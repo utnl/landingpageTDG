@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import { AccentHighlight } from "./accent-highlight";
 
-const ACCENT = "var(--hero-btn-bg, #f59e0b)";
+const ACCENT = "#ff8c3a";
 
 type Service = {
   title: string;
@@ -57,43 +57,29 @@ function ServiceIcon({
   type: "animation" | "art" | "vfx";
   color: string;
 }) {
-  const common = {
-    width: 18,
-    height: 18,
-    viewBox: "0 0 24 24",
-    fill: "none" as const,
-    stroke: "currentColor",
-    strokeWidth: 2.2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    style: { color },
-  };
-
-  if (type === "animation") {
-    return (
-      <svg {...common}>
-        <path d="M8 5v14l11-7z" />
-      </svg>
-    );
-  }
-
-  if (type === "art") {
-    return (
-      <svg {...common}>
-        <path d="M12 3a9 9 0 0 0 0 18c1.2 0 2-1 .9-2.1-.7-.7-.9-1.8-.5-2.7.6-1.3 2.1-1.2 3.3-1.2a4.8 4.8 0 0 0 0-9.6H12z" />
-        <path d="M7.5 10.5h.01" />
-        <path d="M9.7 7.9h.01" />
-        <path d="M12.6 7.3h.01" />
-        <path d="M15.3 8.2h.01" />
-      </svg>
-    );
-  }
+  const iconSrc =
+    type === "art"
+      ? "/images/art.png"
+      : type === "animation"
+        ? "/images/running.png"
+        : "/images/sparkling.png";
 
   return (
-    <svg {...common}>
-      <path d="M12 3c.8 2.8-.2 4.2-2 6 2.8-.6 4.8.4 6 3 1-3.2 2.8-4.2 5-4-2.4-1.2-4.1-2.7-4-5-1.3 2.2-2.9 2.6-5 0z" />
-      <path d="M6 13c.5 1.6-.2 2.5-1.5 3.5 1.7-.2 2.7.4 3.3 1.8.7-2 1.8-2.6 3.1-2.6-1.5-.7-2.5-1.6-2.4-3-.7 1.4-1.6 1.7-2.5.3z" />
-    </svg>
+    <span
+      className="block h-6 w-6"
+      style={{
+        backgroundColor: color,
+        maskImage: `url('${iconSrc}')`,
+        WebkitMaskImage: `url('${iconSrc}')`,
+        maskRepeat: "no-repeat",
+        WebkitMaskRepeat: "no-repeat",
+        maskPosition: "center",
+        WebkitMaskPosition: "center",
+        maskSize: "contain",
+        WebkitMaskSize: "contain",
+      }}
+      aria-hidden="true"
+    />
   );
 }
 
@@ -177,7 +163,7 @@ export default function HomeServicesSection() {
               }}
               className="group relative h-[460px] w-full overflow-visible hover:z-10"
             >
-              <div className="absolute left-0 right-0 top-1/2 z-20 flex -translate-y-1/2 flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#212933] shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:border-[color-mix(in_srgb,var(--hero-btn-bg,#f59e0b)_42%,transparent)] group-hover:shadow-[0_32px_90px_rgba(0,0,0,0.42)]">
+              <div className="absolute left-0 right-0 top-1/2 z-20 flex -translate-y-1/2 flex-col overflow-hidden rounded-[24px] border border-orange-300/35 bg-[linear-gradient(170deg,#1c1f28_0%,#14171f_68%,#171107_100%)] shadow-[0_24px_70px_rgba(0,0,0,0.35)] transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:border-orange-300/65 group-hover:shadow-[0_32px_90px_rgba(0,0,0,0.5),0_0_28px_rgba(255,140,58,0.2)]">
                 <a
                   href={service.href}
                   aria-label={`Open ${service.title}`}
@@ -191,15 +177,16 @@ export default function HomeServicesSection() {
                     className="object-cover"
                     sizes="(max-width:768px) 100vw, 380px"
                   />
+                  <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#0b0b0f] via-transparent to-transparent opacity-75" />
                 </div>
 
                 <div className="flex flex-col px-6 py-5">
                   <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-[24px] font-semibold leading-tight tracking-tight text-white">
+                    <h3 className="text-[24px] font-bold leading-tight tracking-tight text-white">
                       {service.title}
                     </h3>
                     <span
-                      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/25"
+                      className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-amber-300/55 bg-black/55 shadow-[0_8px_24px_rgba(0,0,0,0.32),0_0_14px_rgba(245,158,11,0.2)]"
                       title={service.title}
                     >
                       <ServiceIcon type={service.icon} color={ACCENT} />
@@ -209,7 +196,7 @@ export default function HomeServicesSection() {
                   <div className="grid grid-rows-[0fr] transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:mt-3 group-hover:grid-rows-[1fr]">
                     <div className="min-h-0 overflow-hidden">
                       <div className="translate-y-2 opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100">
-                        <p className="text-[13px] leading-6 text-white/70">
+                        <p className="text-[13px] leading-6 text-white/82">
                           {service.description}
                         </p>
                       </div>
@@ -221,12 +208,12 @@ export default function HomeServicesSection() {
                       <div className="text-base font-semibold leading-tight text-white">
                         {service.statValue}
                       </div>
-                      <div className="text-[12px] leading-tight text-white/45">
+                      <div className="text-[12px] leading-tight text-white/60">
                         {service.statLabel}
                       </div>
                     </div>
 
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/35 text-white/85 transition-colors duration-200 group-hover:bg-[var(--hero-btn-bg,#f59e0b)] group-hover:text-black">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/35 text-white/85 transition-colors duration-200 group-hover:border-orange-300/60 group-hover:bg-[#ff8c3a] group-hover:text-black">
                       <svg
                         width="16"
                         height="16"

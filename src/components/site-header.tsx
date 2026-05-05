@@ -7,12 +7,61 @@ import { usePathname } from "next/navigation";
 import { useQuoteStyleListener } from "./hero-layout-state";
 
 const navLinks = [
-  { label: "SERVICES", href: "/services" },
+  {
+    label: "SERVICES",
+    href: "/services",
+    children: [
+      {
+        label: "2D Art",
+        href: "/services/2d-art",
+        description: "Characters, Environments, UI/UX, Props & more",
+        icon: "art",
+      },
+      {
+        label: "2D Animation",
+        href: "/services/2d-animation",
+        description: "Spine Animation, Frame by Frame, Cutscenes & more",
+        icon: "animation",
+      },
+      {
+        label: "2D VFX",
+        href: "/services/2d-vfx",
+        description: "Skill Effects, Particles, Explosions & more",
+        icon: "vfx",
+      },
+    ],
+  },
   { label: "PORTFOLIO", href: "/portfolio" },
   { label: "ABOUT", href: "/about" },
   { label: "BLOG", href: "/blog" },
   { label: "CAREERS", href: "/careers" },
 ];
+
+function ServiceIcon({ type }: { type: string }) {
+  const iconSrc =
+    type === "art"
+      ? "/images/art.png"
+      : type === "animation"
+        ? "/images/running.png"
+        : "/images/sparkling.png";
+
+  return (
+    <span
+      className="block h-11 w-11 bg-current"
+      style={{
+        maskImage: `url('${iconSrc}')`,
+        WebkitMaskImage: `url('${iconSrc}')`,
+        maskRepeat: "no-repeat",
+        WebkitMaskRepeat: "no-repeat",
+        maskPosition: "center",
+        WebkitMaskPosition: "center",
+        maskSize: "contain",
+        WebkitMaskSize: "contain",
+      }}
+      aria-hidden="true"
+    />
+  );
+}
 
 function QuoteButton({ style, scrolled }: { style: ReturnType<typeof useQuoteStyleListener>; scrolled: boolean }) {
   const base = "hidden md:inline-flex items-center gap-2.5 font-black text-[13px] uppercase tracking-[0.12em] transition-all duration-200";
@@ -64,6 +113,7 @@ function QuoteButton({ style, scrolled }: { style: ReturnType<typeof useQuoteSty
 export default function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const pathname = usePathname();
   const quoteStyle = useQuoteStyleListener();
 
@@ -98,7 +148,76 @@ export default function SiteHeader() {
 
           <nav className="hidden md:flex items-center">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = pathname === link.href || link.children?.some((child) => pathname === child.href);
+
+              if (link.children) {
+                return (
+                  <div key={link.href} className="relative group">
+                    <Link
+                      href={link.href}
+                      className={`nav-link services-trigger inline-flex items-center transition-all duration-300 ${isActive ? "active-link" : "text-white"}`}
+                      style={{
+                        fontFamily: "var(--font-nunito-sans), sans-serif",
+                        fontSize: "17px",
+                        fontWeight: 700,
+                        letterSpacing: "0.5px",
+                        textTransform: "uppercase",
+                        padding: "7px 14px",
+                        margin: "0 5px",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+
+                    <div className="pointer-events-none invisible absolute left-1/2 top-full z-50 w-[390px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
+                      <div className="relative rounded-2xl border border-[#f7a31c]/82 bg-[linear-gradient(165deg,rgba(8,8,12,0.95)_0%,rgba(16,10,6,0.93)_52%,rgba(38,18,4,0.88)_100%)] p-4 shadow-[0_18px_44px_rgba(0,0,0,0.62),0_0_0_1px_rgba(247,163,28,0.28),0_0_26px_rgba(247,163,28,0.24)] backdrop-blur-md">
+                        <div className="absolute top-[-7px] left-1/2 h-3.5 w-3.5 -translate-x-1/2 rotate-45 border-l border-t border-[#f7a31c]/82 bg-[#1a1005]" />
+                      {link.children.map((child, index) => {
+                        const isChildActive = pathname === child.href;
+                        return (
+                          <div key={child.href}>
+                            <Link
+                              href={child.href}
+                              className={`group/item flex items-center gap-3 rounded-xl px-2.5 py-2 transition-all duration-200 ${
+                                isChildActive
+                                  ? "bg-[#f7a31c]/20 text-[#ffd998]"
+                                  : "text-white/92 hover:bg-[#f7a31c]/10 hover:text-white"
+                              }`}
+                              style={{ fontFamily: "var(--font-nunito-sans), sans-serif" }}
+                            >
+                              <span className={`inline-flex h-[70px] w-[70px] shrink-0 items-center justify-center rounded-xl border ${
+                                isChildActive
+                                  ? "border-white/48 bg-white/12 text-[#ff9f1a] shadow-[0_0_20px_rgba(247,163,28,0.36)]"
+                                  : "border-white/28 bg-white/7 text-[#ff9f1a] group-hover/item:border-white/48 group-hover/item:bg-white/12 group-hover/item:shadow-[0_0_16px_rgba(247,163,28,0.24)]"
+                              }`}>
+                                <ServiceIcon type={child.icon} />
+                              </span>
+
+                              <span className="min-w-0 flex-1">
+                                <span className="block text-lg font-bold leading-tight">{child.label}</span>
+                                <span className="mt-0.5 block text-[15px] leading-snug text-white/80">{child.description}</span>
+                              </span>
+
+                              <svg className={`h-5 w-5 shrink-0 transition-transform duration-200 ${
+                                isChildActive ? "text-[#f7a31c]" : "text-[#f7a31c] group-hover/item:translate-x-0.5"
+                              }`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8 5l5 5-5 5" />
+                              </svg>
+                            </Link>
+                            {index < link.children.length - 1 && (
+                              <div className="mx-2 my-1 h-px bg-linear-to-r from-transparent via-[#f7a31c]/30 to-transparent" />
+                            )}
+                          </div>
+                        );
+                      })}
+                        <div className="pointer-events-none absolute bottom-[-5px] left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 border border-[#f7a31c]/82 bg-[#1a1005] shadow-[0_0_10px_rgba(247,163,28,0.35)]" />
+                    </div>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.href}
@@ -140,7 +259,54 @@ export default function SiteHeader() {
       {menuOpen && (
         <div className="mx-5 mt-2 md:hidden rounded-2xl border border-white/12 bg-[#090a0f]/96 backdrop-blur-xl px-5 py-5 flex flex-col gap-2 shadow-[0_18px_36px_rgba(0,0,0,0.5)]">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = pathname === link.href || link.children?.some((child) => pathname === child.href);
+
+            if (link.children) {
+              return (
+                <div key={link.href} className="rounded-lg border border-white/10">
+                  <button
+                    type="button"
+                    onClick={() => setMobileServicesOpen((prev) => !prev)}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-semibold uppercase tracking-[0.14em] transition-colors ${
+                      isActive ? "bg-amber-400/16 text-amber-200" : "text-white/80 hover:bg-white/8 hover:text-white"
+                    }`}
+                    style={{ fontFamily: "var(--font-nav-display)" }}
+                  >
+                    {link.label}
+                    <svg className={`h-3.5 w-3.5 transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.51a.75.75 0 01-1.08 0l-4.25-4.51a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+
+                  {mobileServicesOpen && (
+                    <div className="px-2 pb-2">
+                      {link.children.map((child) => {
+                        const isChildActive = pathname === child.href;
+                        return (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setMenuOpen(false)}
+                            className={`mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-wider ${
+                              isChildActive
+                                ? "bg-amber-400/16 text-amber-200"
+                                : "text-white/85 hover:bg-white/8 hover:text-white"
+                            }`}
+                            style={{ fontFamily: "var(--font-nav-display)" }}
+                          >
+                            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/38 bg-white/10 text-[#ff9f1a] shadow-[0_0_12px_rgba(247,163,28,0.2)]">
+                              <ServiceIcon type={child.icon} />
+                            </span>
+                            {child.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.href}

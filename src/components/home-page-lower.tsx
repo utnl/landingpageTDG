@@ -1239,7 +1239,28 @@ export default function HomePageLower() {
           </div>
 
           <div className="mt-12 border-t border-white/10 pt-6 text-xs text-white/40">
-            © {new Date().getFullYear()} TD Games. All rights reserved.
+            <div>© {new Date().getFullYear()} TD Games. All rights reserved.</div>
+            <div className="mt-2 text-[10px] text-white/28">
+              Running icon by{" "}
+              <a
+                href="https://www.flaticon.com/authors/freepik"
+                target="_blank"
+                rel="noreferrer"
+                className="transition-colors hover:text-white/55"
+              >
+                Freepik
+              </a>{" "}
+              from{" "}
+              <a
+                href="https://www.flaticon.com/free-icons/runner"
+                target="_blank"
+                rel="noreferrer"
+                className="transition-colors hover:text-white/55"
+              >
+                Flaticon
+              </a>
+              .
+            </div>
           </div>
         </div>
       </motion.footer>
