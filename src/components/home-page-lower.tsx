@@ -529,40 +529,23 @@ export default function HomePageLower() {
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(255,140,58,0.08),transparent_40%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_80%,rgba(123,109,255,0.10),transparent_45%)]" />
-        <svg
-          className="pointer-events-none absolute left-[6%] top-[14%] h-24 w-56 opacity-35"
-          viewBox="0 0 280 120"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          className="pointer-events-none absolute left-[4%] top-[10%] h-[170px] w-[170px] opacity-28"
+          aria-hidden
         >
-          <defs>
-            <linearGradient
-              id="tdgScribbleWarm"
-              x1="0"
-              y1="0"
-              x2="280"
-              y2="120"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#ff8c3a" stopOpacity="0.9" />
-              <stop offset="1" stopColor="#ffb34f" stopOpacity="0.85" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M18 86C50 66 88 56 128 50C170 43 210 40 252 30"
-            stroke="url(#tdgScribbleWarm)"
-            strokeWidth="3.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <Image
+            src="/images/scribble.png"
+            alt=""
+            fill
+            className="object-contain"
+            sizes="170px"
+            style={{
+              filter:
+                "invert(61%) sepia(75%) saturate(776%) hue-rotate(343deg) brightness(100%) contrast(102%) drop-shadow(0 0 12px rgba(255,140,58,0.2))",
+              transform: "rotate(-14deg) scale(1.03)",
+            }}
           />
-          <path
-            d="M126 50C150 52 178 60 202 74"
-            stroke="url(#tdgScribbleWarm)"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            opacity="0.7"
-          />
-        </svg>
+        </div>
 
         {/* subtle ember particles */}
         {[

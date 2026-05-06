@@ -47,7 +47,7 @@ function ServiceIcon({ type }: { type: string }) {
 
   return (
     <span
-      className="block h-11 w-11 bg-current"
+      className="block h-9 w-9 bg-current"
       style={{
         maskImage: `url('${iconSrc}')`,
         WebkitMaskImage: `url('${iconSrc}')`,
@@ -168,50 +168,61 @@ export default function SiteHeader() {
                       }}
                     >
                       {link.label}
+                      <svg
+                        className="ml-1.5 h-4 w-4 transition-transform duration-200 group-hover:rotate-180"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.51a.75.75 0 01-1.08 0l-4.25-4.51a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                     </Link>
 
-                    <div className="pointer-events-none invisible absolute left-1/2 top-full z-50 w-[390px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
-                      <div className="relative rounded-2xl border border-[#f7a31c]/82 bg-[linear-gradient(165deg,rgba(8,8,12,0.95)_0%,rgba(16,10,6,0.93)_52%,rgba(38,18,4,0.88)_100%)] p-4 shadow-[0_18px_44px_rgba(0,0,0,0.62),0_0_0_1px_rgba(247,163,28,0.28),0_0_26px_rgba(247,163,28,0.24)] backdrop-blur-md">
-                        <div className="absolute top-[-7px] left-1/2 h-3.5 w-3.5 -translate-x-1/2 rotate-45 border-l border-t border-[#f7a31c]/82 bg-[#1a1005]" />
+                    <div className="pointer-events-none invisible absolute left-1/2 top-full z-50 w-[360px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
+                      <div className="relative rounded-2xl border border-white/20 bg-[linear-gradient(165deg,rgba(8,8,12,0.96)_0%,rgba(15,12,24,0.94)_52%,rgba(17,12,31,0.9)_100%)] p-3.5 shadow-[0_18px_44px_rgba(0,0,0,0.62)] backdrop-blur-md">
+                        <div className="absolute top-[-7px] left-1/2 h-3.5 w-3.5 -translate-x-1/2 rotate-45 border-l border-t border-white/20 bg-[#1a1005]" />
                       {link.children.map((child, index) => {
                         const isChildActive = pathname === child.href;
                         return (
                           <div key={child.href}>
                             <Link
                               href={child.href}
-                              className={`group/item flex items-center gap-3 rounded-xl px-2.5 py-2 transition-all duration-200 ${
+                              className={`group/item flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-all duration-200 ${
                                 isChildActive
-                                  ? "bg-[#f7a31c]/20 text-[#ffd998]"
+                                  ? "bg-white/[0.06] text-white"
                                   : "text-white/92 hover:bg-[#f7a31c]/10 hover:text-white"
                               }`}
                               style={{ fontFamily: "var(--font-nunito-sans), sans-serif" }}
                             >
-                              <span className={`inline-flex h-[70px] w-[70px] shrink-0 items-center justify-center rounded-xl border ${
+                              <span className={`inline-flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-xl border ${
                                 isChildActive
-                                  ? "border-white/48 bg-white/12 text-[#ff9f1a] shadow-[0_0_20px_rgba(247,163,28,0.36)]"
-                                  : "border-white/28 bg-white/7 text-[#ff9f1a] group-hover/item:border-white/48 group-hover/item:bg-white/12 group-hover/item:shadow-[0_0_16px_rgba(247,163,28,0.24)]"
+                                  ? "border-[#ffb867]/45 bg-[#ff9f1a]/6 text-[#ff9f1a] shadow-[0_0_10px_rgba(255,159,26,0.18)]"
+                                  : "border-white/24 bg-white/7 text-[#ff9f1a] group-hover/item:border-white/45 group-hover/item:bg-white/12 group-hover/item:shadow-[0_0_12px_rgba(255,255,255,0.14)]"
                               }`}>
                                 <ServiceIcon type={child.icon} />
                               </span>
 
                               <span className="min-w-0 flex-1">
-                                <span className="block text-lg font-bold leading-tight">{child.label}</span>
-                                <span className="mt-0.5 block text-[15px] leading-snug text-white/80">{child.description}</span>
+                                <span className="block text-[17px] font-bold leading-tight">{child.label}</span>
+                                <span className="mt-0.5 block text-[14px] leading-snug text-white/80">{child.description}</span>
                               </span>
 
                               <svg className={`h-5 w-5 shrink-0 transition-transform duration-200 ${
-                                isChildActive ? "text-[#f7a31c]" : "text-[#f7a31c] group-hover/item:translate-x-0.5"
+                                isChildActive ? "text-[#ffb867]" : "text-white/75 group-hover/item:translate-x-0.5"
                               }`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 5l5 5-5 5" />
                               </svg>
                             </Link>
                             {index < link.children.length - 1 && (
-                              <div className="mx-2 my-1 h-px bg-linear-to-r from-transparent via-[#f7a31c]/30 to-transparent" />
+                              <div className="mx-2 my-1 h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
                             )}
                           </div>
                         );
                       })}
-                        <div className="pointer-events-none absolute bottom-[-5px] left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 border border-[#f7a31c]/82 bg-[#1a1005] shadow-[0_0_10px_rgba(247,163,28,0.35)]" />
                     </div>
                     </div>
                   </div>

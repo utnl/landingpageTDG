@@ -186,7 +186,7 @@ export default function HomeServicesSection() {
                       {service.title}
                     </h3>
                     <span
-                      className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-amber-300/55 bg-black/55 shadow-[0_8px_24px_rgba(0,0,0,0.32),0_0_14px_rgba(245,158,11,0.2)]"
+                      className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-amber-300/30 bg-black/60 shadow-[0_6px_16px_rgba(0,0,0,0.28)]"
                       title={service.title}
                     >
                       <ServiceIcon type={service.icon} color={ACCENT} />

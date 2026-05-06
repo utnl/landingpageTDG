@@ -235,69 +235,23 @@ export default function HomeProjectsSection() {
       className="snap-start relative overflow-hidden border-t border-[#252525] bg-[#0d0d12] py-20 lg:py-24"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_50%,rgba(57,45,138,0.22),transparent_40%)]" />
-      <svg
-        className="pointer-events-none absolute right-[10%] top-[20%] h-24 w-56 opacity-80"
-        viewBox="0 0 280 120"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <div
+        className="pointer-events-none absolute right-[10.5%] top-[17%] h-[128px] w-[128px] opacity-42"
         aria-hidden
       >
-        <defs>
-          <linearGradient
-            id="tdgScribbleOrange"
-            x1="0"
-            y1="0"
-            x2="280"
-            y2="120"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#ff8c3a" />
-            <stop offset="1" stopColor="#ffb34f" />
-          </linearGradient>
-          <filter
-            id="tdgGlowOrange"
-            x="-20%"
-            y="-20%"
-            width="140%"
-            height="140%"
-          >
-            <feGaussianBlur stdDeviation="2.2" result="blur" />
-            <feColorMatrix
-              in="blur"
-              type="matrix"
-              values="1 0 0 0 0  0 0.55 0 0 0  0 0 0.25 0 0  0 0 0 1 0"
-            />
-            <feMerge>
-              <feMergeNode />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-        <g filter="url(#tdgGlowOrange)">
-          <path
-            d="M16 86C48 66 86 56 126 50C168 43 205 40 244 28"
-            stroke="url(#tdgScribbleOrange)"
-            strokeWidth="3.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M122 50C146 52 174 60 198 74"
-            stroke="url(#tdgScribbleOrange)"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.72"
-          />
-          <path
-            d="M18 92C55 70 92 60 136 52C174 45 210 41 252 30"
-            stroke="#ffd1a8"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            opacity="0.35"
-          />
-        </g>
-      </svg>
+        <Image
+          src="/images/scribble.png"
+          alt=""
+          fill
+          className="object-contain"
+          sizes="170px"
+          style={{
+            filter:
+              "invert(62%) sepia(73%) saturate(782%) hue-rotate(342deg) brightness(101%) contrast(103%) drop-shadow(0 0 14px rgba(255,140,58,0.22))",
+            transform: "rotate(90deg) scale(0.98)",
+          }}
+        />
+      </div>
 
       <svg
         className="pointer-events-none absolute bottom-[10%] right-[4%] h-24 w-56 opacity-55"
@@ -464,7 +418,8 @@ export default function HomeProjectsSection() {
                           type="button"
                           className="rounded-md border bg-black/45 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-white transition-all hover:text-black"
                           style={{
-                            borderColor: "color-mix(in srgb, var(--hero-btn-bg, #f59e0b) 60%, transparent)",
+                            borderColor:
+                              "color-mix(in srgb, var(--hero-btn-bg, #f59e0b) 60%, transparent)",
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor =
