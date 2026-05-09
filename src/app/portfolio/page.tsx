@@ -84,10 +84,7 @@ function computeBoardDesignSize(cards: CardConfig[]): {
     maxB = Math.max(maxB, c.y + c.h);
   }
   const topPad = minY < 0 ? -minY : 0;
-  const w = Math.max(
-    BOARD_DESIGN_MIN.w,
-    Math.ceil(maxR + M + SHAPE_PAD * 2),
-  );
+  const w = Math.max(BOARD_DESIGN_MIN.w, Math.ceil(maxR + M + SHAPE_PAD * 2));
   const h = Math.max(
     BOARD_DESIGN_MIN.h,
     Math.ceil(maxB + topPad + M + SHAPE_PAD * 2),
@@ -151,12 +148,14 @@ type PortfolioBgRightInit = {
 };
 
 const PORTFOLIO_INIT_STORAGE_KEY = "portfolio-page-init-v1";
+/** Card “ENVIRONMENT ART” — hover dùng ảnh làm nền khối bên phải. */
+const PORTFOLIO_ENVIRONMENT_CARD_ID = "overdrive-top-left";
 
 const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
   {
     id: "overdrive-top-left",
-    title: "ENVIRONMENT ART",
-    subtitle: "20 ART",
+    title: "",
+    subtitle: "",
     image: "/images/f8e2e81a-e72c-431b-b4ec-5ab7af73ea12.png",
     align: "center",
     x: 1478,
@@ -179,8 +178,8 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
   },
   {
     id: "overdrive-top-right",
-    title: "OVERDRIVE",
-    subtitle: "20 / ANIMATION / VFX",
+    title: "",
+    subtitle: "",
     image: "/images/21f8a0a6-048f-4a5c-9946-3a89f6303fcd.png",
     align: "top",
     x: 1263,
@@ -203,8 +202,8 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
   },
   {
     id: "summoners-era",
-    title: "summoners era",
-    subtitle: "30 ART",
+    title: "",
+    subtitle: "",
     image: "/images/3067c837-e030-403f-b7c5-0c7246bfe15f.png",
     align: "center",
     x: 1193,
@@ -226,8 +225,8 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
   },
   {
     id: "environment-art",
-    title: "OVERDRIVE",
-    subtitle: "20 / ANIMATION / VFX",
+    title: "",
+    subtitle: "",
     image: "/images/f0d05f71-5089-4b3f-b453-7a8d19afc013.png",
     align: "center",
     x: 1546,
@@ -243,15 +242,17 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     bry: 293,
     blx: -68,
     bly: 43,
-    imageOffsetX: -39,
-    imageOffsetY: -28,
-    imageScale: 1.05,
+    textOffsetX: 0,
+    textOffsetY: 0,
+    imageOffsetX: -54,
+    imageOffsetY: 0,
+    imageScale: 1.45,
     showText: true,
   },
   {
     id: "hexagon-card",
-    title: "SQUARE",
-    subtitle: "AUTO CROP",
+    title: "",
+    subtitle: "",
     image: "/images/xoa_nen_vip_pro.png",
     align: "center",
     x: 316,
@@ -301,7 +302,7 @@ const PORTFOLIO_DESIGN_CANVAS_INITIAL: {
 
 const PORTFOLIO_PAGE_DEFAULTS = {
   board: BOARD_CONFIG,
-  background: "/images/a0a5dab6-1e06-4a1b-af95-af0b51fc27e6.png",
+  background: "",
   designCanvas: PORTFOLIO_DESIGN_CANVAS_INITIAL,
   bgRight: PORTFOLIO_BG_RIGHT_INITIAL,
   cards: PORTFOLIO_CARDS_INITIAL,
@@ -325,18 +326,22 @@ function applyPortfolioInitPayload(
     setShowcaseCards: (v: CardConfig[]) => void;
   },
 ) {
-  if (typeof data.background === "string") apply.setBgImage(data.background);
+  if (typeof data.background === "string") {
+    // Không cho phép dùng bgright.png làm background full-page (nó sẽ "to đùng" và trùng với khối phải)
+    apply.setBgImage(
+      /bgright\.png/i.test(data.background) ||
+        /a0a5dab6-1e06-4a1b-af95-af0b51fc27e6\.png/i.test(data.background)
+        ? PORTFOLIO_PAGE_DEFAULTS.background
+        : data.background,
+    );
+  }
 
   if (data.designCanvas && typeof data.designCanvas === "object") {
     const d = data.designCanvas as Record<string, unknown>;
     const w = Number(d.width);
     const h = Number(d.height);
     const topPad = Number(d.topPad);
-    if (
-      Number.isFinite(w) &&
-      Number.isFinite(h) &&
-      Number.isFinite(topPad)
-    ) {
+    if (Number.isFinite(w) && Number.isFinite(h) && Number.isFinite(topPad)) {
       apply.setBoardCanvas({ w, h, topPad });
     }
   }
@@ -416,6 +421,7 @@ export default function PortfolioPage() {
     PORTFOLIO_PAGE_DEFAULTS.cards,
   );
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
   const [interaction, setInteraction] = useState<InteractionState>(null);
   const [lockLayout, setLockLayout] = useState(false);
@@ -476,10 +482,7 @@ export default function PortfolioPage() {
       const w = el.clientWidth;
       const h = el.clientHeight;
       if (w < 2 || h < 2) return;
-      const s = Math.min(
-        w / boardDesignSize.w,
-        h / boardDesignSize.h,
-      );
+      const s = Math.min(w / boardDesignSize.w, h / boardDesignSize.h);
       setBoardFitScale(s > 0 ? s : 1);
     };
     update();
@@ -489,6 +492,15 @@ export default function PortfolioPage() {
   }, [boardDesignSize.w, boardDesignSize.h]);
 
   const selectedCard = showcaseCards[selectedCardIndex];
+  const environmentHeroCard = useMemo(
+    () =>
+      showcaseCards.find((c) => c.id === PORTFOLIO_ENVIRONMENT_CARD_ID) ?? null,
+    [showcaseCards],
+  );
+  const showEnvironmentAsRightBg =
+    hoveredCardIndex !== null &&
+    showcaseCards[hoveredCardIndex]?.id === PORTFOLIO_ENVIRONMENT_CARD_ID;
+
   const availableImageSet = useMemo(
     () => new Set(availableImages),
     [availableImages],
@@ -758,12 +770,10 @@ export default function PortfolioPage() {
 
           if (interaction.mode === "drag") {
             const nextX = Math.round(
-              interaction.originX +
-                (event.clientX - interaction.startX) / z,
+              interaction.originX + (event.clientX - interaction.startX) / z,
             );
             const nextY = Math.round(
-              interaction.originY +
-                (event.clientY - interaction.startY) / z,
+              interaction.originY + (event.clientY - interaction.startY) / z,
             );
             return { ...card, x: nextX, y: nextY };
           }
@@ -808,12 +818,10 @@ export default function PortfolioPage() {
 
           if (interaction.mode === "imagePan") {
             const nextOffsetX = Math.round(
-              interaction.originX +
-                (event.clientX - interaction.startX) / z,
+              interaction.originX + (event.clientX - interaction.startX) / z,
             );
             const nextOffsetY = Math.round(
-              interaction.originY +
-                (event.clientY - interaction.startY) / z,
+              interaction.originY + (event.clientY - interaction.startY) / z,
             );
             return {
               ...card,
@@ -858,6 +866,39 @@ export default function PortfolioPage() {
       <main
         className={`relative min-h-screen overflow-hidden bg-black ${nunitoSans.className}`}
       >
+        {/* Global background (ENVIRONMENT hover: bỏ phủ + scale ảnh) */}
+        <div className="pointer-events-none absolute inset-0 z-0">
+          {bgImage && !/bgright\.png/i.test(bgImage) ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={bgImage}
+              alt=""
+              className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
+                showEnvironmentAsRightBg
+                  ? "scale-100 opacity-0"
+                  : "scale-100 opacity-100"
+              }`}
+            />
+          ) : null}
+          {environmentHeroCard ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={environmentHeroCard.image}
+              alt=""
+              className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
+                showEnvironmentAsRightBg
+                  ? "scale-110 opacity-100"
+                  : "scale-100 opacity-0"
+              }`}
+            />
+          ) : null}
+          <div
+            className={`absolute inset-0 bg-black/65 transition-opacity duration-500 ease-out ${
+              showEnvironmentAsRightBg ? "opacity-0" : "opacity-100"
+            }`}
+          />
+        </div>
+
         {/* Card Controller: fixed trên viewport, không nằm trong khối có transform */}
         {/* Toggle Button */}
         <button
@@ -897,9 +938,7 @@ export default function PortfolioPage() {
                       ? "border-red-400/70 bg-red-400/20 text-red-300"
                       : "border-emerald-400/70 bg-emerald-400/20 text-emerald-300"
                   }`}
-                  title={
-                    lockLayout ? "Mở khóa để kéo góc" : "Khóa layout"
-                  }
+                  title={lockLayout ? "Mở khóa để kéo góc" : "Khóa layout"}
                 >
                   {lockLayout ? "🔒 Khóa" : "🔓 Mở"}
                 </button>
@@ -975,10 +1014,9 @@ export default function PortfolioPage() {
                   />
                   <span className="text-[10px] text-white/55">
                     File phải nằm trong{" "}
-                    <span className="font-mono">public/images</span>. Mình
-                    chỉ lấy <span className="font-mono">file.name</span>{" "}
-                    và gán thành{" "}
-                    <span className="font-mono">/images/tenfile</span>.
+                    <span className="font-mono">public/images</span>. Mình chỉ
+                    lấy <span className="font-mono">file.name</span> và gán
+                    thành <span className="font-mono">/images/tenfile</span>.
                   </span>
                 </div>
                 {pickHint && (
@@ -1064,8 +1102,7 @@ export default function PortfolioPage() {
                   <input
                     type="number"
                     value={
-                      selectedCard.zIndex ??
-                      (selectedCardIndex === 4 ? 1 : 10)
+                      selectedCard.zIndex ?? (selectedCardIndex === 4 ? 1 : 10)
                     }
                     onChange={(e) =>
                       updateSelectedCard("zIndex", Number(e.target.value))
@@ -1079,10 +1116,7 @@ export default function PortfolioPage() {
                     type="number"
                     value={selectedCard.textOffsetX ?? 0}
                     onChange={(e) =>
-                      updateSelectedCard(
-                        "textOffsetX",
-                        Number(e.target.value),
-                      )
+                      updateSelectedCard("textOffsetX", Number(e.target.value))
                     }
                     className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
                   />
@@ -1093,10 +1127,7 @@ export default function PortfolioPage() {
                     type="number"
                     value={selectedCard.textOffsetY ?? 0}
                     onChange={(e) =>
-                      updateSelectedCard(
-                        "textOffsetY",
-                        Number(e.target.value),
-                      )
+                      updateSelectedCard("textOffsetY", Number(e.target.value))
                     }
                     className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
                   />
@@ -1107,10 +1138,7 @@ export default function PortfolioPage() {
                     type="number"
                     value={selectedCard.imageOffsetX}
                     onChange={(e) =>
-                      updateSelectedCard(
-                        "imageOffsetX",
-                        Number(e.target.value),
-                      )
+                      updateSelectedCard("imageOffsetX", Number(e.target.value))
                     }
                     className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
                   />
@@ -1121,10 +1149,7 @@ export default function PortfolioPage() {
                     type="number"
                     value={selectedCard.imageOffsetY}
                     onChange={(e) =>
-                      updateSelectedCard(
-                        "imageOffsetY",
-                        Number(e.target.value),
-                      )
+                      updateSelectedCard("imageOffsetY", Number(e.target.value))
                     }
                     className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
                   />
@@ -1140,10 +1165,7 @@ export default function PortfolioPage() {
                     onChange={(e) =>
                       updateSelectedCard(
                         "imageScale",
-                        Math.max(
-                          0.2,
-                          Math.min(5, Number(e.target.value)),
-                        ),
+                        Math.max(0.2, Math.min(5, Number(e.target.value))),
                       )
                     }
                     className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
@@ -1299,7 +1321,6 @@ export default function PortfolioPage() {
               </div>
             </div>
 
-
             {/* BG Right Layout (bgright.png) */}
             <div className="mt-3 rounded-md border border-white/15 bg-black/55 p-3">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.09em] text-white/80">
@@ -1313,9 +1334,7 @@ export default function PortfolioPage() {
                     min={20}
                     max={100}
                     value={bgRightWidthVw}
-                    onChange={(e) =>
-                      setBgRightWidthVw(Number(e.target.value))
-                    }
+                    onChange={(e) => setBgRightWidthVw(Number(e.target.value))}
                     className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
                   />
                 </label>
@@ -1326,9 +1345,7 @@ export default function PortfolioPage() {
                     min={20}
                     max={100}
                     value={bgRightHeightVh}
-                    onChange={(e) =>
-                      setBgRightHeightVh(Number(e.target.value))
-                    }
+                    onChange={(e) => setBgRightHeightVh(Number(e.target.value))}
                     className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
                   />
                 </label>
@@ -1428,10 +1445,13 @@ export default function PortfolioPage() {
             {/* Init JSON Export */}
             <div className="mt-3 rounded-md border border-emerald-400/30 bg-emerald-950/20 p-2">
               <p className="mb-1 text-[9px] leading-snug text-white/55">
-                Có <strong className="text-emerald-200/90">bgRight.imageScale</strong>{" "}
+                Có{" "}
+                <strong className="text-emerald-200/90">
+                  bgRight.imageScale
+                </strong>{" "}
                 và layout nền.{" "}
-                <strong className="text-emerald-200/90">boardFitScale</strong> theo
-                khung trình duyệt — không export, F5 vẫn đúng nếu lưu Init.
+                <strong className="text-emerald-200/90">boardFitScale</strong>{" "}
+                theo khung trình duyệt — không export, F5 vẫn đúng nếu lưu Init.
               </p>
               <div className="mb-1 flex flex-wrap items-center justify-end gap-1">
                 <button
@@ -1502,67 +1522,67 @@ export default function PortfolioPage() {
               className="relative z-20 max-w-[606px] tracking-[0.5px]"
               style={{ transform: "translateY(var(--hero-text-y, 0px))" }}
             >
-                <div className="mb-[-10px] overflow-hidden">
-                  <div
-                    className={`leading-[1] font-black uppercase text-white ${changaOne.className}`}
-                    style={{ fontSize: "var(--hero-title-size, 100px)" }}
-                  >
-                    OUR{" "}
-                    <span
-                      style={{
-                        color: "var(--hero-highlight-color, #f59e0b)",
-                      }}
-                    >
-                      PROJECTS
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-6 flex items-center gap-4">
-                  <div
-                    className="h-0.5 w-12 shrink-0"
+              <div className="mb-[-10px] overflow-hidden">
+                <div
+                  className={`leading-[1] font-black uppercase text-white ${changaOne.className}`}
+                  style={{ fontSize: "var(--hero-title-size, 100px)" }}
+                >
+                  OUR{" "}
+                  <span
                     style={{
-                      backgroundColor: "var(--hero-subtitle-color, #f59e0b)",
-                    }}
-                  />
-                  <h3
-                    className="font-bold uppercase tracking-[0.3em]"
-                    style={{
-                      fontSize: "var(--hero-subtitle-size, 16px)",
-                      color: "var(--hero-subtitle-color, #f59e0b)",
+                      color: "var(--hero-highlight-color, #f59e0b)",
                     }}
                   >
-                    Take a look at our game art projects!
-                  </h3>
+                    PROJECTS
+                  </span>
                 </div>
+              </div>
 
-                <p
-                  className="mb-[15px] mt-4 max-w-[547px] leading-normal"
+              <div className="mt-6 flex items-center gap-4">
+                <div
+                  className="h-0.5 w-12 shrink-0"
                   style={{
-                    fontSize: "var(--hero-desc-size, 18px)",
-                    color: "var(--hero-desc-color, #e5e7eb)",
+                    backgroundColor: "var(--hero-subtitle-color, #f59e0b)",
+                  }}
+                />
+                <h3
+                  className="font-bold uppercase tracking-[0.3em]"
+                  style={{
+                    fontSize: "var(--hero-subtitle-size, 16px)",
+                    color: "var(--hero-subtitle-color, #f59e0b)",
                   }}
                 >
-                  Sinspired Studio&apos;s portfolio. We specialize in creating
-                  modern 3D environments, captivating characters, and innovative
-                  concept art for next-gen games. For years of experience in the
-                  industry of game art design, managed to collect a solid game
-                  design portfolio of various artworks made in 2D or 3D and other
-                  directions.
-                </p>
+                  Take a look at our game art projects!
+                </h3>
+              </div>
 
-                <div className="mb-[15px] mt-[32px]">
-                  <Link
-                    href="#open-form"
-                    className="inline-block rounded-xl border-2 px-[32px] py-[16px] text-[18px] font-bold uppercase tracking-wider text-black transition-colors duration-300 hover:bg-transparent hover:text-white"
-                    style={{
-                      backgroundColor: "var(--hero-btn-bg, #f59e0b)",
-                      borderColor: "var(--hero-btn-bg, #f59e0b)",
-                    }}
-                  >
-                    Get in Contact
-                  </Link>
-                </div>
+              <p
+                className="mb-[15px] mt-4 max-w-[547px] leading-normal"
+                style={{
+                  fontSize: "var(--hero-desc-size, 18px)",
+                  color: "var(--hero-desc-color, #e5e7eb)",
+                }}
+              >
+                Sinspired Studio&apos;s portfolio. We specialize in creating
+                modern 3D environments, captivating characters, and innovative
+                concept art for next-gen games. For years of experience in the
+                industry of game art design, managed to collect a solid game
+                design portfolio of various artworks made in 2D or 3D and other
+                directions.
+              </p>
+
+              <div className="mb-[15px] mt-[32px]">
+                <Link
+                  href="#open-form"
+                  className="inline-block rounded-xl border-2 px-[32px] py-[16px] text-[18px] font-bold uppercase tracking-wider text-black transition-colors duration-300 hover:bg-transparent hover:text-white"
+                  style={{
+                    backgroundColor: "var(--hero-btn-bg, #f59e0b)",
+                    borderColor: "var(--hero-btn-bg, #f59e0b)",
+                  }}
+                >
+                  Get in Contact
+                </Link>
+              </div>
             </div>
 
             <div
@@ -1593,278 +1613,314 @@ export default function PortfolioPage() {
                     transformOrigin: "center right",
                   }}
                 >
-              <div
-                className="relative h-full w-full"
-                style={{
-                  transform: `translate(${BOARD_CONFIG.translateX}px, ${BOARD_CONFIG.translateY + boardDesignSize.topPad}px)`,
-                }}
-              >
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    transform: `rotate(${bgRightRotate}deg)`,
-                    transformOrigin: "center center",
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/bgright.png"
-                    alt=""
-                    className={`pointer-events-none absolute inset-0 h-full w-full select-none object-right ${
-                      bgRightLockAspect ? "object-contain" : "object-cover"
-                    }`}
+                  <div
+                    className="relative h-full w-full"
                     style={{
-                      transform: `scale(${bgRightImageScale})`,
-                      transformOrigin: "center right",
+                      transform: `translate(${BOARD_CONFIG.translateX}px, ${BOARD_CONFIG.translateY + boardDesignSize.topPad}px)`,
                     }}
-                  />
-                </div>
+                  >
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        transform: `rotate(${bgRightRotate}deg)`,
+                        transformOrigin: "center center",
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/images/bgright.png"
+                        alt=""
+                        className={`pointer-events-none absolute inset-0 h-full w-full select-none object-right transition-opacity duration-500 ease-out ${
+                          bgRightLockAspect ? "object-contain" : "object-cover"
+                        } ${showEnvironmentAsRightBg ? "opacity-0" : "opacity-100"}`}
+                        style={{
+                          transform: `scale(${bgRightImageScale})`,
+                          transformOrigin: "center right",
+                        }}
+                      />
+                    </div>
 
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    transform: `rotate(${BOARD_CONFIG.rotate}deg)`,
-                    transformOrigin: "center center",
-                  }}
-                >
-                  {SHOW_CARDS &&
-                    showcaseCards.map((card, index) =>
-                      (() => {
-                        const poly = getPolygon(card);
-                        const clipPath = `polygon(${poly.points
-                          .map(
-                            (p) => `${p.x + SHAPE_PAD}px ${p.y + SHAPE_PAD}px`,
-                          )
-                          .join(", ")})`;
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        transform: `rotate(${BOARD_CONFIG.rotate}deg)`,
+                        transformOrigin: "center center",
+                      }}
+                    >
+                      {SHOW_CARDS &&
+                        showcaseCards.map((card, index) =>
+                          (() => {
+                            const poly = getPolygon(card);
+                            const clipPath = `polygon(${poly.points
+                              .map(
+                                (p) =>
+                                  `${p.x + SHAPE_PAD}px ${p.y + SHAPE_PAD}px`,
+                              )
+                              .join(", ")})`;
 
-                        return (
-                          <article
-                            key={card.id}
-                            className={`group absolute overflow-visible shadow-[0_14px_40px_rgba(0,0,0,0.55)] ${interaction?.index === index ? "cursor-grabbing" : "cursor-grab"}`}
-                            style={{
-                              left: `${card.x}px`,
-                              top: `${card.y}px`,
-                              width: `${card.w}px`,
-                              height: `${card.h}px`,
-                              zIndex:
-                                card.zIndex ??
-                                (selectedCardIndex === index ? 20 : 10),
-                              transform: `rotate(${card.rotate}deg)`,
-                            }}
-                            onPointerDown={(event) => {
-                              if (lockLayout) return;
-                              if (event.button !== 0) return;
-                              setSelectedCardIndex(index);
-                              setInteraction({
-                                mode: "drag",
-                                index,
-                                startX: event.clientX,
-                                startY: event.clientY,
-                                originX: card.x,
-                                originY: card.y,
-                              });
-                            }}
-                          >
-                            <div
-                              className="absolute overflow-hidden"
-                              style={{
-                                left: `-${SHAPE_PAD}px`,
-                                top: `-${SHAPE_PAD}px`,
-                                width: `calc(100% + ${SHAPE_PAD * 2}px)`,
-                                height: `calc(100% + ${SHAPE_PAD * 2}px)`,
-                                clipPath,
-                              }}
-                            >
-                              <div
-                                className="absolute inset-0"
+                            const cardZ =
+                              interaction?.index === index
+                                ? 40
+                                : (card.zIndex ??
+                                  (selectedCardIndex === index ? 25 : 10));
+
+                            const envTakeover = showEnvironmentAsRightBg;
+                            const isEnvCard =
+                              card.id === PORTFOLIO_ENVIRONMENT_CARD_ID;
+
+                            return (
+                              <article
+                                key={card.id}
+                                className={`group absolute overflow-visible shadow-[0_14px_40px_rgba(0,0,0,0.55)] ${
+                                  envTakeover && !isEnvCard
+                                    ? "pointer-events-none opacity-0"
+                                    : ""
+                                } ${
+                                  envTakeover && isEnvCard
+                                    ? "pointer-events-auto opacity-0"
+                                    : ""
+                                } ${interaction?.index === index ? "cursor-grabbing" : "cursor-grab"}`}
                                 style={{
-                                  transform: `rotate(${-(BOARD_CONFIG.rotate + card.rotate)}deg) scale(${card.imageScale})`,
-                                  transformOrigin: "center",
+                                  left: `${card.x}px`,
+                                  top: `${card.y}px`,
+                                  width: `${card.w}px`,
+                                  height: `${card.h}px`,
+                                  zIndex: cardZ,
+                                  transform: `rotate(${card.rotate}deg)`,
+                                }}
+                                onMouseEnter={() => setHoveredCardIndex(index)}
+                                onMouseLeave={() =>
+                                  setHoveredCardIndex((h) =>
+                                    h === index ? null : h,
+                                  )
+                                }
+                                onPointerDown={(event) => {
+                                  if (lockLayout) return;
+                                  if (event.button !== 0) return;
+                                  setSelectedCardIndex(index);
+                                  setInteraction({
+                                    mode: "drag",
+                                    index,
+                                    startX: event.clientX,
+                                    startY: event.clientY,
+                                    originX: card.x,
+                                    originY: card.y,
+                                  });
                                 }}
                               >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                  src={card.image}
-                                  alt=""
-                                  className={`absolute inset-0 h-full w-full ${
-                                    card.imageFit === "contain"
-                                      ? "object-contain"
-                                      : "object-cover"
-                                  } ${
-                                    card.align === "top"
-                                      ? "object-top"
-                                      : card.align === "bottom"
-                                        ? "object-bottom"
-                                        : "object-center"
-                                  }`}
-                                  style={{
-                                    transform: `translate(${card.imageOffsetX}px, ${card.imageOffsetY}px)`,
-                                  }}
-                                />
-                              </div>
-                              {card.showText !== false && (
-                                <div
-                                  className="pointer-events-none absolute inset-x-0 bottom-0 p-3 text-white"
-                                  style={{
-                                    textShadow:
-                                      "0 2px 14px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.85)",
-                                  }}
-                                >
-                                  <p className="text-[10px] font-black uppercase tracking-[0.08em]">
-                                    {card.title}
-                                  </p>
-                                  <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.11em] text-white/90">
-                                    {card.subtitle}
-                                  </p>
+                                <div className="relative h-full w-full origin-center transition-transform duration-500 ease-out will-change-transform group-hover:scale-110">
+                                  <div
+                                    className="absolute overflow-hidden"
+                                    style={{
+                                      left: `-${SHAPE_PAD}px`,
+                                      top: `-${SHAPE_PAD}px`,
+                                      width: `calc(100% + ${SHAPE_PAD * 2}px)`,
+                                      height: `calc(100% + ${SHAPE_PAD * 2}px)`,
+                                      clipPath,
+                                    }}
+                                  >
+                                    <div
+                                      className="absolute inset-0"
+                                      style={{
+                                        transform: `rotate(${-(BOARD_CONFIG.rotate + card.rotate)}deg) scale(${card.imageScale})`,
+                                        transformOrigin: "center",
+                                      }}
+                                    >
+                                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                                      <img
+                                        src={card.image}
+                                        alt=""
+                                        className={`absolute inset-0 h-full w-full ${
+                                          card.imageFit === "contain"
+                                            ? "object-contain"
+                                            : "object-cover"
+                                        } ${
+                                          card.align === "top"
+                                            ? "object-top"
+                                            : card.align === "bottom"
+                                              ? "object-bottom"
+                                              : "object-center"
+                                        }`}
+                                        style={{
+                                          transform: `translate(${card.imageOffsetX}px, ${card.imageOffsetY}px)`,
+                                        }}
+                                      />
+                                    </div>
+                                    {card.showText !== false && (
+                                      <div
+                                        className="pointer-events-none absolute inset-x-0 bottom-0 p-3 text-white"
+                                        style={{
+                                          textShadow:
+                                            "0 2px 14px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.85)",
+                                        }}
+                                      >
+                                        <p className="text-[10px] font-black uppercase tracking-[0.08em]">
+                                          {card.title}
+                                        </p>
+                                        <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.11em] text-white/90">
+                                          {card.subtitle}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                  {/* Black border - outside clip-path */}
+                                  {card.id !== "hexagon-card" && (
+                                    <svg
+                                      className="pointer-events-none absolute"
+                                      style={{
+                                        left: `-${SHAPE_PAD}px`,
+                                        top: `-${SHAPE_PAD}px`,
+                                        width: `calc(100% + ${SHAPE_PAD * 2}px)`,
+                                        height: `calc(100% + ${SHAPE_PAD * 2}px)`,
+                                      }}
+                                      preserveAspectRatio="none"
+                                    >
+                                      <polygon
+                                        points={poly.points
+                                          .map(
+                                            (p) =>
+                                              `${p.x + SHAPE_PAD},${p.y + SHAPE_PAD}`,
+                                          )
+                                          .join(" ")}
+                                        fill="none"
+                                        stroke="black"
+                                        strokeWidth="10"
+                                      />
+                                    </svg>
+                                  )}
+                                  {selectedCardIndex === index && (
+                                    <>
+                                      <button
+                                        type="button"
+                                        onPointerDown={(event) => {
+                                          if (lockLayout) return;
+                                          event.stopPropagation();
+                                          setInteraction({
+                                            mode: "rotate",
+                                            index,
+                                            startX: event.clientX,
+                                            originRotate: card.rotate,
+                                          });
+                                        }}
+                                        className="absolute left-1/2 top-[-18px] h-4 w-4 -translate-x-1/2 rounded-full border border-white bg-white/95"
+                                        title="Rotate"
+                                      />
+                                      <button
+                                        type="button"
+                                        onPointerDown={(event) => {
+                                          event.stopPropagation();
+                                          setInteraction({
+                                            mode: "imagePan",
+                                            index,
+                                            startX: event.clientX,
+                                            startY: event.clientY,
+                                            originX: card.imageOffsetX,
+                                            originY: card.imageOffsetY,
+                                          });
+                                        }}
+                                        className="absolute right-1 top-1 h-4 w-4 rounded-full border border-white bg-white/95"
+                                        title="Move image inside frame"
+                                      />
+                                      {card.poly && card.poly.length >= 3
+                                        ? poly.points.map((p, cornerIndex) => (
+                                            <button
+                                              key={`p-${cornerIndex}`}
+                                              type="button"
+                                              onPointerDown={(event) => {
+                                                if (lockLayout) return;
+                                                event.stopPropagation();
+                                                const origin = card.poly?.[
+                                                  cornerIndex
+                                                ] ?? { x: p.x, y: p.y };
+                                                setInteraction({
+                                                  mode: "polyCorner",
+                                                  index,
+                                                  cornerIndex,
+                                                  startX: event.clientX,
+                                                  startY: event.clientY,
+                                                  originX: origin.x,
+                                                  originY: origin.y,
+                                                });
+                                              }}
+                                              className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
+                                              style={{
+                                                left: `${p.x}px`,
+                                                top: `${p.y}px`,
+                                              }}
+                                              title={`Point ${cornerIndex + 1}`}
+                                            />
+                                          ))
+                                        : (
+                                            [
+                                              {
+                                                key: "tl",
+                                                point: poly.points[0],
+                                              },
+                                              {
+                                                key: "tr",
+                                                point: poly.points[1],
+                                              },
+                                              {
+                                                key: "br",
+                                                point: poly.points[2],
+                                              },
+                                              {
+                                                key: "bl",
+                                                point: poly.points[3],
+                                              },
+                                            ] as const
+                                          ).map((handle) => (
+                                            <button
+                                              key={handle.key}
+                                              type="button"
+                                              onPointerDown={(event) => {
+                                                if (lockLayout) return;
+                                                event.stopPropagation();
+                                                const cornerKey =
+                                                  handle.key as CornerKey;
+                                                const originX =
+                                                  cornerKey === "tl"
+                                                    ? card.tlx
+                                                    : cornerKey === "tr"
+                                                      ? card.trx
+                                                      : cornerKey === "br"
+                                                        ? card.brx
+                                                        : card.blx;
+                                                const originY =
+                                                  cornerKey === "tl"
+                                                    ? card.tly
+                                                    : cornerKey === "tr"
+                                                      ? card.try
+                                                      : cornerKey === "br"
+                                                        ? card.bry
+                                                        : card.bly;
+                                                setInteraction({
+                                                  mode: "corner",
+                                                  index,
+                                                  corner: cornerKey,
+                                                  startX: event.clientX,
+                                                  startY: event.clientY,
+                                                  originX,
+                                                  originY,
+                                                });
+                                              }}
+                                              className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
+                                              style={{
+                                                left: `${handle.point.x}px`,
+                                                top: `${handle.point.y}px`,
+                                              }}
+                                              title={`Corner ${handle.key.toUpperCase()}`}
+                                            />
+                                          ))}
+                                    </>
+                                  )}
                                 </div>
-                              )}
-                            </div>
-                            {/* Black border - outside clip-path */}
-                            {card.id !== "hexagon-card" && (
-                              <svg
-                                className="pointer-events-none absolute"
-                                style={{
-                                  left: `-${SHAPE_PAD}px`,
-                                  top: `-${SHAPE_PAD}px`,
-                                  width: `calc(100% + ${SHAPE_PAD * 2}px)`,
-                                  height: `calc(100% + ${SHAPE_PAD * 2}px)`,
-                                }}
-                                preserveAspectRatio="none"
-                              >
-                                <polygon
-                                  points={poly.points
-                                    .map(
-                                      (p) =>
-                                        `${p.x + SHAPE_PAD},${p.y + SHAPE_PAD}`,
-                                    )
-                                    .join(" ")}
-                                  fill="none"
-                                  stroke="black"
-                                  strokeWidth="10"
-                                />
-                              </svg>
-                            )}
-                            {selectedCardIndex === index && (
-                              <>
-                                <button
-                                  type="button"
-                                  onPointerDown={(event) => {
-                                    if (lockLayout) return;
-                                    event.stopPropagation();
-                                    setInteraction({
-                                      mode: "rotate",
-                                      index,
-                                      startX: event.clientX,
-                                      originRotate: card.rotate,
-                                    });
-                                  }}
-                                  className="absolute left-1/2 top-[-18px] h-4 w-4 -translate-x-1/2 rounded-full border border-white bg-white/95"
-                                  title="Rotate"
-                                />
-                                <button
-                                  type="button"
-                                  onPointerDown={(event) => {
-                                    event.stopPropagation();
-                                    setInteraction({
-                                      mode: "imagePan",
-                                      index,
-                                      startX: event.clientX,
-                                      startY: event.clientY,
-                                      originX: card.imageOffsetX,
-                                      originY: card.imageOffsetY,
-                                    });
-                                  }}
-                                  className="absolute right-1 top-1 h-4 w-4 rounded-full border border-white bg-white/95"
-                                  title="Move image inside frame"
-                                />
-                                {card.poly && card.poly.length >= 3
-                                  ? poly.points.map((p, cornerIndex) => (
-                                      <button
-                                        key={`p-${cornerIndex}`}
-                                        type="button"
-                                        onPointerDown={(event) => {
-                                          if (lockLayout) return;
-                                          event.stopPropagation();
-                                          const origin = card.poly?.[
-                                            cornerIndex
-                                          ] ?? { x: p.x, y: p.y };
-                                          setInteraction({
-                                            mode: "polyCorner",
-                                            index,
-                                            cornerIndex,
-                                            startX: event.clientX,
-                                            startY: event.clientY,
-                                            originX: origin.x,
-                                            originY: origin.y,
-                                          });
-                                        }}
-                                        className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
-                                        style={{
-                                          left: `${p.x}px`,
-                                          top: `${p.y}px`,
-                                        }}
-                                        title={`Point ${cornerIndex + 1}`}
-                                      />
-                                    ))
-                                  : (
-                                      [
-                                        { key: "tl", point: poly.points[0] },
-                                        { key: "tr", point: poly.points[1] },
-                                        { key: "br", point: poly.points[2] },
-                                        { key: "bl", point: poly.points[3] },
-                                      ] as const
-                                    ).map((handle) => (
-                                      <button
-                                        key={handle.key}
-                                        type="button"
-                                        onPointerDown={(event) => {
-                                          if (lockLayout) return;
-                                          event.stopPropagation();
-                                          const cornerKey =
-                                            handle.key as CornerKey;
-                                          const originX =
-                                            cornerKey === "tl"
-                                              ? card.tlx
-                                              : cornerKey === "tr"
-                                                ? card.trx
-                                                : cornerKey === "br"
-                                                  ? card.brx
-                                                  : card.blx;
-                                          const originY =
-                                            cornerKey === "tl"
-                                              ? card.tly
-                                              : cornerKey === "tr"
-                                                ? card.try
-                                                : cornerKey === "br"
-                                                  ? card.bry
-                                                  : card.bly;
-                                          setInteraction({
-                                            mode: "corner",
-                                            index,
-                                            corner: cornerKey,
-                                            startX: event.clientX,
-                                            startY: event.clientY,
-                                            originX,
-                                            originY,
-                                          });
-                                        }}
-                                        className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
-                                        style={{
-                                          left: `${handle.point.x}px`,
-                                          top: `${handle.point.y}px`,
-                                        }}
-                                        title={`Corner ${handle.key.toUpperCase()}`}
-                                      />
-                                    ))}
-                              </>
-                            )}
-                          </article>
-                        );
-                      })()
-                    )}
-                </div>
-              </div>
+                              </article>
+                            );
+                          })(),
+                        )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
