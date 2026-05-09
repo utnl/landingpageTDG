@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { Changa_One, Nunito_Sans } from "next/font/google";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import SiteHeader from "@/components/site-header";
 
 const changaOne = Changa_One({ weight: "400", subsets: ["latin"] });
@@ -56,6 +63,38 @@ const BOARD_CONFIG = {
   rotate: 24,
   height: 520,
 };
+/**
+ * Sàn tối thiểu (px logic); kích thước thật = max(bounds cards, min này) để JSON/export
+ * không lệch scale khi chỉnh layout.
+ */
+const BOARD_DESIGN_MIN = { w: 1065, h: 800 } as const;
+
+function computeBoardDesignSize(cards: CardConfig[]): {
+  w: number;
+  h: number;
+  topPad: number;
+} {
+  const M = 96;
+  let minY = 0;
+  let maxR = 0;
+  let maxB = 0;
+  for (const c of cards) {
+    minY = Math.min(minY, c.y);
+    maxR = Math.max(maxR, c.x + c.w);
+    maxB = Math.max(maxB, c.y + c.h);
+  }
+  const topPad = minY < 0 ? -minY : 0;
+  const w = Math.max(
+    BOARD_DESIGN_MIN.w,
+    Math.ceil(maxR + M + SHAPE_PAD * 2),
+  );
+  const h = Math.max(
+    BOARD_DESIGN_MIN.h,
+    Math.ceil(maxB + topPad + M + SHAPE_PAD * 2),
+  );
+  return { w, h, topPad };
+}
+
 /** Tỉ lệ pixel gốc của public/images/bgright.png (chỉnh trong settings nếu đổi file). */
 const BG_RIGHT_NATURAL = { w: 1065, h: 938 } as const;
 
@@ -97,156 +136,357 @@ type InteractionState =
     }
   | null;
 
+/** Snapshot BG Right panel (+ scale ảnh bgright). `boardFitScale` không lưu — tính lại theo viewport. */
+type PortfolioBgRightInit = {
+  widthVw: number;
+  heightVh: number;
+  maxHeightPx: number;
+  offsetX: number;
+  offsetY: number;
+  rotate: number;
+  lockAspect: boolean;
+  aspectW: number;
+  aspectH: number;
+  imageScale: number;
+};
+
+const PORTFOLIO_INIT_STORAGE_KEY = "portfolio-page-init-v1";
+
+const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
+  {
+    id: "overdrive-top-left",
+    title: "ENVIRONMENT ART",
+    subtitle: "20 ART",
+    image: "/images/f8e2e81a-e72c-431b-b4ec-5ab7af73ea12.png",
+    align: "center",
+    x: 1478,
+    y: 383,
+    w: 600,
+    h: 600,
+    rotate: -1.4,
+    tlx: 183,
+    tly: -416,
+    trx: 141,
+    try: -6,
+    brx: -170,
+    bry: 89,
+    blx: -1095,
+    bly: 62,
+    imageOffsetX: -87,
+    imageOffsetY: -115,
+    imageScale: 1.05,
+    showText: true,
+  },
+  {
+    id: "overdrive-top-right",
+    title: "OVERDRIVE",
+    subtitle: "20 / ANIMATION / VFX",
+    image: "/images/21f8a0a6-048f-4a5c-9946-3a89f6303fcd.png",
+    align: "top",
+    x: 1263,
+    y: -97,
+    w: 200,
+    h: 149,
+    rotate: 2.1,
+    tlx: 10,
+    tly: -388,
+    trx: 49,
+    try: -77,
+    brx: -4,
+    bry: 173,
+    blx: -72,
+    bly: 92,
+    imageOffsetX: 33,
+    imageOffsetY: -37,
+    imageScale: 1.05,
+    showText: true,
+  },
+  {
+    id: "summoners-era",
+    title: "summoners era",
+    subtitle: "30 ART",
+    image: "/images/3067c837-e030-403f-b7c5-0c7246bfe15f.png",
+    align: "center",
+    x: 1193,
+    y: 267,
+    w: 387,
+    h: 170,
+    rotate: 0,
+    tlx: -17,
+    tly: -410,
+    trx: 50,
+    try: -14,
+    brx: -59,
+    bry: 577,
+    blx: -358,
+    bly: 73,
+    imageOffsetX: -10,
+    imageOffsetY: -24,
+    imageScale: 1.2,
+  },
+  {
+    id: "environment-art",
+    title: "OVERDRIVE",
+    subtitle: "20 / ANIMATION / VFX",
+    image: "/images/f0d05f71-5089-4b3f-b453-7a8d19afc013.png",
+    align: "center",
+    x: 1546,
+    y: -35,
+    w: 439,
+    h: 171,
+    rotate: 0,
+    tlx: -17,
+    tly: -234,
+    trx: -39,
+    try: -26,
+    brx: -138,
+    bry: 293,
+    blx: -68,
+    bly: 43,
+    imageOffsetX: -39,
+    imageOffsetY: -28,
+    imageScale: 1.05,
+    showText: true,
+  },
+  {
+    id: "hexagon-card",
+    title: "SQUARE",
+    subtitle: "AUTO CROP",
+    image: "/images/xoa_nen_vip_pro.png",
+    align: "center",
+    x: 316,
+    y: 124,
+    w: 934,
+    h: 899,
+    rotate: -39.2,
+    zIndex: 1,
+    tlx: -140,
+    tly: 55,
+    trx: 319,
+    try: -149,
+    brx: 489,
+    bry: 363,
+    blx: -456,
+    bly: 157,
+    imageOffsetX: 120,
+    imageOffsetY: 74,
+    imageScale: 0.95,
+    showText: true,
+  },
+];
+
+const PORTFOLIO_BG_RIGHT_INITIAL: PortfolioBgRightInit = {
+  widthVw: 70,
+  heightVh: 86,
+  maxHeightPx: 938,
+  offsetX: 196,
+  offsetY: 89,
+  rotate: 0,
+  lockAspect: true,
+  aspectW: 1065,
+  aspectH: 938,
+  imageScale: 1.2,
+};
+
+/** Khớp Init JSON export (không derive từ compute để tránh lệch 1px). */
+const PORTFOLIO_DESIGN_CANVAS_INITIAL: {
+  w: number;
+  h: number;
+  topPad: number;
+} = {
+  w: 1985,
+  h: 1224,
+  topPad: 50,
+};
+
+const PORTFOLIO_PAGE_DEFAULTS = {
+  board: BOARD_CONFIG,
+  background: "/images/a0a5dab6-1e06-4a1b-af95-af0b51fc27e6.png",
+  designCanvas: PORTFOLIO_DESIGN_CANVAS_INITIAL,
+  bgRight: PORTFOLIO_BG_RIGHT_INITIAL,
+  cards: PORTFOLIO_CARDS_INITIAL,
+};
+
+function applyPortfolioInitPayload(
+  data: Record<string, unknown>,
+  apply: {
+    setBgImage: (v: string) => void;
+    setBgRightWidthVw: (v: number) => void;
+    setBgRightHeightVh: (v: number) => void;
+    setBgRightMaxHeightPx: (v: number) => void;
+    setBgRightOffsetX: (v: number) => void;
+    setBgRightOffsetY: (v: number) => void;
+    setBgRightRotate: (v: number) => void;
+    setBgRightLockAspect: (v: boolean) => void;
+    setBgRightAspectW: (v: number) => void;
+    setBgRightAspectH: (v: number) => void;
+    setBgRightImageScale: (v: number) => void;
+    setBoardCanvas: (v: { w: number; h: number; topPad: number }) => void;
+    setShowcaseCards: (v: CardConfig[]) => void;
+  },
+) {
+  if (typeof data.background === "string") apply.setBgImage(data.background);
+
+  if (data.designCanvas && typeof data.designCanvas === "object") {
+    const d = data.designCanvas as Record<string, unknown>;
+    const w = Number(d.width);
+    const h = Number(d.height);
+    const topPad = Number(d.topPad);
+    if (
+      Number.isFinite(w) &&
+      Number.isFinite(h) &&
+      Number.isFinite(topPad)
+    ) {
+      apply.setBoardCanvas({ w, h, topPad });
+    }
+  }
+
+  if (data.bgRight && typeof data.bgRight === "object") {
+    const b = data.bgRight as Record<string, unknown>;
+    const num = (k: string) => {
+      const v = Number(b[k]);
+      return Number.isFinite(v) ? v : null;
+    };
+    const nw = num("widthVw");
+    if (nw !== null) apply.setBgRightWidthVw(nw);
+    const nh = num("heightVh");
+    if (nh !== null) apply.setBgRightHeightVh(nh);
+    const nm = num("maxHeightPx");
+    if (nm !== null) apply.setBgRightMaxHeightPx(nm);
+    const ox = num("offsetX");
+    if (ox !== null) apply.setBgRightOffsetX(ox);
+    const oy = num("offsetY");
+    if (oy !== null) apply.setBgRightOffsetY(oy);
+    const rot = num("rotate");
+    if (rot !== null) apply.setBgRightRotate(rot);
+    if (typeof b.lockAspect === "boolean")
+      apply.setBgRightLockAspect(b.lockAspect);
+    const aw = num("aspectW");
+    if (aw !== null) apply.setBgRightAspectW(aw);
+    const ah = num("aspectH");
+    if (ah !== null) apply.setBgRightAspectH(ah);
+    const ims = num("imageScale");
+    if (ims !== null) apply.setBgRightImageScale(ims);
+  }
+
+  if (Array.isArray(data.cards)) {
+    apply.setShowcaseCards(data.cards as CardConfig[]);
+  }
+}
+
 export default function PortfolioPage() {
   const [settingsOpen, setSettingsOpen] = useState(true);
-  const [bgImage, setBgImage] = useState(
-    "/images/a0a5dab6-1e06-4a1b-af95-af0b51fc27e6.png",
+  const [bgImage, setBgImage] = useState(PORTFOLIO_PAGE_DEFAULTS.background);
+  const [bgRightWidthVw, setBgRightWidthVw] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.widthVw,
   );
-  const [bgRightWidthVw, setBgRightWidthVw] = useState(70);
-  const [bgRightHeightVh, setBgRightHeightVh] = useState(86);
-  const [bgRightMaxHeightPx, setBgRightMaxHeightPx] = useState(938);
-  const [bgRightOffsetX, setBgRightOffsetX] = useState(188);
-  const [bgRightOffsetY, setBgRightOffsetY] = useState(89);
+  const [bgRightHeightVh, setBgRightHeightVh] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.heightVh,
+  );
+  const [bgRightMaxHeightPx, setBgRightMaxHeightPx] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.maxHeightPx,
+  );
+  const [bgRightOffsetX, setBgRightOffsetX] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.offsetX,
+  );
+  const [bgRightOffsetY, setBgRightOffsetY] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.offsetY,
+  );
   /** Xoay riêng nền bgright (card vẫn dùng BOARD_CONFIG.rotate). */
-  const [bgRightRotate, setBgRightRotate] = useState(0);
+  const [bgRightRotate, setBgRightRotate] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.rotate,
+  );
   /** Bật: chiều cao khối theo đúng tỉ lệ ảnh (width vw × aspect). Tắt: dùng vh + max px như cũ. */
-  const [bgRightLockAspect, setBgRightLockAspect] = useState(true);
+  const [bgRightLockAspect, setBgRightLockAspect] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.lockAspect,
+  );
   const [bgRightAspectW, setBgRightAspectW] = useState<number>(
-    BG_RIGHT_NATURAL.w,
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.aspectW,
   );
   const [bgRightAspectH, setBgRightAspectH] = useState<number>(
-    BG_RIGHT_NATURAL.h,
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.aspectH,
   );
-  const [bgRightImageScale, setBgRightImageScale] = useState(1.2);
+  const [bgRightImageScale, setBgRightImageScale] = useState(
+    PORTFOLIO_PAGE_DEFAULTS.bgRight.imageScale,
+  );
   const [availableImages, setAvailableImages] = useState<string[]>([]);
   const [pickHint, setPickHint] = useState<string | null>(null);
 
-  const [showcaseCards, setShowcaseCards] = useState<CardConfig[]>([
-    {
-      id: "overdrive-top-left",
-      title: "ENVIRONMENT ART",
-      subtitle: "20 ART",
-      image: "/images/f8e2e81a-e72c-431b-b4ec-5ab7af73ea12.png",
-      align: "center",
-      x: 884,
-      y: 274,
-      w: 500,
-      h: 500,
-      rotate: -1.4,
-      tlx: 96,
-      tly: -71,
-      trx: 48,
-      try: 32,
-      brx: -180,
-      bry: 27,
-      blx: -365,
-      bly: -17,
-      imageOffsetX: -107,
-      imageOffsetY: -89,
-      imageScale: 1.05,
-      showText: true,
-    },
-    {
-      id: "overdrive-top-right",
-      title: "OVERDRIVE",
-      subtitle: "20 / ANIMATION / VFX",
-      image: "/images/21f8a0a6-048f-4a5c-9946-3a89f6303fcd.png",
-      align: "top",
-      x: 687,
-      y: 1,
-      w: 168,
-      h: 96,
-      rotate: 2.1,
-      tlx: 35,
-      tly: -191,
-      trx: 22,
-      try: -95,
-      brx: -19,
-      bry: 55,
-      blx: -21,
-      bly: 33,
-      imageOffsetX: 33,
-      imageOffsetY: -37,
-      imageScale: 0.85,
-      showText: true,
-    },
-    {
-      id: "summoners-era",
-      title: "summoners era",
-      subtitle: "30 ART",
-      image: "/images/3067c837-e030-403f-b7c5-0c7246bfe15f.png",
-      align: "center",
-      x: 634,
-      y: 245,
-      w: 342,
-      h: 136,
-      rotate: 0,
-      tlx: 30,
-      tly: -204,
-      trx: -12,
-      try: -63,
-      brx: -133,
-      bry: 181,
-      blx: -64,
-      bly: 60,
-      imageOffsetX: -10,
-      imageOffsetY: -24,
-      imageScale: 1,
-    },
-    {
-      id: "environment-art",
-      title: "OVERDRIVE",
-      subtitle: "20 / ANIMATION / VFX",
-      image: "/images/f0d05f71-5089-4b3f-b453-7a8d19afc013.png",
-      align: "center",
-      x: 874,
-      y: 26,
-      w: 342,
-      h: 112,
-      rotate: 0,
-      tlx: 9,
-      tly: -194,
-      trx: -24,
-      try: -76,
-      brx: -84,
-      bry: 77,
-      blx: -36,
-      bly: 12,
-      imageOffsetX: -14,
-      imageOffsetY: -36,
-      imageScale: 1,
-      showText: true,
-    },
-    {
-      id: "hexagon-card",
-      title: "SQUARE",
-      subtitle: "AUTO CROP",
-      image: "/images/xoa_nen_vip_pro.png",
-      align: "center",
-      x: 239,
-      y: 82,
-      w: 528,
-      h: 505,
-      rotate: -39.2,
-      zIndex: 1,
-      tlx: -140,
-      tly: 55,
-      trx: 89,
-      try: -30,
-      brx: 381,
-      bry: 18,
-      blx: -456,
-      bly: 157,
-      imageOffsetX: -23,
-      imageOffsetY: 62,
-      imageScale: 0.8,
-      showText: true,
-    },
-  ]);
+  const [showcaseCards, setShowcaseCards] = useState<CardConfig[]>(
+    PORTFOLIO_PAGE_DEFAULTS.cards,
+  );
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const [interaction, setInteraction] = useState<InteractionState>(null);
   const [lockLayout, setLockLayout] = useState(false);
+
+  const bgrightSlotRef = useRef<HTMLDivElement>(null);
+  const [boardFitScale, setBoardFitScale] = useState(1);
+
+  /**
+   * Canvas scale/topPad cố định trong lúc kéo; không tính lại mỗi frame (tránh cả khối nhảy).
+   * Bấm “Refit canvas” sau khi dịch layout xa; Init JSON / localStorage khôi phục designCanvas + bgRight.
+   */
+  const [boardCanvas, setBoardCanvas] = useState({
+    w: PORTFOLIO_PAGE_DEFAULTS.designCanvas.w,
+    h: PORTFOLIO_PAGE_DEFAULTS.designCanvas.h,
+    topPad: PORTFOLIO_PAGE_DEFAULTS.designCanvas.topPad,
+  });
+
+  const runApplyInitPayload = (data: Record<string, unknown>) => {
+    applyPortfolioInitPayload(data, {
+      setBgImage,
+      setBgRightWidthVw,
+      setBgRightHeightVh,
+      setBgRightMaxHeightPx,
+      setBgRightOffsetX,
+      setBgRightOffsetY,
+      setBgRightRotate,
+      setBgRightLockAspect,
+      setBgRightAspectW,
+      setBgRightAspectH,
+      setBgRightImageScale,
+      setBoardCanvas,
+      setShowcaseCards,
+    });
+  };
+
+  const portfolioHydratedRef = useRef(false);
+  useLayoutEffect(() => {
+    if (portfolioHydratedRef.current) return;
+    portfolioHydratedRef.current = true;
+    try {
+      const raw = localStorage.getItem(PORTFOLIO_INIT_STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw) as unknown;
+      if (data && typeof data === "object") {
+        runApplyInitPayload(data as Record<string, unknown>);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const boardDesignSize = boardCanvas;
+
+  useLayoutEffect(() => {
+    const el = bgrightSlotRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      if (w < 2 || h < 2) return;
+      const s = Math.min(
+        w / boardDesignSize.w,
+        h / boardDesignSize.h,
+      );
+      setBoardFitScale(s > 0 ? s : 1);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [boardDesignSize.w, boardDesignSize.h]);
 
   const selectedCard = showcaseCards[selectedCardIndex];
   const availableImageSet = useMemo(
@@ -399,6 +639,33 @@ export default function PortfolioPage() {
     return { points, kind: "legacy" as const };
   };
 
+  const bgRightExport = useMemo(
+    (): PortfolioBgRightInit => ({
+      widthVw: bgRightWidthVw,
+      heightVh: bgRightHeightVh,
+      maxHeightPx: bgRightMaxHeightPx,
+      offsetX: bgRightOffsetX,
+      offsetY: bgRightOffsetY,
+      rotate: bgRightRotate,
+      lockAspect: bgRightLockAspect,
+      aspectW: bgRightAspectW,
+      aspectH: bgRightAspectH,
+      imageScale: bgRightImageScale,
+    }),
+    [
+      bgRightWidthVw,
+      bgRightHeightVh,
+      bgRightMaxHeightPx,
+      bgRightOffsetX,
+      bgRightOffsetY,
+      bgRightRotate,
+      bgRightLockAspect,
+      bgRightAspectW,
+      bgRightAspectH,
+      bgRightImageScale,
+    ],
+  );
+
   const exportJson = useMemo(
     () =>
       JSON.stringify(
@@ -407,12 +674,18 @@ export default function PortfolioPage() {
             ...BOARD_CONFIG,
           },
           background: bgImage,
+          designCanvas: {
+            width: boardDesignSize.w,
+            height: boardDesignSize.h,
+            topPad: boardDesignSize.topPad,
+          },
+          bgRight: bgRightExport,
           cards: showcaseCards,
         },
         null,
         2,
       ),
-    [showcaseCards, bgImage],
+    [showcaseCards, bgImage, boardDesignSize, bgRightExport],
   );
 
   const initJson = useMemo(
@@ -421,6 +694,12 @@ export default function PortfolioPage() {
         {
           board: BOARD_CONFIG,
           background: bgImage,
+          designCanvas: {
+            width: boardDesignSize.w,
+            height: boardDesignSize.h,
+            topPad: boardDesignSize.topPad,
+          },
+          bgRight: bgRightExport,
           cards: showcaseCards.map((c) => ({
             id: c.id,
             title: c.title,
@@ -455,7 +734,7 @@ export default function PortfolioPage() {
         null,
         2,
       ),
-    [showcaseCards, bgImage],
+    [showcaseCards, bgImage, boardDesignSize, bgRightExport],
   );
 
   const handleExportCoordinates = async () => {
@@ -472,23 +751,26 @@ export default function PortfolioPage() {
     if (!interaction) return;
 
     const onPointerMove = (event: PointerEvent) => {
+      const z = Math.max(boardFitScale, 0.001);
       setShowcaseCards((prev) =>
         prev.map((card, index) => {
           if (index !== interaction.index) return card;
 
           if (interaction.mode === "drag") {
             const nextX = Math.round(
-              interaction.originX + (event.clientX - interaction.startX),
+              interaction.originX +
+                (event.clientX - interaction.startX) / z,
             );
             const nextY = Math.round(
-              interaction.originY + (event.clientY - interaction.startY),
+              interaction.originY +
+                (event.clientY - interaction.startY) / z,
             );
             return { ...card, x: nextX, y: nextY };
           }
 
           if (interaction.mode === "corner") {
-            const dx = Math.round(event.clientX - interaction.startX);
-            const dy = Math.round(event.clientY - interaction.startY);
+            const dx = Math.round((event.clientX - interaction.startX) / z);
+            const dy = Math.round((event.clientY - interaction.startY) / z);
             const nextX = interaction.originX + dx;
             const nextY = interaction.originY + dy;
 
@@ -506,8 +788,8 @@ export default function PortfolioPage() {
           }
 
           if (interaction.mode === "polyCorner") {
-            const dx = Math.round(event.clientX - interaction.startX);
-            const dy = Math.round(event.clientY - interaction.startY);
+            const dx = Math.round((event.clientX - interaction.startX) / z);
+            const dy = Math.round((event.clientY - interaction.startY) / z);
             const nextX = clamp(
               interaction.originX + dx,
               -SHAPE_PAD,
@@ -526,10 +808,12 @@ export default function PortfolioPage() {
 
           if (interaction.mode === "imagePan") {
             const nextOffsetX = Math.round(
-              interaction.originX + (event.clientX - interaction.startX),
+              interaction.originX +
+                (event.clientX - interaction.startX) / z,
             );
             const nextOffsetY = Math.round(
-              interaction.originY + (event.clientY - interaction.startY),
+              interaction.originY +
+                (event.clientY - interaction.startY) / z,
             );
             return {
               ...card,
@@ -541,7 +825,7 @@ export default function PortfolioPage() {
           const nextRotate =
             Math.round(
               (interaction.originRotate +
-                (event.clientX - interaction.startX) * 0.35) *
+                ((event.clientX - interaction.startX) / z) * 0.35) *
                 10,
             ) / 10;
           return { ...card, rotate: nextRotate };
@@ -557,7 +841,7 @@ export default function PortfolioPage() {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
     };
-  }, [interaction]);
+  }, [interaction, boardFitScale]);
 
   // boardScale removed (rollback)
 
@@ -618,6 +902,16 @@ export default function PortfolioPage() {
                   }
                 >
                   {lockLayout ? "🔒 Khóa" : "🔓 Mở"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setBoardCanvas(computeBoardDesignSize(showcaseCards))
+                  }
+                  className="rounded-md border border-sky-400/60 bg-sky-500/25 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-sky-200"
+                  title="Tính lại khung canvas theo vị trí cards hiện tại (sau khi kéo xa)"
+                >
+                  Refit canvas
                 </button>
                 <button
                   type="button"
@@ -1133,26 +1427,67 @@ export default function PortfolioPage() {
 
             {/* Init JSON Export */}
             <div className="mt-3 rounded-md border border-emerald-400/30 bg-emerald-950/20 p-2">
-              <div className="mb-1 flex items-center justify-between">
-                <p className="text-[10px] uppercase tracking-[0.09em] text-emerald-300">
-                  Init JSON (for initialization)
-                </p>
+              <p className="mb-1 text-[9px] leading-snug text-white/55">
+                Có <strong className="text-emerald-200/90">bgRight.imageScale</strong>{" "}
+                và layout nền.{" "}
+                <strong className="text-emerald-200/90">boardFitScale</strong> theo
+                khung trình duyệt — không export, F5 vẫn đúng nếu lưu Init.
+              </p>
+              <div className="mb-1 flex flex-wrap items-center justify-end gap-1">
                 <button
                   type="button"
                   onClick={async () => {
                     try {
                       await navigator.clipboard.writeText(initJson);
-                      alert("Đã copy init JSON!");
+                      try {
+                        localStorage.setItem(
+                          PORTFOLIO_INIT_STORAGE_KEY,
+                          initJson,
+                        );
+                      } catch {
+                        /* ignore */
+                      }
+                      alert(
+                        "Đã copy Init + lưu trình duyệt (F5 khôi phục cùng scale/offset).",
+                      );
                     } catch {
                       alert("Copy thất bại!");
                     }
                   }}
                   className="rounded border border-emerald-400/50 bg-emerald-500/20 px-2 py-0.5 text-[10px] text-emerald-300 hover:bg-emerald-500/30"
                 >
-                  Copy Init
+                  Copy Init + lưu F5
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const text = await navigator.clipboard.readText();
+                      const data = JSON.parse(text) as unknown;
+                      if (!data || typeof data !== "object") {
+                        alert("JSON không hợp lệ.");
+                        return;
+                      }
+                      runApplyInitPayload(data as Record<string, unknown>);
+                      try {
+                        localStorage.setItem(PORTFOLIO_INIT_STORAGE_KEY, text);
+                      } catch {
+                        /* ignore */
+                      }
+                      alert("Đã dán Init + lưu F5.");
+                    } catch {
+                      alert("Clipboard / JSON lỗi.");
+                    }
+                  }}
+                  className="rounded border border-emerald-400/50 bg-white/10 px-2 py-0.5 text-[10px] text-white/90 hover:bg-white/15"
+                >
+                  Dán Init
                 </button>
               </div>
-              <pre className="max-h-32 overflow-auto text-[10px] leading-relaxed text-white/80">
+              <p className="text-[10px] uppercase tracking-[0.09em] text-emerald-300">
+                Init JSON
+              </p>
+              <pre className="mt-1 max-h-32 overflow-auto text-[10px] leading-relaxed text-white/80">
                 {initJson}
               </pre>
             </div>
@@ -1231,6 +1566,7 @@ export default function PortfolioPage() {
             </div>
 
             <div
+              ref={bgrightSlotRef}
               className="absolute right-0 top-0 z-0 max-w-none"
               style={{
                 width: `${bgRightWidthVw}vw`,
@@ -1245,10 +1581,22 @@ export default function PortfolioPage() {
                 transform: `translate(${bgRightOffsetX}px, ${bgRightOffsetY}px)`,
               }}
             >
+              <div className="relative h-full w-full min-h-0 overflow-hidden">
+                <div
+                  className="absolute"
+                  style={{
+                    right: 0,
+                    top: "50%",
+                    width: boardDesignSize.w,
+                    height: boardDesignSize.h,
+                    transform: `translateY(-50%) scale(${boardFitScale})`,
+                    transformOrigin: "center right",
+                  }}
+                >
               <div
                 className="relative h-full w-full"
                 style={{
-                  transform: `translate(${BOARD_CONFIG.translateX}px, ${BOARD_CONFIG.translateY}px)`,
+                  transform: `translate(${BOARD_CONFIG.translateX}px, ${BOARD_CONFIG.translateY + boardDesignSize.topPad}px)`,
                 }}
               >
                 <div
@@ -1515,6 +1863,8 @@ export default function PortfolioPage() {
                         );
                       })()
                     )}
+                </div>
+              </div>
                 </div>
               </div>
             </div>
