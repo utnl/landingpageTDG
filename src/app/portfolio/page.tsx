@@ -148,8 +148,6 @@ type PortfolioBgRightInit = {
 };
 
 const PORTFOLIO_INIT_STORAGE_KEY = "portfolio-page-init-v1";
-/** Card “ENVIRONMENT ART” — hover dùng ảnh làm nền khối bên phải. */
-const PORTFOLIO_ENVIRONMENT_CARD_ID = "overdrive-top-left";
 
 const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
   {
@@ -172,7 +170,7 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     blx: -1095,
     bly: 62,
     imageOffsetX: -87,
-    imageOffsetY: -115,
+    imageOffsetY: -91,
     imageScale: 1.05,
     showText: true,
   },
@@ -195,8 +193,8 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     bry: 173,
     blx: -72,
     bly: 92,
-    imageOffsetX: 33,
-    imageOffsetY: -37,
+    imageOffsetX: 25,
+    imageOffsetY: -4,
     imageScale: 1.05,
     showText: true,
   },
@@ -220,8 +218,8 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     blx: -358,
     bly: 73,
     imageOffsetX: -10,
-    imageOffsetY: -24,
-    imageScale: 1.2,
+    imageOffsetY: -8,
+    imageScale: 1.25,
   },
   {
     id: "environment-art",
@@ -380,7 +378,9 @@ function applyPortfolioInitPayload(
 }
 
 export default function PortfolioPage() {
-  const [settingsOpen, setSettingsOpen] = useState(true);
+  const ENABLE_EDITOR = false;
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [introCardsReady, setIntroCardsReady] = useState(true);
   const [bgImage, setBgImage] = useState(PORTFOLIO_PAGE_DEFAULTS.background);
   const [bgRightWidthVw, setBgRightWidthVw] = useState(
     PORTFOLIO_PAGE_DEFAULTS.bgRight.widthVw,
@@ -492,14 +492,15 @@ export default function PortfolioPage() {
   }, [boardDesignSize.w, boardDesignSize.h]);
 
   const selectedCard = showcaseCards[selectedCardIndex];
-  const environmentHeroCard = useMemo(
+  /** Card đang hover — ảnh dùng làm nền full-page (mọi card). */
+  const hoveredHeroCard = useMemo(
     () =>
-      showcaseCards.find((c) => c.id === PORTFOLIO_ENVIRONMENT_CARD_ID) ?? null,
-    [showcaseCards],
+      hoveredCardIndex !== null
+        ? (showcaseCards[hoveredCardIndex] ?? null)
+        : null,
+    [hoveredCardIndex, showcaseCards],
   );
-  const showEnvironmentAsRightBg =
-    hoveredCardIndex !== null &&
-    showcaseCards[hoveredCardIndex]?.id === PORTFOLIO_ENVIRONMENT_CARD_ID;
+  const showHoveredCardAsFullBg = hoveredHeroCard !== null;
 
   const availableImageSet = useMemo(
     () => new Set(availableImages),
@@ -858,6 +859,16 @@ export default function PortfolioPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
+      setIntroCardsReady(true);
+      return;
+    }
+    const id = window.requestAnimationFrame(() => setIntroCardsReady(true));
+    return () => window.cancelAnimationFrame(id);
+  }, []);
+
   const SHOW_CARDS = true;
 
   return (
@@ -866,7 +877,7 @@ export default function PortfolioPage() {
       <main
         className={`relative min-h-screen overflow-hidden bg-black ${nunitoSans.className}`}
       >
-        {/* Global background (ENVIRONMENT hover: bỏ phủ + scale ảnh) */}
+        {/* Global background — hover bất kỳ card: ảnh card làm nền + bỏ phủ + scale nhẹ */}
         <div className="pointer-events-none absolute inset-0 z-0">
           {bgImage && !/bgright\.png/i.test(bgImage) ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -874,19 +885,19 @@ export default function PortfolioPage() {
               src={bgImage}
               alt=""
               className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
-                showEnvironmentAsRightBg
+                showHoveredCardAsFullBg
                   ? "scale-100 opacity-0"
                   : "scale-100 opacity-100"
               }`}
             />
           ) : null}
-          {environmentHeroCard ? (
+          {hoveredHeroCard ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={environmentHeroCard.image}
+              src={hoveredHeroCard.image}
               alt=""
               className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
-                showEnvironmentAsRightBg
+                showHoveredCardAsFullBg
                   ? "scale-110 opacity-100"
                   : "scale-100 opacity-0"
               }`}
@@ -894,36 +905,12 @@ export default function PortfolioPage() {
           ) : null}
           <div
             className={`absolute inset-0 bg-black/65 transition-opacity duration-500 ease-out ${
-              showEnvironmentAsRightBg ? "opacity-0" : "opacity-100"
+              showHoveredCardAsFullBg ? "opacity-0" : "opacity-100"
             }`}
           />
         </div>
 
-        {/* Card Controller: fixed trên viewport, không nằm trong khối có transform */}
-        {/* Toggle Button */}
-        <button
-          type="button"
-          onClick={() => setSettingsOpen(!settingsOpen)}
-          className={`hidden lg:block fixed left-4 top-28 z-[100] rounded-full border border-white/30 bg-black/75 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/90 ${settingsOpen ? "bg-amber-500/20 border-amber-400/50" : ""}`}
-          title={settingsOpen ? "Ẩn Settings" : "Hiện Settings"}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.47a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        </button>
-
-        {settingsOpen && (
+        {false && settingsOpen && (
           <div className="hidden lg:block fixed left-4 top-[11rem] z-[100] max-h-[min(70vh,calc(100dvh-12rem))] w-[min(380px,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/30 bg-black/75 p-4 text-white shadow-xl backdrop-blur-sm">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-sm font-semibold uppercase tracking-[0.09em] text-amber-300">
@@ -1632,7 +1619,7 @@ export default function PortfolioPage() {
                         alt=""
                         className={`pointer-events-none absolute inset-0 h-full w-full select-none object-right transition-opacity duration-500 ease-out ${
                           bgRightLockAspect ? "object-contain" : "object-cover"
-                        } ${showEnvironmentAsRightBg ? "opacity-0" : "opacity-100"}`}
+                        } ${showHoveredCardAsFullBg ? "opacity-0" : "opacity-100"}`}
                         style={{
                           transform: `scale(${bgRightImageScale})`,
                           transformOrigin: "center right",
@@ -1658,26 +1645,40 @@ export default function PortfolioPage() {
                               )
                               .join(", ")})`;
 
-                            const cardZ =
-                              interaction?.index === index
-                                ? 40
-                                : (card.zIndex ??
-                                  (selectedCardIndex === index ? 25 : 10));
+                            const cardBgTakeover = showHoveredCardAsFullBg;
+                            const isActiveHoveredCard =
+                              hoveredCardIndex === index;
 
-                            const envTakeover = showEnvironmentAsRightBg;
-                            const isEnvCard =
-                              card.id === PORTFOLIO_ENVIRONMENT_CARD_ID;
+                            const cardZ =
+                              cardBgTakeover && isActiveHoveredCard
+                                ? 80
+                                : interaction?.index === index
+                                  ? 40
+                                  : (card.zIndex ??
+                                    (selectedCardIndex === index ? 25 : 10));
+                            /** Hover: chỉ phóng ảnh trong khung, không scale cả polygon */
+                            const innerImageHoverOnly =
+                              card.id === "summoners-era" ||
+                              card.id === "overdrive-top-left" ||
+                              card.id === "overdrive-top-right";
+                            const introDelayMs = index * 120;
+                            const introFrom =
+                              index % 3 === 0
+                                ? { tx: 220, ty: 90 }
+                                : index % 3 === 1
+                                  ? { tx: -240, ty: 140 }
+                                  : { tx: 180, ty: -160 };
 
                             return (
                               <article
                                 key={card.id}
                                 className={`group absolute overflow-visible shadow-[0_14px_40px_rgba(0,0,0,0.55)] ${
-                                  envTakeover && !isEnvCard
-                                    ? "pointer-events-none opacity-0"
+                                  cardBgTakeover && !isActiveHoveredCard
+                                    ? "pointer-events-none"
                                     : ""
                                 } ${
-                                  envTakeover && isEnvCard
-                                    ? "pointer-events-auto opacity-0"
+                                  cardBgTakeover && isActiveHoveredCard
+                                    ? "pointer-events-auto"
                                     : ""
                                 } ${interaction?.index === index ? "cursor-grabbing" : "cursor-grab"}`}
                                 style={{
@@ -1686,7 +1687,23 @@ export default function PortfolioPage() {
                                   width: `${card.w}px`,
                                   height: `${card.h}px`,
                                   zIndex: cardZ,
-                                  transform: `rotate(${card.rotate}deg)`,
+                                  opacity: !introCardsReady
+                                    ? 0
+                                    : cardBgTakeover
+                                      ? 0
+                                      : 1,
+                                  filter: introCardsReady
+                                    ? "blur(0px)"
+                                    : "blur(10px)",
+                                  transform: introCardsReady
+                                    ? `translate3d(0,0,0) rotate(${card.rotate}deg) scale(1)`
+                                    : `translate3d(${introFrom.tx}px, ${introFrom.ty}px, 0) rotate(${card.rotate - 10}deg) scale(0.92)`,
+                                  transitionProperty:
+                                    "transform, opacity, filter",
+                                  transitionDuration: "900ms",
+                                  transitionTimingFunction:
+                                    "cubic-bezier(0.22, 1, 0.36, 1)",
+                                  transitionDelay: `${introDelayMs}ms`,
                                 }}
                                 onMouseEnter={() => setHoveredCardIndex(index)}
                                 onMouseLeave={() =>
@@ -1695,6 +1712,7 @@ export default function PortfolioPage() {
                                   )
                                 }
                                 onPointerDown={(event) => {
+                                  if (!ENABLE_EDITOR) return;
                                   if (lockLayout) return;
                                   if (event.button !== 0) return;
                                   setSelectedCardIndex(index);
@@ -1708,7 +1726,13 @@ export default function PortfolioPage() {
                                   });
                                 }}
                               >
-                                <div className="relative h-full w-full origin-center transition-transform duration-500 ease-out will-change-transform group-hover:scale-110">
+                                <div
+                                  className={`relative h-full w-full origin-center ${
+                                    innerImageHoverOnly
+                                      ? ""
+                                      : "transition-transform duration-500 ease-out will-change-transform group-hover:scale-110"
+                                  }`}
+                                >
                                   <div
                                     className="absolute overflow-hidden"
                                     style={{
@@ -1726,25 +1750,33 @@ export default function PortfolioPage() {
                                         transformOrigin: "center",
                                       }}
                                     >
-                                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                                      <img
-                                        src={card.image}
-                                        alt=""
-                                        className={`absolute inset-0 h-full w-full ${
-                                          card.imageFit === "contain"
-                                            ? "object-contain"
-                                            : "object-cover"
-                                        } ${
-                                          card.align === "top"
-                                            ? "object-top"
-                                            : card.align === "bottom"
-                                              ? "object-bottom"
-                                              : "object-center"
-                                        }`}
-                                        style={{
-                                          transform: `translate(${card.imageOffsetX}px, ${card.imageOffsetY}px)`,
-                                        }}
-                                      />
+                                      <div
+                                        className={
+                                          innerImageHoverOnly
+                                            ? "absolute inset-0 origin-center transition-transform duration-500 ease-out will-change-transform group-hover:scale-110"
+                                            : "absolute inset-0"
+                                        }
+                                      >
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                          src={card.image}
+                                          alt=""
+                                          className={`absolute inset-0 h-full w-full ${
+                                            card.imageFit === "contain"
+                                              ? "object-contain"
+                                              : "object-cover"
+                                          } ${
+                                            card.align === "top"
+                                              ? "object-top"
+                                              : card.align === "bottom"
+                                                ? "object-bottom"
+                                                : "object-center"
+                                          }`}
+                                          style={{
+                                            transform: `translate(${card.imageOffsetX}px, ${card.imageOffsetY}px)`,
+                                          }}
+                                        />
+                                      </div>
                                     </div>
                                     {card.showText !== false && (
                                       <div
@@ -1788,132 +1820,135 @@ export default function PortfolioPage() {
                                       />
                                     </svg>
                                   )}
-                                  {selectedCardIndex === index && (
-                                    <>
-                                      <button
-                                        type="button"
-                                        onPointerDown={(event) => {
-                                          if (lockLayout) return;
-                                          event.stopPropagation();
-                                          setInteraction({
-                                            mode: "rotate",
-                                            index,
-                                            startX: event.clientX,
-                                            originRotate: card.rotate,
-                                          });
-                                        }}
-                                        className="absolute left-1/2 top-[-18px] h-4 w-4 -translate-x-1/2 rounded-full border border-white bg-white/95"
-                                        title="Rotate"
-                                      />
-                                      <button
-                                        type="button"
-                                        onPointerDown={(event) => {
-                                          event.stopPropagation();
-                                          setInteraction({
-                                            mode: "imagePan",
-                                            index,
-                                            startX: event.clientX,
-                                            startY: event.clientY,
-                                            originX: card.imageOffsetX,
-                                            originY: card.imageOffsetY,
-                                          });
-                                        }}
-                                        className="absolute right-1 top-1 h-4 w-4 rounded-full border border-white bg-white/95"
-                                        title="Move image inside frame"
-                                      />
-                                      {card.poly && card.poly.length >= 3
-                                        ? poly.points.map((p, cornerIndex) => (
-                                            <button
-                                              key={`p-${cornerIndex}`}
-                                              type="button"
-                                              onPointerDown={(event) => {
-                                                if (lockLayout) return;
-                                                event.stopPropagation();
-                                                const origin = card.poly?.[
-                                                  cornerIndex
-                                                ] ?? { x: p.x, y: p.y };
-                                                setInteraction({
-                                                  mode: "polyCorner",
-                                                  index,
-                                                  cornerIndex,
-                                                  startX: event.clientX,
-                                                  startY: event.clientY,
-                                                  originX: origin.x,
-                                                  originY: origin.y,
-                                                });
-                                              }}
-                                              className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
-                                              style={{
-                                                left: `${p.x}px`,
-                                                top: `${p.y}px`,
-                                              }}
-                                              title={`Point ${cornerIndex + 1}`}
-                                            />
-                                          ))
-                                        : (
-                                            [
-                                              {
-                                                key: "tl",
-                                                point: poly.points[0],
-                                              },
-                                              {
-                                                key: "tr",
-                                                point: poly.points[1],
-                                              },
-                                              {
-                                                key: "br",
-                                                point: poly.points[2],
-                                              },
-                                              {
-                                                key: "bl",
-                                                point: poly.points[3],
-                                              },
-                                            ] as const
-                                          ).map((handle) => (
-                                            <button
-                                              key={handle.key}
-                                              type="button"
-                                              onPointerDown={(event) => {
-                                                if (lockLayout) return;
-                                                event.stopPropagation();
-                                                const cornerKey =
-                                                  handle.key as CornerKey;
-                                                const originX =
-                                                  cornerKey === "tl"
-                                                    ? card.tlx
-                                                    : cornerKey === "tr"
-                                                      ? card.trx
-                                                      : cornerKey === "br"
-                                                        ? card.brx
-                                                        : card.blx;
-                                                const originY =
-                                                  cornerKey === "tl"
-                                                    ? card.tly
-                                                    : cornerKey === "tr"
-                                                      ? card.try
-                                                      : cornerKey === "br"
-                                                        ? card.bry
-                                                        : card.bly;
-                                                setInteraction({
-                                                  mode: "corner",
-                                                  index,
-                                                  corner: cornerKey,
-                                                  startX: event.clientX,
-                                                  startY: event.clientY,
-                                                  originX,
-                                                  originY,
-                                                });
-                                              }}
-                                              className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
-                                              style={{
-                                                left: `${handle.point.x}px`,
-                                                top: `${handle.point.y}px`,
-                                              }}
-                                              title={`Corner ${handle.key.toUpperCase()}`}
-                                            />
-                                          ))}
-                                    </>
-                                  )}
+                                  {ENABLE_EDITOR &&
+                                    selectedCardIndex === index && (
+                                      <>
+                                        <button
+                                          type="button"
+                                          onPointerDown={(event) => {
+                                            if (lockLayout) return;
+                                            event.stopPropagation();
+                                            setInteraction({
+                                              mode: "rotate",
+                                              index,
+                                              startX: event.clientX,
+                                              originRotate: card.rotate,
+                                            });
+                                          }}
+                                          className="absolute left-1/2 top-[-18px] h-4 w-4 -translate-x-1/2 rounded-full border border-white bg-white/95"
+                                          title="Rotate"
+                                        />
+                                        <button
+                                          type="button"
+                                          onPointerDown={(event) => {
+                                            event.stopPropagation();
+                                            setInteraction({
+                                              mode: "imagePan",
+                                              index,
+                                              startX: event.clientX,
+                                              startY: event.clientY,
+                                              originX: card.imageOffsetX,
+                                              originY: card.imageOffsetY,
+                                            });
+                                          }}
+                                          className="absolute right-1 top-1 h-4 w-4 rounded-full border border-white bg-white/95"
+                                          title="Move image inside frame"
+                                        />
+                                        {card.poly && card.poly.length >= 3
+                                          ? poly.points.map(
+                                              (p, cornerIndex) => (
+                                                <button
+                                                  key={`p-${cornerIndex}`}
+                                                  type="button"
+                                                  onPointerDown={(event) => {
+                                                    if (lockLayout) return;
+                                                    event.stopPropagation();
+                                                    const origin = card.poly?.[
+                                                      cornerIndex
+                                                    ] ?? { x: p.x, y: p.y };
+                                                    setInteraction({
+                                                      mode: "polyCorner",
+                                                      index,
+                                                      cornerIndex,
+                                                      startX: event.clientX,
+                                                      startY: event.clientY,
+                                                      originX: origin.x,
+                                                      originY: origin.y,
+                                                    });
+                                                  }}
+                                                  className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
+                                                  style={{
+                                                    left: `${p.x}px`,
+                                                    top: `${p.y}px`,
+                                                  }}
+                                                  title={`Point ${cornerIndex + 1}`}
+                                                />
+                                              ),
+                                            )
+                                          : (
+                                              [
+                                                {
+                                                  key: "tl",
+                                                  point: poly.points[0],
+                                                },
+                                                {
+                                                  key: "tr",
+                                                  point: poly.points[1],
+                                                },
+                                                {
+                                                  key: "br",
+                                                  point: poly.points[2],
+                                                },
+                                                {
+                                                  key: "bl",
+                                                  point: poly.points[3],
+                                                },
+                                              ] as const
+                                            ).map((handle) => (
+                                              <button
+                                                key={handle.key}
+                                                type="button"
+                                                onPointerDown={(event) => {
+                                                  if (lockLayout) return;
+                                                  event.stopPropagation();
+                                                  const cornerKey =
+                                                    handle.key as CornerKey;
+                                                  const originX =
+                                                    cornerKey === "tl"
+                                                      ? card.tlx
+                                                      : cornerKey === "tr"
+                                                        ? card.trx
+                                                        : cornerKey === "br"
+                                                          ? card.brx
+                                                          : card.blx;
+                                                  const originY =
+                                                    cornerKey === "tl"
+                                                      ? card.tly
+                                                      : cornerKey === "tr"
+                                                        ? card.try
+                                                        : cornerKey === "br"
+                                                          ? card.bry
+                                                          : card.bly;
+                                                  setInteraction({
+                                                    mode: "corner",
+                                                    index,
+                                                    corner: cornerKey,
+                                                    startX: event.clientX,
+                                                    startY: event.clientY,
+                                                    originX,
+                                                    originY,
+                                                  });
+                                                }}
+                                                className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-white/95"
+                                                style={{
+                                                  left: `${handle.point.x}px`,
+                                                  top: `${handle.point.y}px`,
+                                                }}
+                                                title={`Corner ${handle.key.toUpperCase()}`}
+                                              />
+                                            ))}
+                                      </>
+                                    )}
                                 </div>
                               </article>
                             );
