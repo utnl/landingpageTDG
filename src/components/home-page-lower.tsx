@@ -315,7 +315,7 @@ export default function HomePageLower() {
         </div>
       </motion.section>
 
-      {/* Benefits — dark Sinspired-style: layered title, 4 cards, stats bar */}
+      {/* Benefits — dark TD Games-style: layered title, 4 cards, stats bar */}
       <motion.section
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -720,11 +720,12 @@ export default function HomePageLower() {
         </div>
 
         <motion.div
+          id="careers"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className="relative mx-auto mt-16 md:mt-20"
+          className="relative mx-auto mt-16 md:mt-20 scroll-mt-24"
           style={{ width: "min(var(--layout-width, 85%), 1240px)" }}
         >
           <div className="relative overflow-hidden rounded-[28px] border border-white/[0.09] bg-[linear-gradient(152deg,rgba(123,109,255,0.11)_0%,rgba(10,10,14,0.92)_38%,rgba(10,10,14,0.96)_62%,rgba(245,158,11,0.07)_100%)] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.45)] md:p-10">
@@ -819,7 +820,8 @@ export default function HomePageLower() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.16 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="snap-start relative overflow-hidden border-t border-white/10 bg-[#070709] py-20 lg:py-24"
+        id="blog"
+        className="snap-start relative scroll-mt-24 overflow-hidden border-t border-white/10 bg-[#070709] py-20 lg:py-24"
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_55%_at_50%_-12%,rgba(245,158,11,0.09),transparent_52%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_75%,rgba(123,109,255,0.09),transparent_42%)]" />
@@ -1019,234 +1021,6 @@ export default function HomePageLower() {
           </div>
         </div>
       </motion.section>
-
-      {/* Footer (demo4) */}
-      <motion.footer
-        initial={{ opacity: 0, y: 22 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="border-t border-white/10 bg-[#070709] py-16"
-      >
-        <div
-          className="mx-auto"
-          style={{ width: "min(var(--layout-width, 85%), 1240px)" }}
-        >
-          <div className="grid gap-10 lg:grid-cols-[1.3fr_2fr]">
-            <div>
-              <div className="relative h-10 w-[170px]">
-                <Image
-                  src="/video/logo/logo_td2.png"
-                  alt="TD Games"
-                  fill
-                  className="object-contain"
-                  sizes="170px"
-                />
-              </div>
-              <div
-                className="mt-4 h-[2px] w-20 rounded-full"
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(255,180,0,0) 0%, rgba(255,180,0,1) 22%, rgba(255,140,58,1) 78%, rgba(255,140,58,0) 100%)",
-                }}
-              />
-              <p className="mt-5 text-sm leading-7 text-white/58">
-                Founded in 2019, TD Games emerged from a shared passion for
-                creating visually stunning game experiences. What started as a
-                small team of artists has grown into a full-service game art
-                studio trusted by developers worldwide.
-              </p>
-              <p className="mt-4 text-sm leading-7 text-white/58">
-                We believe that great art is the foundation of memorable games.
-                Our mission is to help developers bring their creative visions
-                to life with professional-grade assets that enhance gameplay and
-                captivate players.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                {[
-                  {
-                    id: "in",
-                    label: "LinkedIn",
-                    icon: (
-                      <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8.5 8.5h3.8v2h.1c.53-1 1.84-2.1 3.79-2.1 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.32c0-1.75-.03-4-2.44-4-2.44 0-2.81 1.9-2.81 3.87V23h-4V8.5z" />
-                    ),
-                  },
-                  {
-                    id: "fb",
-                    label: "Facebook",
-                    icon: (
-                      <path d="M13.5 24v-8.7h2.9l.4-3.4h-3.3V9.7c0-1 .3-1.7 1.8-1.7h1.6V5c-.3 0-1.5-.1-2.9-.1-2.9 0-4.9 1.8-4.9 5v2.9H6.4v3.4h2.7V24h4.4z" />
-                    ),
-                  },
-                  {
-                    id: "ig",
-                    label: "Instagram",
-                    icon: (
-                      <>
-                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9z" />
-                        <path d="M12 7.3A4.7 4.7 0 1 1 7.3 12 4.7 4.7 0 0 1 12 7.3zm0 2A2.7 2.7 0 1 0 14.7 12 2.7 2.7 0 0 0 12 9.3z" />
-                        <path d="M17.6 6.2a1.1 1.1 0 1 1-1.1-1.1 1.1 1.1 0 0 1 1.1 1.1z" />
-                      </>
-                    ),
-                  },
-                  {
-                    id: "be",
-                    label: "Behance",
-                    icon: (
-                      <>
-                        <path d="M10.8 12.1c1.1-.6 1.8-1.7 1.8-3 0-2.4-1.8-3.6-4.3-3.6H2V23h6.6c3 0 4.9-1.3 4.9-4.2 0-1.9-1.1-3.4-2.7-3.9zm-6.5-4h3.8c1.3 0 2 .5 2 1.6 0 1.2-.8 1.7-2.1 1.7H4.3V8.1zm4.2 12.3H4.3v-5.2h4.3c1.6 0 2.4.8 2.4 2.6 0 1.8-.9 2.6-2.5 2.6z" />
-                        <path d="M14.6 10.1h6.2V8.3h-6.2v1.8z" />
-                        <path d="M18.4 10.9c-3.2 0-5.3 2.3-5.3 6.1 0 3.9 2 6.1 5.4 6.1 2.6 0 4.4-1.4 4.9-3.7h-2.3c-.3 1-1.1 1.6-2.5 1.6-1.7 0-2.7-1.1-2.8-3.1h7.6c.2-3.9-1.7-7-5-7zm2.6 5h-5.2c.2-1.9 1.2-3 2.6-3 1.6 0 2.5 1 2.6 3z" />
-                      </>
-                    ),
-                  },
-                ].map((s) => (
-                  <a
-                    key={s.id}
-                    href="#"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/75 transition-colors hover:border-[#ff8c3a]/45 hover:text-white"
-                    aria-label={s.label}
-                    title={s.label}
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="h-4 w-4"
-                      fill="currentColor"
-                      aria-hidden
-                    >
-                      {s.icon}
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-              <div>
-                <div
-                  className="text-sm font-black uppercase tracking-[0.14em] text-white"
-                  style={{ fontFamily: "var(--font-rajdhani)" }}
-                >
-                  Contacts
-                </div>
-                <div className="mt-4 space-y-3 text-sm text-white/55">
-                  <div className="flex items-start gap-2">
-                    <span className="mt-0.5 text-[#ff8c3a]" aria-hidden>
-                      •
-                    </span>
-                    <span>505 Minh Khai, Hà Nội</span>
-                  </div>
-                  <a
-                    href="mailto:contact@tdgames.vn"
-                    className="flex items-start gap-2 transition-colors hover:text-white"
-                  >
-                    <span className="mt-0.5 text-[#ff8c3a]" aria-hidden>
-                      •
-                    </span>
-                    <span>contact@tdgames.vn</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-start gap-2 transition-colors hover:text-white"
-                  >
-                    <span className="mt-0.5 text-[#ff8c3a]" aria-hidden>
-                      •
-                    </span>
-                    <span>Contact us</span>
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <div
-                  className="text-sm font-black uppercase tracking-[0.14em] text-white"
-                  style={{ fontFamily: "var(--font-rajdhani)" }}
-                >
-                  Services
-                </div>
-                <div className="mt-4 space-y-3 text-sm text-white/55">
-                  {["2D Art", "2D Animation", "2D VFX", "Game UI"].map((t) => (
-                    <a
-                      key={t}
-                      href="#"
-                      className="block transition-colors hover:text-white"
-                    >
-                      {t}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div
-                  className="text-sm font-black uppercase tracking-[0.14em] text-white"
-                  style={{ fontFamily: "var(--font-rajdhani)" }}
-                >
-                  Company
-                </div>
-                <div className="mt-4 space-y-3 text-sm text-white/55">
-                  {["Company", "Our projects", "Careers", "Blog"].map((t) => (
-                    <a
-                      key={t}
-                      href="#"
-                      className="block transition-colors hover:text-white"
-                    >
-                      {t}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div
-                  className="text-sm font-black uppercase tracking-[0.14em] text-white"
-                  style={{ fontFamily: "var(--font-rajdhani)" }}
-                >
-                  Info
-                </div>
-                <div className="mt-4 space-y-3 text-sm text-white/55">
-                  {["Privacy policy", "Terms of use", "FAQ", "Glossary"].map(
-                    (t) => (
-                      <a
-                        key={t}
-                        href="#"
-                        className="block transition-colors hover:text-white"
-                      >
-                        {t}
-                      </a>
-                    ),
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 border-t border-white/10 pt-6 text-xs text-white/40">
-            <div>© {new Date().getFullYear()} TD Games. All rights reserved.</div>
-            <div className="mt-2 text-[10px] text-white/28">
-              Running icon by{" "}
-              <a
-                href="https://www.flaticon.com/authors/freepik"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-white/55"
-              >
-                Freepik
-              </a>{" "}
-              from{" "}
-              <a
-                href="https://www.flaticon.com/free-icons/runner"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-white/55"
-              >
-                Flaticon
-              </a>
-              .
-            </div>
-          </div>
-        </div>
-      </motion.footer>
     </>
   );
 }

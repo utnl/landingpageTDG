@@ -156,19 +156,19 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     subtitle: "",
     image: "/images/f8e2e81a-e72c-431b-b4ec-5ab7af73ea12.png",
     align: "center",
-    x: 1478,
-    y: 383,
+    x: 1471,
+    y: 369,
     w: 600,
     h: 600,
     rotate: -1.4,
-    tlx: 183,
-    tly: -416,
+    tlx: 165,
+    tly: -463,
     trx: 141,
     try: -6,
     brx: -170,
     bry: 89,
-    blx: -1095,
-    bly: 62,
+    blx: -1127,
+    bly: 51,
     imageOffsetX: -87,
     imageOffsetY: -91,
     imageScale: 1.05,
@@ -189,10 +189,10 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     tly: -388,
     trx: 49,
     try: -77,
-    brx: -4,
-    bry: 173,
-    blx: -72,
-    bly: 92,
+    brx: -13,
+    bry: 237,
+    blx: -76,
+    bly: 96,
     imageOffsetX: 25,
     imageOffsetY: -4,
     imageScale: 1.05,
@@ -204,19 +204,19 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     subtitle: "",
     image: "/images/3067c837-e030-403f-b7c5-0c7246bfe15f.png",
     align: "center",
-    x: 1193,
-    y: 267,
+    x: 1185,
+    y: 259,
     w: 387,
     h: 170,
     rotate: 0,
-    tlx: -17,
-    tly: -410,
-    trx: 50,
-    try: -14,
-    brx: -59,
-    bry: 577,
-    blx: -358,
-    bly: 73,
+    tlx: -10,
+    tly: -440,
+    trx: 65,
+    try: -35,
+    brx: -45,
+    bry: 585,
+    blx: -307,
+    bly: 76,
     imageOffsetX: -10,
     imageOffsetY: -8,
     imageScale: 1.25,
@@ -227,19 +227,19 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     subtitle: "",
     image: "/images/f0d05f71-5089-4b3f-b453-7a8d19afc013.png",
     align: "center",
-    x: 1546,
-    y: -35,
-    w: 439,
-    h: 171,
+    x: 1593,
+    y: -45,
+    w: 506,
+    h: 213,
     rotate: 0,
-    tlx: -17,
-    tly: -234,
+    tlx: -60,
+    tly: -393,
     trx: -39,
     try: -26,
-    brx: -138,
-    bry: 293,
-    blx: -68,
-    bly: 43,
+    brx: -122,
+    bry: 786,
+    blx: -223,
+    bly: 24,
     textOffsetX: 0,
     textOffsetY: 0,
     imageOffsetX: -54,
@@ -253,23 +253,23 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     subtitle: "",
     image: "/images/xoa_nen_vip_pro.png",
     align: "center",
-    x: 316,
-    y: 124,
+    x: 335,
+    y: 171,
     w: 934,
     h: 899,
     rotate: -39.2,
     zIndex: 1,
     tlx: -140,
     tly: 55,
-    trx: 319,
-    try: -149,
+    trx: 179,
+    try: -156,
     brx: 489,
     bry: 363,
-    blx: -456,
-    bly: 157,
-    imageOffsetX: 120,
-    imageOffsetY: 74,
-    imageScale: 0.95,
+    blx: -490,
+    bly: 164,
+    imageOffsetX: 86,
+    imageOffsetY: 62,
+    imageScale: 0.9,
     showText: true,
   },
 ];
@@ -379,8 +379,10 @@ function applyPortfolioInitPayload(
 
 export default function PortfolioPage() {
   const ENABLE_EDITOR = false;
+  /** Bật lại `true` khi cần: takeover nền + scale khi hover card. */
+  const ENABLE_PORTFOLIO_HOVER_FX = true;
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [introCardsReady, setIntroCardsReady] = useState(true);
+  const [introCardsReady, setIntroCardsReady] = useState(false);
   const [bgImage, setBgImage] = useState(PORTFOLIO_PAGE_DEFAULTS.background);
   const [bgRightWidthVw, setBgRightWidthVw] = useState(
     PORTFOLIO_PAGE_DEFAULTS.bgRight.widthVw,
@@ -428,6 +430,8 @@ export default function PortfolioPage() {
 
   const bgrightSlotRef = useRef<HTMLDivElement>(null);
   const [boardFitScale, setBoardFitScale] = useState(1);
+  /** Tránh frame đầu scale=1 sai → nhảy/giật (nhìn như bgright “xoay”) trước khi đo slot xong. */
+  const [boardFitLayoutReady, setBoardFitLayoutReady] = useState(false);
 
   /**
    * Canvas scale/topPad cố định trong lúc kéo; không tính lại mỗi frame (tránh cả khối nhảy).
@@ -478,17 +482,22 @@ export default function PortfolioPage() {
   useLayoutEffect(() => {
     const el = bgrightSlotRef.current;
     if (!el) return;
-    const update = () => {
+    const commit = () => {
       const w = el.clientWidth;
       const h = el.clientHeight;
       if (w < 2 || h < 2) return;
       const s = Math.min(w / boardDesignSize.w, h / boardDesignSize.h);
       setBoardFitScale(s > 0 ? s : 1);
+      setBoardFitLayoutReady(true);
     };
-    update();
-    const ro = new ResizeObserver(update);
+    commit();
+    const ro = new ResizeObserver(commit);
     ro.observe(el);
-    return () => ro.disconnect();
+    const raf = window.requestAnimationFrame(() => commit());
+    return () => {
+      window.cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
   }, [boardDesignSize.w, boardDesignSize.h]);
 
   const selectedCard = showcaseCards[selectedCardIndex];
@@ -500,7 +509,8 @@ export default function PortfolioPage() {
         : null,
     [hoveredCardIndex, showcaseCards],
   );
-  const showHoveredCardAsFullBg = hoveredHeroCard !== null;
+  const showHoveredCardAsFullBg =
+    ENABLE_PORTFOLIO_HOVER_FX && hoveredHeroCard !== null;
 
   const availableImageSet = useMemo(
     () => new Set(availableImages),
@@ -861,13 +871,32 @@ export default function PortfolioPage() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!boardFitLayoutReady) return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
       setIntroCardsReady(true);
       return;
     }
     const id = window.requestAnimationFrame(() => setIntroCardsReady(true));
     return () => window.cancelAnimationFrame(id);
-  }, []);
+  }, [boardFitLayoutReady]);
+
+  /** Slot đôi khi chưa có kích thước ở frame đầu (aspect/vw); không để intro kẹt mãi. */
+  useEffect(() => {
+    if (boardFitLayoutReady) return;
+    const t = window.setTimeout(() => {
+      const el = bgrightSlotRef.current;
+      if (el) {
+        const w = el.clientWidth;
+        const h = el.clientHeight;
+        if (w >= 2 && h >= 2) {
+          const s = Math.min(w / boardDesignSize.w, h / boardDesignSize.h);
+          setBoardFitScale(s > 0 ? s : 1);
+        }
+      }
+      setBoardFitLayoutReady(true);
+    }, 400);
+    return () => window.clearTimeout(t);
+  }, [boardFitLayoutReady, boardDesignSize.w, boardDesignSize.h]);
 
   const SHOW_CARDS = true;
 
@@ -1550,7 +1579,7 @@ export default function PortfolioPage() {
                   color: "var(--hero-desc-color, #e5e7eb)",
                 }}
               >
-                Sinspired Studio&apos;s portfolio. We specialize in creating
+                TD Games&apos; portfolio. We specialize in creating
                 modern 3D environments, captivating characters, and innovative
                 concept art for next-gen games. For years of experience in the
                 industry of game art design, managed to collect a solid game
@@ -1598,6 +1627,7 @@ export default function PortfolioPage() {
                     height: boardDesignSize.h,
                     transform: `translateY(-50%) scale(${boardFitScale})`,
                     transformOrigin: "center right",
+                    opacity: boardFitLayoutReady ? 1 : 0,
                   }}
                 >
                   <div
@@ -1650,12 +1680,10 @@ export default function PortfolioPage() {
                               hoveredCardIndex === index;
 
                             const cardZ =
-                              cardBgTakeover && isActiveHoveredCard
-                                ? 80
-                                : interaction?.index === index
-                                  ? 40
-                                  : (card.zIndex ??
-                                    (selectedCardIndex === index ? 25 : 10));
+                              interaction?.index === index
+                                ? 40
+                                : (card.zIndex ??
+                                  (selectedCardIndex === index ? 25 : 10));
                             /** Hover: chỉ phóng ảnh trong khung, không scale cả polygon */
                             const innerImageHoverOnly =
                               card.id === "summoners-era" ||
@@ -1705,12 +1733,16 @@ export default function PortfolioPage() {
                                     "cubic-bezier(0.22, 1, 0.36, 1)",
                                   transitionDelay: `${introDelayMs}ms`,
                                 }}
-                                onMouseEnter={() => setHoveredCardIndex(index)}
-                                onMouseLeave={() =>
+                                onMouseEnter={() => {
+                                  if (ENABLE_PORTFOLIO_HOVER_FX)
+                                    setHoveredCardIndex(index);
+                                }}
+                                onMouseLeave={() => {
+                                  if (!ENABLE_PORTFOLIO_HOVER_FX) return;
                                   setHoveredCardIndex((h) =>
                                     h === index ? null : h,
-                                  )
-                                }
+                                  );
+                                }}
                                 onPointerDown={(event) => {
                                   if (!ENABLE_EDITOR) return;
                                   if (lockLayout) return;
@@ -1728,9 +1760,11 @@ export default function PortfolioPage() {
                               >
                                 <div
                                   className={`relative h-full w-full origin-center ${
-                                    innerImageHoverOnly
+                                    !ENABLE_PORTFOLIO_HOVER_FX
                                       ? ""
-                                      : "transition-transform duration-500 ease-out will-change-transform group-hover:scale-110"
+                                      : innerImageHoverOnly
+                                        ? ""
+                                        : "transition-transform duration-500 ease-out will-change-transform group-hover:scale-110"
                                   }`}
                                 >
                                   <div
@@ -1752,6 +1786,7 @@ export default function PortfolioPage() {
                                     >
                                       <div
                                         className={
+                                          ENABLE_PORTFOLIO_HOVER_FX &&
                                           innerImageHoverOnly
                                             ? "absolute inset-0 origin-center transition-transform duration-500 ease-out will-change-transform group-hover:scale-110"
                                             : "absolute inset-0"

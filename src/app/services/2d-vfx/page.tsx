@@ -1,18 +1,80 @@
+import ContactShowcaseSection from "@/components/contact-showcase-section";
+import Service2DVfxFaq from "@/components/service-2d-vfx-faq";
+import Service2DVfxFeaturedShowcase from "@/components/service-2d-vfx-featured-showcase";
+import Service2DVfxWorkflow from "@/components/service-2d-vfx-workflow";
 import ServicePageTemplate from "@/components/service-page-template";
+import SiteFooter from "@/components/site-footer";
 
 export default function Service2DVfxPage() {
   return (
     <ServicePageTemplate
-      eyebrow="Service"
+      eyebrow=""
       title="2D VFX"
       subtitle="Impactful effects that enhance action without overwhelming the scene."
-      intro="We craft VFX with gameplay readability first: strong timing, readable silhouettes, and effect layering that performs well on real devices."
-      bullets={[
-        "Skill effects and hit impact libraries",
-        "Elemental particles and ambient overlays",
-        "Screen-space flashes and combo feedback effects",
-        "Optimization-friendly atlas and timing setup",
-      ]}
+      showDeliverRelated={false}
+      appendSections={
+        <>
+          <Service2DVfxWorkflow />
+          <Service2DVfxFeaturedShowcase />
+          <Service2DVfxFaq />
+          <ContactShowcaseSection sectionStep="05" />
+          <SiteFooter />
+        </>
+      }
+      hero={{
+        image: "/images/9ab9a213-58d4-40c7-aacc-c6ad9f826d0f.png",
+        titleTop: "2D GAME",
+        titleMain: "VFX",
+        subheading: "2D VFX outsource",
+        description:
+          "TD Games authors sprite and flipbook VFX with gameplay readability first—hits, skills, auras, and UI-safe flashes—packed and timed for production builds.",
+        ctaLabel: "Consult with our experts",
+      }}
+      capabilities={{
+        eyebrow: "What we do",
+        sectionMarker: { step: "01", label: "What we do" },
+        titlePrefix: "OUR ",
+        titleHighlight: "2D VFX",
+        titleSuffix: " SERVICES",
+        items: [
+          {
+            title: "Combat impacts",
+            description:
+              "Hit flashes, slams, and combo punctuation with clear telegraphing.",
+            image: "/images/bcc4707e-cae2-46a2-9c96-c254c28ba763.png",
+          },
+          {
+            title: "Skill libraries",
+            description:
+              "Elemental variants and tiered intensity so designers can reuse content.",
+            image: "/images/3067c837-e030-403f-b7c5-0c7246bfe15f.png",
+          },
+          {
+            title: "Buffs & auras",
+            description:
+              "Looping overlays and support effects that stay readable at mobile scale.",
+            image: "/images/95bff405-e638-4cec-9260-e5c9af46f49b.png",
+          },
+          {
+            title: "Ambient world VFX",
+            description:
+              "Weather hints, glows, and environmental motion that sell mood.",
+            image: "/images/Environment_Art-1024x683.jpg",
+          },
+          {
+            title: "UI feedback",
+            description:
+              "Reward bursts, level-up sparks, and HUD-safe treatments.",
+            image: "/images/f8e2e81a-e72c-431b-b4ec-5ab7af73ea12.png",
+          },
+          {
+            title: "Atlas delivery",
+            description:
+              "Packed sheets, pivots, and integration notes for your shaders and tools.",
+            image: "/images/21f8a0a6-048f-4a5c-9946-3a89f6303fcd.png",
+          },
+        ],
+      }}
     />
   );
 }

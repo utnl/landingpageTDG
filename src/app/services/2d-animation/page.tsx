@@ -1,18 +1,80 @@
+import ContactShowcaseSection from "@/components/contact-showcase-section";
+import Service2DAnimationFaq from "@/components/service-2d-animation-faq";
+import Service2DAnimationFeaturedShowcase from "@/components/service-2d-animation-featured-showcase";
+import Service2DAnimationWorkflow from "@/components/service-2d-animation-workflow";
 import ServicePageTemplate from "@/components/service-page-template";
+import SiteFooter from "@/components/site-footer";
 
 export default function Service2DAnimationPage() {
   return (
     <ServicePageTemplate
-      eyebrow="Service"
+      eyebrow=""
       title="2D Animation"
       subtitle="Smooth, expressive motion tuned for gameplay clarity and efficient production."
-      intro="From subtle idle loops to high-energy combat actions, we build animation sets that preserve character identity while fitting technical constraints."
-      bullets={[
-        "Spine animation for gameplay and UI characters",
-        "Frame-by-frame shots for promo and cutscenes",
-        "Combat actions, transitions, and loop sets",
-        "Export-ready animation packages for engine integration",
-      ]}
+      showDeliverRelated={false}
+      appendSections={
+        <>
+          <Service2DAnimationWorkflow />
+          <Service2DAnimationFeaturedShowcase />
+          <Service2DAnimationFaq />
+          <ContactShowcaseSection sectionStep="05" />
+          <SiteFooter />
+        </>
+      }
+      hero={{
+        image: "/images/origins-thumbnail.png",
+        titleTop: "2D GAME",
+        titleMain: "ANIMATION",
+        subheading: "2D Animation outsource",
+        description:
+          "TD Games delivers production-ready 2D animation—from idle and locomotion to combat sets and UI motion—with timing, exports, and integration notes built for real shipping schedules.",
+        ctaLabel: "Consult with our experts",
+      }}
+      capabilities={{
+        eyebrow: "What we do",
+        sectionMarker: { step: "01", label: "What we do" },
+        titlePrefix: "OUR ",
+        titleHighlight: "2D ANIMATION",
+        titleSuffix: " SERVICES",
+        items: [
+          {
+            title: "Spine gameplay sets",
+            description:
+              "Rig-driven loops and attacks tuned for engine constraints and revision speed.",
+            image: "/images/7be77dae-b42e-44c0-b1be-397150c7ff3d.jpg",
+          },
+          {
+            title: "Frame highlights",
+            description:
+              "Hand-drawn accents for promo beats and hero moments when the brief demands it.",
+            image: "/images/minh-hong-minh-hong-thumbnail-2.jpg",
+          },
+          {
+            title: "Combat actions",
+            description:
+              "Chains, cancels, and hit reactions authored for readable silhouettes.",
+            image: "/images/ourproject.jpg",
+          },
+          {
+            title: "Locomotion packages",
+            description:
+              "Walk, run, turn, and idle families that stay on-model across variants.",
+            image: "/images/Casual_character-1024x683.jpg",
+          },
+          {
+            title: "UI & presentation",
+            description:
+              "Lightweight motion for menus, rewards, and tutorial flourishes.",
+            image: "/images/Screenshot 2026-05-07 233917.png",
+          },
+          {
+            title: "Export & QA",
+            description:
+              "Atlases, naming, pivots, and checklists so engineering can integrate fast.",
+            image: "/images/2f308aec-bd0c-42b9-9220-ca123338d9b9.png",
+          },
+        ],
+      }}
     />
   );
 }

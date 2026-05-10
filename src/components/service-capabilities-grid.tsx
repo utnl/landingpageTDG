@@ -14,6 +14,8 @@ type ServiceCapabilitiesGridProps = {
   titleHighlight: string;
   titleSuffix: string;
   items: ServiceCapabilityItem[];
+  /** When set, shows `// step · label` and skips the orange eyebrow line (avoid duplicate with label). */
+  sectionMarker?: { step: string; label: string };
 };
 
 export default function ServiceCapabilitiesGrid({
@@ -22,6 +24,7 @@ export default function ServiceCapabilitiesGrid({
   titleHighlight,
   titleSuffix,
   items,
+  sectionMarker,
 }: ServiceCapabilitiesGridProps) {
   return (
     <section className="border-t border-[#252525] bg-[linear-gradient(180deg,#121218_0%,#0b0b10_100%)] py-14 text-white md:py-20 lg:py-24">
@@ -30,14 +33,24 @@ export default function ServiceCapabilitiesGrid({
         style={{ width: "min(var(--layout-width, 85%), 1240px)" }}
       >
         <header className="mb-10 md:mb-12">
-          <p
-            className="text-[11px] font-bold uppercase tracking-[0.28em]"
-            style={{ color: "var(--hero-btn-bg, #f59e0b)" }}
-          >
-            {eyebrow}
-          </p>
+          {sectionMarker ? (
+            <div className="mb-4 flex items-center gap-4">
+              <span className="text-sm font-black italic tracking-tighter text-[#ff8c3a]">{`// ${sectionMarker.step}`}</span>
+              <div className="h-px w-10 shrink-0 bg-white/10" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">
+                {sectionMarker.label}
+              </span>
+            </div>
+          ) : (
+            <p
+              className="text-[11px] font-bold uppercase tracking-[0.28em]"
+              style={{ color: "var(--hero-btn-bg, #f59e0b)" }}
+            >
+              {eyebrow}
+            </p>
+          )}
           <h2
-            className="mt-3 text-4xl font-black uppercase leading-tight tracking-tight text-white md:text-5xl lg:text-[3.25rem] lg:leading-[1.05]"
+            className={`text-4xl font-black uppercase leading-tight tracking-tight text-white md:text-5xl lg:text-[3.25rem] lg:leading-[1.05] ${sectionMarker ? "mt-0" : "mt-3"}`}
             style={{ fontFamily: "var(--font-rajdhani)" }}
           >
             {titlePrefix}

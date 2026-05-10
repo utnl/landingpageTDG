@@ -1,4 +1,9 @@
+import ContactShowcaseSection from "@/components/contact-showcase-section";
+import Service2DArtFaq from "@/components/service-2d-art-faq";
+import Service2DArtFeaturedShowcase from "@/components/service-2d-art-featured-showcase";
+import Service2DArtWorkflow from "@/components/service-2d-art-workflow";
 import ServicePageTemplate from "@/components/service-page-template";
+import SiteFooter from "@/components/site-footer";
 
 export default function Service2DArtPage() {
   return (
@@ -6,7 +11,16 @@ export default function Service2DArtPage() {
       eyebrow=""
       title="2D Art"
       subtitle="Stylized visuals built for readability, consistency, and game-ready production."
-      intro="Our 2D art pipeline focuses on strong shape language, clean value structure, and practical handoff for implementation teams."
+      showDeliverRelated={false}
+      appendSections={
+        <>
+          <Service2DArtWorkflow />
+          <Service2DArtFeaturedShowcase />
+          <Service2DArtFaq />
+          <ContactShowcaseSection sectionStep="05" />
+          <SiteFooter />
+        </>
+      }
       hero={{
         image: "/images/summoners.png",
         titleTop: "2D GAME ART",
@@ -18,6 +32,7 @@ export default function Service2DArtPage() {
       }}
       capabilities={{
         eyebrow: "What we do",
+        sectionMarker: { step: "01", label: "What we do" },
         titlePrefix: "OUR ",
         titleHighlight: "2D ART",
         titleSuffix: " SERVICES",
@@ -57,12 +72,6 @@ export default function Service2DArtPage() {
           },
         ],
       }}
-      bullets={[
-        "Character concepts and final render packs",
-        "Environment key art and modular scene paint-overs",
-        "UI-support illustrations and icon families",
-        "Prop sheets and in-game object variations",
-      ]}
     />
   );
 }

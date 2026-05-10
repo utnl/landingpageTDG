@@ -9,7 +9,6 @@ import { useQuoteStyleListener } from "./hero-layout-state";
 const navLinks = [
   {
     label: "SERVICES",
-    href: "/services",
     children: [
       {
         label: "2D Art",
@@ -35,7 +34,7 @@ const navLinks = [
   { label: "ABOUT", href: "/about" },
   { label: "BLOG", href: "/blog" },
   { label: "CAREERS", href: "/careers" },
-];
+] as const;
 
 function ServiceIcon({ type }: { type: string }) {
   const iconSrc =
@@ -131,31 +130,38 @@ export default function SiteHeader() {
           : "bg-transparent"
       }`}
     >
-      <div className="py-3">
+      <div className="py-2.5 md:py-3">
         <div
-          className="mx-auto flex items-center justify-between h-[70px]"
+          className="mx-auto flex h-[76px] items-center justify-between md:h-[80px]"
           style={{ width: "var(--layout-width, 75%)" }}
         >
-          <Link href="/" className="shrink-0">
+          <Link
+            href="/"
+            className="flex h-full shrink-0 items-center"
+            aria-label="TD Games home"
+          >
             <Image
               src="/video/logo/logo_td2.png"
-              alt="TD Games"
-              width={187}
-              height={55}
-              className="object-contain"
+              alt=""
+              width={260}
+              height={76}
+              className="h-[46px] w-auto object-contain object-left md:h-[54px] lg:h-[58px]"
+              priority
             />
           </Link>
 
-          <nav className="hidden md:flex items-center">
+          <nav className="hidden md:flex h-full items-center">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href || link.children?.some((child) => pathname === child.href);
+              const isActive =
+                ("href" in link && pathname === link.href) ||
+                ("children" in link && link.children.some((child) => pathname === child.href));
 
-              if (link.children) {
+              if ("children" in link) {
                 return (
-                  <div key={link.href} className="relative group">
-                    <Link
-                      href={link.href}
-                      className={`nav-link services-trigger inline-flex items-center transition-all duration-300 ${isActive ? "active-link" : "text-white"}`}
+                  <div key={link.label} className="relative group">
+                    <button
+                      type="button"
+                      className={`nav-link services-trigger inline-flex cursor-default items-center transition-all duration-300 ${isActive ? "active-link" : "text-white"}`}
                       style={{
                         fontFamily: "var(--font-nunito-sans), sans-serif",
                         fontSize: "17px",
@@ -166,6 +172,7 @@ export default function SiteHeader() {
                         margin: "0 5px",
                         lineHeight: 1,
                       }}
+                      aria-haspopup="menu"
                     >
                       {link.label}
                       <svg
@@ -180,7 +187,7 @@ export default function SiteHeader() {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </Link>
+                    </button>
 
                     <div className="pointer-events-none invisible absolute left-1/2 top-full z-50 w-[360px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
                       <div className="relative rounded-2xl border border-white/20 bg-[linear-gradient(165deg,rgba(8,8,12,0.96)_0%,rgba(15,12,24,0.94)_52%,rgba(17,12,31,0.9)_100%)] p-3.5 shadow-[0_18px_44px_rgba(0,0,0,0.62)] backdrop-blur-md">
@@ -251,7 +258,7 @@ export default function SiteHeader() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex h-full items-center gap-2">
             <QuoteButton style={quoteStyle} scrolled={scrolled} />
 
             <button
@@ -270,11 +277,13 @@ export default function SiteHeader() {
       {menuOpen && (
         <div className="mx-5 mt-2 md:hidden rounded-2xl border border-white/12 bg-[#090a0f]/96 backdrop-blur-xl px-5 py-5 flex flex-col gap-2 shadow-[0_18px_36px_rgba(0,0,0,0.5)]">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href || link.children?.some((child) => pathname === child.href);
+            const isActive =
+              ("href" in link && pathname === link.href) ||
+              ("children" in link && link.children.some((child) => pathname === child.href));
 
-            if (link.children) {
+            if ("children" in link) {
               return (
-                <div key={link.href} className="rounded-lg border border-white/10">
+                <div key={link.label} className="rounded-lg border border-white/10">
                   <button
                     type="button"
                     onClick={() => setMobileServicesOpen((prev) => !prev)}
