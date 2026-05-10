@@ -11,6 +11,10 @@ import {
   useState,
 } from "react";
 import SiteHeader from "@/components/site-header";
+import SiteFooter from "@/components/site-footer";
+import PortfolioGalleryGrid from "@/components/portfolio-gallery-grid";
+import PortfolioFaq from "@/components/portfolio-faq";
+import ContactShowcaseSection from "@/components/contact-showcase-section";
 
 const changaOne = Changa_One({ weight: "400", subsets: ["latin"] });
 const nunitoSans = Nunito_Sans({
@@ -904,8 +908,10 @@ export default function PortfolioPage() {
     <>
       <SiteHeader />
       <main
-        className={`relative min-h-screen overflow-hidden bg-black ${nunitoSans.className}`}
+        className={`relative min-h-screen bg-black ${nunitoSans.className}`}
       >
+        {/* Chỉ vùng hero: nền hover card không được absolute theo cả <main> (sẽ kéo dài xuống FAQ/Contact). */}
+        <div className="relative isolate overflow-hidden">
         {/* Global background — hover bất kỳ card: ảnh card làm nền + bỏ phủ + scale nhẹ */}
         <div className="pointer-events-none absolute inset-0 z-0">
           {bgImage && !/bgright\.png/i.test(bgImage) ? (
@@ -1589,7 +1595,7 @@ export default function PortfolioPage() {
 
               <div className="mb-[15px] mt-[32px]">
                 <Link
-                  href="#open-form"
+                  href="#contact"
                   className="inline-block rounded-xl border-2 px-[32px] py-[16px] text-[18px] font-bold uppercase tracking-wider text-black transition-colors duration-300 hover:bg-transparent hover:text-white"
                   style={{
                     backgroundColor: "var(--hero-btn-bg, #f59e0b)",
@@ -1996,6 +2002,13 @@ export default function PortfolioPage() {
             </div>
           </div>
         </section>
+        </div>
+
+        <PortfolioGalleryGrid />
+
+        <PortfolioFaq />
+        <ContactShowcaseSection sectionStep="// 04" embedded />
+        <SiteFooter />
       </main>
     </>
   );
