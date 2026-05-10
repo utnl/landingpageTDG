@@ -22,7 +22,7 @@ export default function Service2DAnimationPage() {
         </>
       }
       hero={{
-        image: "/images/origins-thumbnail.png",
+        image: "/images/Environment_Art-1024x683.jpg",
         titleTop: "2D GAME",
         titleMain: "ANIMATION",
         subheading: "2D Animation outsource",

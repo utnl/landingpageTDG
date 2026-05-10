@@ -22,7 +22,7 @@ export default function Service2DVfxPage() {
         </>
       }
       hero={{
-        image: "/images/9ab9a213-58d4-40c7-aacc-c6ad9f826d0f.png",
+        image: "/images/f8e2e81a-e72c-431b-b4ec-5ab7af73ea12.png",
         titleTop: "2D GAME",
         titleMain: "VFX",
         subheading: "2D VFX outsource",
