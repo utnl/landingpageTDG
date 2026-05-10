@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Orbitron, Rajdhani, Barlow_Condensed, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import ClickSpark from "@/components/ClickSpark";
+import HashScrollOnNav from "@/components/hash-scroll-on-nav";
 import { HeroRootStyles } from "@/components/hero-layout-state";
 
 const geist = Geist({
@@ -39,6 +40,13 @@ export const metadata: Metadata = {
     "TD Games is a Vietnam-based outsourcing studio specializing in 2D Art, Animation, and VFX for mobile games.",
 };
 
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,6 +56,7 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable} ${rajdhani.variable} ${orbitron.variable} ${barlowCondensed.variable} ${nunitoSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-black text-white">
         <HeroRootStyles />
+        <HashScrollOnNav />
         <ClickSpark />
         {children}
       </body>

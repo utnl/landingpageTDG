@@ -38,9 +38,28 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-/* Smooth scroll */
+/*
+ * Cuộn mượt + bù fixed header khi bấm anchor / hash (SERVICES → FAQ, #contact, …).
+ * prefers-reduced-motion: tắt smooth scroll theo khuyến nghị a11y.
+ */
 html {
-  scroll-behavior: smooth;
+  scroll-padding-top: 5.75rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee {
+    animation: none !important;
+  }
 }
 
 /* Marquee animation */

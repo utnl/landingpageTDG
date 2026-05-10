@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Changa_One, Nunito_Sans } from "next/font/google";
 import {
@@ -11,10 +12,18 @@ import {
   useState,
 } from "react";
 import SiteHeader from "@/components/site-header";
-import SiteFooter from "@/components/site-footer";
-import PortfolioGalleryGrid from "@/components/portfolio-gallery-grid";
-import PortfolioFaq from "@/components/portfolio-faq";
-import ContactShowcaseSection from "@/components/contact-showcase-section";
+
+const PortfolioLowerSections = dynamic(
+  () => import("@/components/portfolio-lower-sections"),
+  {
+    loading: () => (
+      <div
+        className="min-h-[50vh] border-t border-white/10 bg-[#0a0a0a]"
+        aria-hidden
+      />
+    ),
+  },
+);
 
 const changaOne = Changa_One({ weight: "400", subsets: ["latin"] });
 const nunitoSans = Nunito_Sans({
@@ -871,6 +880,22 @@ export default function PortfolioPage() {
   useEffect(() => {
     fetchAvailableImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /** Prefetch chunk below-fold khi main thread rảnh (song song với dynamic mount). */
+  useEffect(() => {
+    const w = typeof window !== "undefined" ? window : undefined;
+    if (!w) return;
+    const load = () => {
+      void import("@/components/portfolio-lower-sections");
+    };
+    const ric = w.requestIdleCallback;
+    if (typeof ric === "function") {
+      const id = ric.call(w, load, { timeout: 2500 });
+      return () => w.cancelIdleCallback(id);
+    }
+    const t = w.setTimeout(load, 200);
+    return () => w.clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -2004,11 +2029,7 @@ export default function PortfolioPage() {
         </section>
         </div>
 
-        <PortfolioGalleryGrid />
-
-        <PortfolioFaq />
-        <ContactShowcaseSection sectionStep="// 04" embedded />
-        <SiteFooter />
+        <PortfolioLowerSections />
       </main>
     </>
   );

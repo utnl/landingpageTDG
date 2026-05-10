@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 
 interface Spark {
   x: number;
@@ -31,6 +31,16 @@ export default function ClickSpark({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sparksRef = useRef<Spark[]>([]);
   const rafRef = useRef<number>(0);
+  /** null = chưa đọc prefers-reduced-motion (tránh bật canvas một nhịp cho user giảm chuyển động). */
+  const [effectsOn, setEffectsOn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setEffectsOn(!mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -103,6 +113,8 @@ export default function ClickSpark({
   );
 
   useEffect(() => {
+    if (effectsOn !== true) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -119,7 +131,9 @@ export default function ClickSpark({
       window.removeEventListener("click", handleClick);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [handleClick]);
+  }, [handleClick, effectsOn]);
+
+  if (effectsOn !== true) return null;
 
   return (
     <canvas
