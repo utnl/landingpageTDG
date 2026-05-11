@@ -33,7 +33,7 @@ const DEFAULT_ITEMS: PortfolioGalleryItem[] = [
     title: "Summoners Era",
     tag: "Key art pack",
     image: "/images/3067c837-e030-403f-b7c5-0c7246bfe15f.png",
-    href: "#portfolio-gallery",
+    href: "/portfolio/summoner-era",
   },
   {
     id: "p4",

@@ -1816,7 +1816,14 @@ export default function PortfolioPage() {
                                     originY: card.y,
                                   });
                                 }}
-                              >
+                                >
+                                {card.id === "summoners-era" && !ENABLE_EDITOR ? (
+                                  <Link
+                                    href="/portfolio/summoner-era"
+                                    aria-label="Open Summoner Era project detail"
+                                    className="absolute inset-0 z-20 block"
+                                  />
+                                ) : null}
                                 <div
                                   className={`relative h-full w-full origin-center ${
                                     !ENABLE_PORTFOLIO_HOVER_FX
