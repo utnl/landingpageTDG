@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 
 /**
@@ -9,6 +9,25 @@ import { usePathname } from "next/navigation";
  */
 export default function HashScrollOnNav() {
   const pathname = usePathname();
+
+  useLayoutEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash) return;
+
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+
+    const restoreId = window.requestAnimationFrame(() => {
+      root.style.scrollBehavior = previousScrollBehavior;
+    });
+
+    return () => {
+      window.cancelAnimationFrame(restoreId);
+      root.style.scrollBehavior = previousScrollBehavior;
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, "");

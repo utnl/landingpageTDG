@@ -937,698 +937,724 @@ export default function PortfolioPage() {
       >
         {/* Chỉ vùng hero: nền hover card không được absolute theo cả <main> (sẽ kéo dài xuống FAQ/Contact). */}
         <div className="relative isolate overflow-hidden">
-        {/* Global background — hover bất kỳ card: ảnh card làm nền + bỏ phủ + scale nhẹ */}
-        <div className="pointer-events-none absolute inset-0 z-0">
-          {bgImage && !/bgright\.png/i.test(bgImage) ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={bgImage}
-              alt=""
-              className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
-                showHoveredCardAsFullBg
-                  ? "scale-100 opacity-0"
-                  : "scale-100 opacity-100"
+          {/* Global background — hover bất kỳ card: ảnh card làm nền + bỏ phủ + scale nhẹ */}
+          <div className="pointer-events-none absolute inset-0 z-0">
+            {bgImage && !/bgright\.png/i.test(bgImage) ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={bgImage}
+                alt=""
+                className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
+                  showHoveredCardAsFullBg
+                    ? "scale-100 opacity-0"
+                    : "scale-100 opacity-100"
+                }`}
+              />
+            ) : null}
+            {hoveredHeroCard ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={hoveredHeroCard.image}
+                alt=""
+                className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
+                  showHoveredCardAsFullBg
+                    ? "scale-110 opacity-100"
+                    : "scale-100 opacity-0"
+                }`}
+              />
+            ) : null}
+            <div
+              className={`absolute inset-0 bg-black/65 transition-opacity duration-500 ease-out ${
+                showHoveredCardAsFullBg ? "opacity-0" : "opacity-100"
               }`}
             />
-          ) : null}
-          {hoveredHeroCard ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={hoveredHeroCard.image}
-              alt=""
-              className={`absolute inset-0 h-full w-full origin-center object-cover transition-[opacity,transform] duration-500 ease-out ${
-                showHoveredCardAsFullBg
-                  ? "scale-110 opacity-100"
-                  : "scale-100 opacity-0"
-              }`}
-            />
-          ) : null}
-          <div
-            className={`absolute inset-0 bg-black/65 transition-opacity duration-500 ease-out ${
-              showHoveredCardAsFullBg ? "opacity-0" : "opacity-100"
-            }`}
-          />
-        </div>
+          </div>
 
-        {false && settingsOpen && (
-          <div className="hidden lg:block fixed left-4 top-[11rem] z-[100] max-h-[min(70vh,calc(100dvh-12rem))] w-[min(380px,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/30 bg-black/75 p-4 text-white shadow-xl backdrop-blur-sm">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="text-sm font-semibold uppercase tracking-[0.09em] text-amber-300">
-                Card Controller
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setLockLayout(!lockLayout)}
-                  className={`rounded-md border px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] ${
-                    lockLayout
-                      ? "border-red-400/70 bg-red-400/20 text-red-300"
-                      : "border-emerald-400/70 bg-emerald-400/20 text-emerald-300"
-                  }`}
-                  title={lockLayout ? "Mở khóa để kéo góc" : "Khóa layout"}
-                >
-                  {lockLayout ? "🔒 Khóa" : "🔓 Mở"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setBoardCanvas(computeBoardDesignSize(showcaseCards))
-                  }
-                  className="rounded-md border border-sky-400/60 bg-sky-500/25 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-sky-200"
-                  title="Tính lại khung canvas theo vị trí cards hiện tại (sau khi kéo xa)"
-                >
-                  Refit canvas
-                </button>
-                <button
-                  type="button"
-                  onClick={handleExportCoordinates}
-                  className="rounded-md border border-amber-300/70 bg-amber-400 px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] text-black"
-                >
-                  Xuất JSON
-                </button>
-              </div>
-            </div>
-            <p className="mb-3 text-[11px] text-white/70">
-              {lockLayout
-                ? "Layout đang khóa. Bật 🔓 Mở để kéo các góc chỉnh hình dạng (4 hoặc 6 góc)."
-                : "Layout đang mở. Kéo các chấm trắng ở góc để chỉnh hình. Card 5 = Hexagon 6 góc. Bật 🔒 Khóa để giữ cố định."}
-            </p>
-
-            <div className="mb-3 flex flex-wrap gap-2">
-              {showcaseCards.map((card, index) => (
-                <button
-                  key={card.id}
-                  type="button"
-                  onClick={() => setSelectedCardIndex(index)}
-                  className={`rounded-md border px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${
-                    selectedCardIndex === index
-                      ? "border-amber-300 bg-amber-300/20 text-amber-200"
-                      : "border-white/25 text-white/75"
-                  }`}
-                >
-                  Card {index + 1}
-                </button>
-              ))}
-            </div>
-
-            {selectedCard && (
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <label className="flex flex-col gap-1">
-                  <span>Image</span>
-                  <input
-                    type="text"
-                    value={selectedCard.image}
-                    onChange={(e) => updateSelectedImage(e.target.value)}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <div className="col-span-2 flex flex-col gap-1">
-                  <div className="flex items-center justify-between gap-2">
-                    <span>Chọn ảnh (file browser → lấy tên file)</span>
-                    <button
-                      type="button"
-                      onClick={fetchAvailableImages}
-                      className="rounded border border-amber-300/60 bg-amber-400/15 px-2 py-0.5 text-[10px] font-semibold text-amber-200 hover:bg-amber-400/25"
-                    >
-                      Reload images dir
-                    </button>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePickCardImage}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-[11px]"
-                  />
-                  <span className="text-[10px] text-white/55">
-                    File phải nằm trong{" "}
-                    <span className="font-mono">public/images</span>. Mình chỉ
-                    lấy <span className="font-mono">file.name</span> và gán
-                    thành <span className="font-mono">/images/tenfile</span>.
-                  </span>
-                </div>
-                {pickHint && (
-                  <div className="col-span-2 rounded border border-red-400/30 bg-red-950/20 px-2 py-1 text-[10px] text-red-200">
-                    {pickHint}
-                  </div>
-                )}
-                <label className="flex flex-col gap-1">
-                  <span>X</span>
-                  <input
-                    type="number"
-                    value={selectedCard.x}
-                    onChange={(e) =>
-                      updateSelectedCard("x", Number(e.target.value))
+          {false && settingsOpen && (
+            <div className="hidden lg:block fixed left-4 top-[11rem] z-[100] max-h-[min(70vh,calc(100dvh-12rem))] w-[min(380px,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/30 bg-black/75 p-4 text-white shadow-xl backdrop-blur-sm">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-sm font-semibold uppercase tracking-[0.09em] text-amber-300">
+                  Card Controller
+                </p>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setLockLayout(!lockLayout)}
+                    className={`rounded-md border px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] ${
+                      lockLayout
+                        ? "border-red-400/70 bg-red-400/20 text-red-300"
+                        : "border-emerald-400/70 bg-emerald-400/20 text-emerald-300"
+                    }`}
+                    title={lockLayout ? "Mở khóa để kéo góc" : "Khóa layout"}
+                  >
+                    {lockLayout ? "🔒 Khóa" : "🔓 Mở"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setBoardCanvas(computeBoardDesignSize(showcaseCards))
                     }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Y</span>
-                  <input
-                    type="number"
-                    value={selectedCard.y}
-                    onChange={(e) =>
-                      updateSelectedCard("y", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>W</span>
-                  <input
-                    type="number"
-                    value={selectedCard.w}
-                    onChange={(e) =>
-                      updateSelectedCard("w", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>H</span>
-                  <input
-                    type="number"
-                    value={selectedCard.h}
-                    onChange={(e) =>
-                      updateSelectedCard("h", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>TL x,y</span>
-                  <input
-                    type="text"
-                    value={`${selectedCard.tlx}, ${selectedCard.tly}`}
-                    readOnly
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>TR x,y</span>
-                  <input
-                    type="text"
-                    value={`${selectedCard.trx}, ${selectedCard.try}`}
-                    readOnly
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Rotate</span>
-                  <input
-                    type="number"
-                    value={selectedCard.rotate}
-                    onChange={(e) =>
-                      updateSelectedCard("rotate", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Z Index</span>
-                  <input
-                    type="number"
-                    value={
-                      selectedCard.zIndex ?? (selectedCardIndex === 4 ? 1 : 10)
-                    }
-                    onChange={(e) =>
-                      updateSelectedCard("zIndex", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Text X</span>
-                  <input
-                    type="number"
-                    value={selectedCard.textOffsetX ?? 0}
-                    onChange={(e) =>
-                      updateSelectedCard("textOffsetX", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Text Y</span>
-                  <input
-                    type="number"
-                    value={selectedCard.textOffsetY ?? 0}
-                    onChange={(e) =>
-                      updateSelectedCard("textOffsetY", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Image X</span>
-                  <input
-                    type="number"
-                    value={selectedCard.imageOffsetX}
-                    onChange={(e) =>
-                      updateSelectedCard("imageOffsetX", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Image Y</span>
-                  <input
-                    type="number"
-                    value={selectedCard.imageOffsetY}
-                    onChange={(e) =>
-                      updateSelectedCard("imageOffsetY", Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Image Scale</span>
-                  <input
-                    type="number"
-                    step="0.05"
-                    min="0.2"
-                    max="5"
-                    value={selectedCard.imageScale}
-                    onChange={(e) =>
-                      updateSelectedCard(
-                        "imageScale",
-                        Math.max(0.2, Math.min(5, Number(e.target.value))),
-                      )
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>BR x,y</span>
-                  <input
-                    type="text"
-                    value={`${selectedCard.brx}, ${selectedCard.bry}`}
-                    readOnly
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
-                  />
-                </label>
-                <label className="col-span-2 flex flex-col gap-1">
-                  <span>BL x,y</span>
-                  <input
-                    type="text"
-                    value={`${selectedCard.blx}, ${selectedCard.bly}`}
-                    readOnly
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
-                  />
-                </label>
-                {selectedCard.tmx !== undefined && (
-                  <>
-                    <label className="flex flex-col gap-1">
-                      <span>TM x</span>
-                      <input
-                        type="number"
-                        value={selectedCard.tmx}
-                        onChange={(e) =>
-                          setShowcaseCards((prev) =>
-                            prev.map((card, idx) =>
-                              idx === selectedCardIndex
-                                ? { ...card, tmx: Number(e.target.value) }
-                                : card,
-                            ),
-                          )
-                        }
-                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                      />
-                    </label>
-                    <label className="flex flex-col gap-1">
-                      <span>TM y</span>
-                      <input
-                        type="number"
-                        value={selectedCard.tmy}
-                        onChange={(e) =>
-                          setShowcaseCards((prev) =>
-                            prev.map((card, idx) =>
-                              idx === selectedCardIndex
-                                ? { ...card, tmy: Number(e.target.value) }
-                                : card,
-                            ),
-                          )
-                        }
-                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                      />
-                    </label>
-                  </>
-                )}
-                {selectedCard.bmx !== undefined && (
-                  <>
-                    <label className="flex flex-col gap-1">
-                      <span>BM x</span>
-                      <input
-                        type="number"
-                        value={selectedCard.bmx}
-                        onChange={(e) =>
-                          setShowcaseCards((prev) =>
-                            prev.map((card, idx) =>
-                              idx === selectedCardIndex
-                                ? { ...card, bmx: Number(e.target.value) }
-                                : card,
-                            ),
-                          )
-                        }
-                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                      />
-                    </label>
-                    <label className="flex flex-col gap-1">
-                      <span>BM y</span>
-                      <input
-                        type="number"
-                        value={selectedCard.bmy}
-                        onChange={(e) =>
-                          setShowcaseCards((prev) =>
-                            prev.map((card, idx) =>
-                              idx === selectedCardIndex
-                                ? { ...card, bmy: Number(e.target.value) }
-                                : card,
-                            ),
-                          )
-                        }
-                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                      />
-                    </label>
-                  </>
-                )}
-                <label className="col-span-2 flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedCard.showText !== false}
-                    onChange={(e) =>
-                      setShowcaseCards((prev) =>
-                        prev.map((card, index) =>
-                          index === selectedCardIndex
-                            ? { ...card, showText: e.target.checked }
-                            : card,
-                        ),
-                      )
-                    }
-                    className="h-4 w-4 rounded border-white/20"
-                  />
-                  <span className="text-xs">Hiển thị text</span>
-                </label>
-              </div>
-            )}
-
-            <div className="mt-3 rounded-md border border-white/15 bg-black/55 p-2">
-              <p className="mb-1 text-[10px] uppercase tracking-[0.09em] text-white/70">
-                JSON export {copied ? "(copied)" : ""}
-              </p>
-              <pre className="max-h-36 overflow-auto text-[10px] leading-relaxed text-white/80">
-                {exportJson}
-              </pre>
-            </div>
-
-            {/* Background Image Settings */}
-            <div className="mt-3 rounded-md border border-amber-400/30 bg-amber-950/20 p-3">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.09em] text-amber-300">
-                Background Image
-              </p>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <label className="flex flex-col gap-1">
-                  <span>Image URL</span>
-                  <input
-                    type="text"
-                    value={bgImage}
-                    onChange={(e) => setBgImage(e.target.value)}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <div className="flex flex-col gap-1">
-                  <span>Pick BG (file browser)</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePickBgImage}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-[11px]"
-                  />
+                    className="rounded-md border border-sky-400/60 bg-sky-500/25 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-sky-200"
+                    title="Tính lại khung canvas theo vị trí cards hiện tại (sau khi kéo xa)"
+                  >
+                    Refit canvas
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleExportCoordinates}
+                    className="rounded-md border border-amber-300/70 bg-amber-400 px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] text-black"
+                  >
+                    Xuất JSON
+                  </button>
                 </div>
               </div>
-            </div>
-
-            {/* BG Right Layout (bgright.png) */}
-            <div className="mt-3 rounded-md border border-white/15 bg-black/55 p-3">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.09em] text-white/80">
-                BG Right Layout (bgright.png)
+              <p className="mb-3 text-[11px] text-white/70">
+                {lockLayout
+                  ? "Layout đang khóa. Bật 🔓 Mở để kéo các góc chỉnh hình dạng (4 hoặc 6 góc)."
+                  : "Layout đang mở. Kéo các chấm trắng ở góc để chỉnh hình. Card 5 = Hexagon 6 góc. Bật 🔒 Khóa để giữ cố định."}
               </p>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <label className="flex flex-col gap-1">
-                  <span>Width (vw)</span>
-                  <input
-                    type="number"
-                    min={20}
-                    max={100}
-                    value={bgRightWidthVw}
-                    onChange={(e) => setBgRightWidthVw(Number(e.target.value))}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Height (vh)</span>
-                  <input
-                    type="number"
-                    min={20}
-                    max={100}
-                    value={bgRightHeightVh}
-                    onChange={(e) => setBgRightHeightVh(Number(e.target.value))}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Max height (px)</span>
-                  <input
-                    type="number"
-                    min={200}
-                    max={2000}
-                    value={bgRightMaxHeightPx}
-                    onChange={(e) =>
-                      setBgRightMaxHeightPx(Number(e.target.value))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Offset X (px)</span>
-                  <input
-                    type="number"
-                    value={bgRightOffsetX}
-                    onChange={(e) => setBgRightOffsetX(Number(e.target.value))}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Offset Y (px)</span>
-                  <input
-                    type="number"
-                    value={bgRightOffsetY}
-                    onChange={(e) => setBgRightOffsetY(Number(e.target.value))}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="col-span-2 flex flex-col gap-1">
-                  <span>Rotate nền (deg)</span>
-                  <input
-                    type="number"
-                    step="0.5"
-                    value={bgRightRotate}
-                    onChange={(e) => setBgRightRotate(Number(e.target.value))}
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="col-span-2 flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={bgRightLockAspect}
-                    onChange={(e) => setBgRightLockAspect(e.target.checked)}
-                    className="h-4 w-4 rounded border-white/20"
-                  />
-                  <span>Giữ tỉ lệ W:H</span>
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Tỉ lệ W (px)</span>
-                  <input
-                    type="number"
-                    min={1}
-                    value={bgRightAspectW}
-                    onChange={(e) =>
-                      setBgRightAspectW(Math.max(1, Number(e.target.value)))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Tỉ lệ H (px)</span>
-                  <input
-                    type="number"
-                    min={1}
-                    value={bgRightAspectH}
-                    onChange={(e) =>
-                      setBgRightAspectH(Math.max(1, Number(e.target.value)))
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
-                <label className="col-span-2 flex flex-col gap-1">
-                  <span>Scale ảnh bgright</span>
-                  <input
-                    type="number"
-                    step="0.05"
-                    min="0.25"
-                    max="4"
-                    value={bgRightImageScale}
-                    onChange={(e) =>
-                      setBgRightImageScale(
-                        Math.max(0.25, Math.min(4, Number(e.target.value))),
-                      )
-                    }
-                    className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
-                  />
-                </label>
+
+              <div className="mb-3 flex flex-wrap gap-2">
+                {showcaseCards.map((card, index) => (
+                  <button
+                    key={card.id}
+                    type="button"
+                    onClick={() => setSelectedCardIndex(index)}
+                    className={`rounded-md border px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${
+                      selectedCardIndex === index
+                        ? "border-amber-300 bg-amber-300/20 text-amber-200"
+                        : "border-white/25 text-white/75"
+                    }`}
+                  >
+                    Card {index + 1}
+                  </button>
+                ))}
               </div>
-            </div>
 
-            {/* Init JSON Export */}
-            <div className="mt-3 rounded-md border border-emerald-400/30 bg-emerald-950/20 p-2">
-              <p className="mb-1 text-[9px] leading-snug text-white/55">
-                Có{" "}
-                <strong className="text-emerald-200/90">
-                  bgRight.imageScale
-                </strong>{" "}
-                và layout nền.{" "}
-                <strong className="text-emerald-200/90">boardFitScale</strong>{" "}
-                theo khung trình duyệt — không export, F5 vẫn đúng nếu lưu Init.
-              </p>
-              <div className="mb-1 flex flex-wrap items-center justify-end gap-1">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      await navigator.clipboard.writeText(initJson);
+              {selectedCard && (
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <label className="flex flex-col gap-1">
+                    <span>Image</span>
+                    <input
+                      type="text"
+                      value={selectedCard.image}
+                      onChange={(e) => updateSelectedImage(e.target.value)}
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <div className="col-span-2 flex flex-col gap-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span>Chọn ảnh (file browser → lấy tên file)</span>
+                      <button
+                        type="button"
+                        onClick={fetchAvailableImages}
+                        className="rounded border border-amber-300/60 bg-amber-400/15 px-2 py-0.5 text-[10px] font-semibold text-amber-200 hover:bg-amber-400/25"
+                      >
+                        Reload images dir
+                      </button>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePickCardImage}
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-[11px]"
+                    />
+                    <span className="text-[10px] text-white/55">
+                      File phải nằm trong{" "}
+                      <span className="font-mono">public/images</span>. Mình chỉ
+                      lấy <span className="font-mono">file.name</span> và gán
+                      thành <span className="font-mono">/images/tenfile</span>.
+                    </span>
+                  </div>
+                  {pickHint && (
+                    <div className="col-span-2 rounded border border-red-400/30 bg-red-950/20 px-2 py-1 text-[10px] text-red-200">
+                      {pickHint}
+                    </div>
+                  )}
+                  <label className="flex flex-col gap-1">
+                    <span>X</span>
+                    <input
+                      type="number"
+                      value={selectedCard.x}
+                      onChange={(e) =>
+                        updateSelectedCard("x", Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Y</span>
+                    <input
+                      type="number"
+                      value={selectedCard.y}
+                      onChange={(e) =>
+                        updateSelectedCard("y", Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>W</span>
+                    <input
+                      type="number"
+                      value={selectedCard.w}
+                      onChange={(e) =>
+                        updateSelectedCard("w", Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>H</span>
+                    <input
+                      type="number"
+                      value={selectedCard.h}
+                      onChange={(e) =>
+                        updateSelectedCard("h", Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>TL x,y</span>
+                    <input
+                      type="text"
+                      value={`${selectedCard.tlx}, ${selectedCard.tly}`}
+                      readOnly
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>TR x,y</span>
+                    <input
+                      type="text"
+                      value={`${selectedCard.trx}, ${selectedCard.try}`}
+                      readOnly
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Rotate</span>
+                    <input
+                      type="number"
+                      value={selectedCard.rotate}
+                      onChange={(e) =>
+                        updateSelectedCard("rotate", Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Z Index</span>
+                    <input
+                      type="number"
+                      value={
+                        selectedCard.zIndex ??
+                        (selectedCardIndex === 4 ? 1 : 10)
+                      }
+                      onChange={(e) =>
+                        updateSelectedCard("zIndex", Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Text X</span>
+                    <input
+                      type="number"
+                      value={selectedCard.textOffsetX ?? 0}
+                      onChange={(e) =>
+                        updateSelectedCard(
+                          "textOffsetX",
+                          Number(e.target.value),
+                        )
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Text Y</span>
+                    <input
+                      type="number"
+                      value={selectedCard.textOffsetY ?? 0}
+                      onChange={(e) =>
+                        updateSelectedCard(
+                          "textOffsetY",
+                          Number(e.target.value),
+                        )
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Image X</span>
+                    <input
+                      type="number"
+                      value={selectedCard.imageOffsetX}
+                      onChange={(e) =>
+                        updateSelectedCard(
+                          "imageOffsetX",
+                          Number(e.target.value),
+                        )
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Image Y</span>
+                    <input
+                      type="number"
+                      value={selectedCard.imageOffsetY}
+                      onChange={(e) =>
+                        updateSelectedCard(
+                          "imageOffsetY",
+                          Number(e.target.value),
+                        )
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Image Scale</span>
+                    <input
+                      type="number"
+                      step="0.05"
+                      min="0.2"
+                      max="5"
+                      value={selectedCard.imageScale}
+                      onChange={(e) =>
+                        updateSelectedCard(
+                          "imageScale",
+                          Math.max(0.2, Math.min(5, Number(e.target.value))),
+                        )
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>BR x,y</span>
+                    <input
+                      type="text"
+                      value={`${selectedCard.brx}, ${selectedCard.bry}`}
+                      readOnly
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
+                    />
+                  </label>
+                  <label className="col-span-2 flex flex-col gap-1">
+                    <span>BL x,y</span>
+                    <input
+                      type="text"
+                      value={`${selectedCard.blx}, ${selectedCard.bly}`}
+                      readOnly
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-white/75"
+                    />
+                  </label>
+                  {selectedCard.tmx !== undefined && (
+                    <>
+                      <label className="flex flex-col gap-1">
+                        <span>TM x</span>
+                        <input
+                          type="number"
+                          value={selectedCard.tmx}
+                          onChange={(e) =>
+                            setShowcaseCards((prev) =>
+                              prev.map((card, idx) =>
+                                idx === selectedCardIndex
+                                  ? { ...card, tmx: Number(e.target.value) }
+                                  : card,
+                              ),
+                            )
+                          }
+                          className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1">
+                        <span>TM y</span>
+                        <input
+                          type="number"
+                          value={selectedCard.tmy}
+                          onChange={(e) =>
+                            setShowcaseCards((prev) =>
+                              prev.map((card, idx) =>
+                                idx === selectedCardIndex
+                                  ? { ...card, tmy: Number(e.target.value) }
+                                  : card,
+                              ),
+                            )
+                          }
+                          className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                        />
+                      </label>
+                    </>
+                  )}
+                  {selectedCard.bmx !== undefined && (
+                    <>
+                      <label className="flex flex-col gap-1">
+                        <span>BM x</span>
+                        <input
+                          type="number"
+                          value={selectedCard.bmx}
+                          onChange={(e) =>
+                            setShowcaseCards((prev) =>
+                              prev.map((card, idx) =>
+                                idx === selectedCardIndex
+                                  ? { ...card, bmx: Number(e.target.value) }
+                                  : card,
+                              ),
+                            )
+                          }
+                          className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1">
+                        <span>BM y</span>
+                        <input
+                          type="number"
+                          value={selectedCard.bmy}
+                          onChange={(e) =>
+                            setShowcaseCards((prev) =>
+                              prev.map((card, idx) =>
+                                idx === selectedCardIndex
+                                  ? { ...card, bmy: Number(e.target.value) }
+                                  : card,
+                              ),
+                            )
+                          }
+                          className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                        />
+                      </label>
+                    </>
+                  )}
+                  <label className="col-span-2 flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedCard.showText !== false}
+                      onChange={(e) =>
+                        setShowcaseCards((prev) =>
+                          prev.map((card, index) =>
+                            index === selectedCardIndex
+                              ? { ...card, showText: e.target.checked }
+                              : card,
+                          ),
+                        )
+                      }
+                      className="h-4 w-4 rounded border-white/20"
+                    />
+                    <span className="text-xs">Hiển thị text</span>
+                  </label>
+                </div>
+              )}
+
+              <div className="mt-3 rounded-md border border-white/15 bg-black/55 p-2">
+                <p className="mb-1 text-[10px] uppercase tracking-[0.09em] text-white/70">
+                  JSON export {copied ? "(copied)" : ""}
+                </p>
+                <pre className="max-h-36 overflow-auto text-[10px] leading-relaxed text-white/80">
+                  {exportJson}
+                </pre>
+              </div>
+
+              {/* Background Image Settings */}
+              <div className="mt-3 rounded-md border border-amber-400/30 bg-amber-950/20 p-3">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.09em] text-amber-300">
+                  Background Image
+                </p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <label className="flex flex-col gap-1">
+                    <span>Image URL</span>
+                    <input
+                      type="text"
+                      value={bgImage}
+                      onChange={(e) => setBgImage(e.target.value)}
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <div className="flex flex-col gap-1">
+                    <span>Pick BG (file browser)</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePickBgImage}
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-[11px]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* BG Right Layout (bgright.png) */}
+              <div className="mt-3 rounded-md border border-white/15 bg-black/55 p-3">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.09em] text-white/80">
+                  BG Right Layout (bgright.png)
+                </p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <label className="flex flex-col gap-1">
+                    <span>Width (vw)</span>
+                    <input
+                      type="number"
+                      min={20}
+                      max={100}
+                      value={bgRightWidthVw}
+                      onChange={(e) =>
+                        setBgRightWidthVw(Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Height (vh)</span>
+                    <input
+                      type="number"
+                      min={20}
+                      max={100}
+                      value={bgRightHeightVh}
+                      onChange={(e) =>
+                        setBgRightHeightVh(Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Max height (px)</span>
+                    <input
+                      type="number"
+                      min={200}
+                      max={2000}
+                      value={bgRightMaxHeightPx}
+                      onChange={(e) =>
+                        setBgRightMaxHeightPx(Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Offset X (px)</span>
+                    <input
+                      type="number"
+                      value={bgRightOffsetX}
+                      onChange={(e) =>
+                        setBgRightOffsetX(Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Offset Y (px)</span>
+                    <input
+                      type="number"
+                      value={bgRightOffsetY}
+                      onChange={(e) =>
+                        setBgRightOffsetY(Number(e.target.value))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="col-span-2 flex flex-col gap-1">
+                    <span>Rotate nền (deg)</span>
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={bgRightRotate}
+                      onChange={(e) => setBgRightRotate(Number(e.target.value))}
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="col-span-2 flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={bgRightLockAspect}
+                      onChange={(e) => setBgRightLockAspect(e.target.checked)}
+                      className="h-4 w-4 rounded border-white/20"
+                    />
+                    <span>Giữ tỉ lệ W:H</span>
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Tỉ lệ W (px)</span>
+                    <input
+                      type="number"
+                      min={1}
+                      value={bgRightAspectW}
+                      onChange={(e) =>
+                        setBgRightAspectW(Math.max(1, Number(e.target.value)))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Tỉ lệ H (px)</span>
+                    <input
+                      type="number"
+                      min={1}
+                      value={bgRightAspectH}
+                      onChange={(e) =>
+                        setBgRightAspectH(Math.max(1, Number(e.target.value)))
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                  <label className="col-span-2 flex flex-col gap-1">
+                    <span>Scale ảnh bgright</span>
+                    <input
+                      type="number"
+                      step="0.05"
+                      min="0.25"
+                      max="4"
+                      value={bgRightImageScale}
+                      onChange={(e) =>
+                        setBgRightImageScale(
+                          Math.max(0.25, Math.min(4, Number(e.target.value))),
+                        )
+                      }
+                      className="rounded-md border border-white/20 bg-white/5 px-2 py-1"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {/* Init JSON Export */}
+              <div className="mt-3 rounded-md border border-emerald-400/30 bg-emerald-950/20 p-2">
+                <p className="mb-1 text-[9px] leading-snug text-white/55">
+                  Có{" "}
+                  <strong className="text-emerald-200/90">
+                    bgRight.imageScale
+                  </strong>{" "}
+                  và layout nền.{" "}
+                  <strong className="text-emerald-200/90">boardFitScale</strong>{" "}
+                  theo khung trình duyệt — không export, F5 vẫn đúng nếu lưu
+                  Init.
+                </p>
+                <div className="mb-1 flex flex-wrap items-center justify-end gap-1">
+                  <button
+                    type="button"
+                    onClick={async () => {
                       try {
-                        localStorage.setItem(
-                          PORTFOLIO_INIT_STORAGE_KEY,
-                          initJson,
+                        await navigator.clipboard.writeText(initJson);
+                        try {
+                          localStorage.setItem(
+                            PORTFOLIO_INIT_STORAGE_KEY,
+                            initJson,
+                          );
+                        } catch {
+                          /* ignore */
+                        }
+                        alert(
+                          "Đã copy Init + lưu trình duyệt (F5 khôi phục cùng scale/offset).",
                         );
                       } catch {
-                        /* ignore */
+                        alert("Copy thất bại!");
                       }
-                      alert(
-                        "Đã copy Init + lưu trình duyệt (F5 khôi phục cùng scale/offset).",
-                      );
-                    } catch {
-                      alert("Copy thất bại!");
-                    }
-                  }}
-                  className="rounded border border-emerald-400/50 bg-emerald-500/20 px-2 py-0.5 text-[10px] text-emerald-300 hover:bg-emerald-500/30"
-                >
-                  Copy Init + lưu F5
-                </button>
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      const text = await navigator.clipboard.readText();
-                      const data = JSON.parse(text) as unknown;
-                      if (!data || typeof data !== "object") {
-                        alert("JSON không hợp lệ.");
-                        return;
-                      }
-                      runApplyInitPayload(data as Record<string, unknown>);
+                    }}
+                    className="rounded border border-emerald-400/50 bg-emerald-500/20 px-2 py-0.5 text-[10px] text-emerald-300 hover:bg-emerald-500/30"
+                  >
+                    Copy Init + lưu F5
+                  </button>
+                  <button
+                    type="button"
+                    onClick={async () => {
                       try {
-                        localStorage.setItem(PORTFOLIO_INIT_STORAGE_KEY, text);
+                        const text = await navigator.clipboard.readText();
+                        const data = JSON.parse(text) as unknown;
+                        if (!data || typeof data !== "object") {
+                          alert("JSON không hợp lệ.");
+                          return;
+                        }
+                        runApplyInitPayload(data as Record<string, unknown>);
+                        try {
+                          localStorage.setItem(
+                            PORTFOLIO_INIT_STORAGE_KEY,
+                            text,
+                          );
+                        } catch {
+                          /* ignore */
+                        }
+                        alert("Đã dán Init + lưu F5.");
                       } catch {
-                        /* ignore */
+                        alert("Clipboard / JSON lỗi.");
                       }
-                      alert("Đã dán Init + lưu F5.");
-                    } catch {
-                      alert("Clipboard / JSON lỗi.");
-                    }
-                  }}
-                  className="rounded border border-emerald-400/50 bg-white/10 px-2 py-0.5 text-[10px] text-white/90 hover:bg-white/15"
-                >
-                  Dán Init
-                </button>
+                    }}
+                    className="rounded border border-emerald-400/50 bg-white/10 px-2 py-0.5 text-[10px] text-white/90 hover:bg-white/15"
+                  >
+                    Dán Init
+                  </button>
+                </div>
+                <p className="text-[10px] uppercase tracking-[0.09em] text-emerald-300">
+                  Init JSON
+                </p>
+                <pre className="mt-1 max-h-32 overflow-auto text-[10px] leading-relaxed text-white/80">
+                  {initJson}
+                </pre>
               </div>
-              <p className="text-[10px] uppercase tracking-[0.09em] text-emerald-300">
-                Init JSON
-              </p>
-              <pre className="mt-1 max-h-32 overflow-auto text-[10px] leading-relaxed text-white/80">
-                {initJson}
-              </pre>
             </div>
-          </div>
-        )}
-        <section
-          className="relative z-10 mx-auto flex min-h-screen items-center"
-          style={{ width: "var(--layout-width, 75%)" }}
-        >
-          <div className="relative flex w-full items-center py-24 pt-28 sm:pt-32 lg:min-h-screen">
+          )}
+          <section className="relative z-10 min-h-screen">
             <div
-              className="relative z-20 max-w-[606px] tracking-[0.5px]"
-              style={{ transform: "translateY(var(--hero-text-y, 0px))" }}
+              className="relative mx-auto flex min-h-screen w-full items-center py-24 pt-28 sm:pt-32"
+              style={{ width: "var(--layout-width, 75%)" }}
             >
-              <div className="mb-[-10px] overflow-hidden">
-                <div
-                  className={`leading-[1] font-black uppercase text-white ${changaOne.className}`}
-                  style={{ fontSize: "var(--hero-title-size, 100px)" }}
-                >
-                  OUR{" "}
-                  <span
+              <div
+                className="relative z-20 max-w-[606px] tracking-[0.5px]"
+                style={{ transform: "translateY(var(--hero-text-y, 0px))" }}
+              >
+                <div className="mb-[-10px] overflow-hidden">
+                  <div
+                    className={`leading-[1] font-black uppercase text-white ${changaOne.className}`}
+                    style={{ fontSize: "var(--hero-title-size, 100px)" }}
+                  >
+                    OUR{" "}
+                    <span
+                      style={{
+                        color: "var(--hero-highlight-color, #f59e0b)",
+                      }}
+                    >
+                      PROJECTS
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center gap-4">
+                  <div
+                    className="h-0.5 w-12 shrink-0"
                     style={{
-                      color: "var(--hero-highlight-color, #f59e0b)",
+                      backgroundColor: "var(--hero-subtitle-color, #f59e0b)",
+                    }}
+                  />
+                  <h3
+                    className="font-bold uppercase tracking-[0.3em]"
+                    style={{
+                      fontSize: "var(--hero-subtitle-size, 16px)",
+                      color: "var(--hero-subtitle-color, #f59e0b)",
                     }}
                   >
-                    PROJECTS
-                  </span>
+                    Take a look at our game art projects!
+                  </h3>
                 </div>
-              </div>
 
-              <div className="mt-6 flex items-center gap-4">
-                <div
-                  className="h-0.5 w-12 shrink-0"
+                <p
+                  className="mb-[15px] mt-4 max-w-[547px] leading-normal"
                   style={{
-                    backgroundColor: "var(--hero-subtitle-color, #f59e0b)",
-                  }}
-                />
-                <h3
-                  className="font-bold uppercase tracking-[0.3em]"
-                  style={{
-                    fontSize: "var(--hero-subtitle-size, 16px)",
-                    color: "var(--hero-subtitle-color, #f59e0b)",
+                    fontSize: "var(--hero-desc-size, 18px)",
+                    color: "var(--hero-desc-color, #e5e7eb)",
                   }}
                 >
-                  Take a look at our game art projects!
-                </h3>
-              </div>
+                  TD Games&apos; portfolio. We specialize in creating modern 3D
+                  environments, captivating characters, and innovative concept
+                  art for next-gen games. For years of experience in the
+                  industry of game art design, managed to collect a solid game
+                  design portfolio of various artworks made in 2D or 3D and
+                  other directions.
+                </p>
 
-              <p
-                className="mb-[15px] mt-4 max-w-[547px] leading-normal"
-                style={{
-                  fontSize: "var(--hero-desc-size, 18px)",
-                  color: "var(--hero-desc-color, #e5e7eb)",
-                }}
-              >
-                TD Games&apos; portfolio. We specialize in creating
-                modern 3D environments, captivating characters, and innovative
-                concept art for next-gen games. For years of experience in the
-                industry of game art design, managed to collect a solid game
-                design portfolio of various artworks made in 2D or 3D and other
-                directions.
-              </p>
-
-              <div className="mb-[15px] mt-[32px]">
-                <Link
-                  href="#contact"
-                  className="inline-block rounded-xl border-2 px-[32px] py-[16px] text-[18px] font-bold uppercase tracking-wider text-black transition-colors duration-300 hover:bg-transparent hover:text-white"
-                  style={{
-                    backgroundColor: "var(--hero-btn-bg, #f59e0b)",
-                    borderColor: "var(--hero-btn-bg, #f59e0b)",
-                  }}
-                >
-                  Get in Contact
-                </Link>
+                <div className="mb-[15px] mt-[32px]">
+                  <Link
+                    href="#contact"
+                    className="inline-block rounded-xl border-2 px-[32px] py-[16px] text-[18px] font-bold uppercase tracking-wider text-black transition-colors duration-300 hover:bg-transparent hover:text-white"
+                    style={{
+                      backgroundColor: "var(--hero-btn-bg, #f59e0b)",
+                      borderColor: "var(--hero-btn-bg, #f59e0b)",
+                    }}
+                  >
+                    Get in Contact
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -1636,6 +1662,8 @@ export default function PortfolioPage() {
               ref={bgrightSlotRef}
               className="absolute right-0 top-0 z-0 max-w-none"
               style={{
+                right:
+                  "clamp(48px, calc((100vw - var(--layout-width, 75%)) / 2 - 96px), 180px)",
                 width: `${bgRightWidthVw}vw`,
                 ...(bgRightLockAspect
                   ? {
@@ -2025,8 +2053,7 @@ export default function PortfolioPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
         </div>
 
         <PortfolioLowerSections />
