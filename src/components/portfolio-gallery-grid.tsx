@@ -46,7 +46,7 @@ const DEFAULT_ITEMS: PortfolioGalleryItem[] = [
     id: "p5",
     title: "Hero key visual",
     tag: "Marketing",
-    image: "/images/xoa_nen_vip_pro.png",
+    image: "/images/IMG_4352.png",
     href: "#portfolio-gallery",
   },
   {
@@ -142,9 +142,7 @@ export default function PortfolioGalleryGrid({
           </p>
         </header>
 
-        <div
-          className="grid grid-cols-1 gap-3 sm:gap-4 lg:min-h-[200vh] lg:grid-cols-3 lg:grid-rows-[repeat(16,minmax(0,1fr))] lg:gap-3"
-        >
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:min-h-[200vh] lg:grid-cols-3 lg:grid-rows-[repeat(16,minmax(0,1fr))] lg:gap-3">
           {items.map((item, index) => {
             const n = String(index + 1).padStart(2, "0");
             const lg = BENTO_LG[index] ?? "";

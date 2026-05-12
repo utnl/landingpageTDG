@@ -255,8 +255,8 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     bly: 24,
     textOffsetX: 0,
     textOffsetY: 0,
-    imageOffsetX: -54,
-    imageOffsetY: 0,
+    imageOffsetX: -122,
+    imageOffsetY: 3,
     imageScale: 1.45,
     showText: true,
   },
@@ -264,7 +264,7 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     id: "hexagon-card",
     title: "",
     subtitle: "",
-    image: "/images/xoa_nen_vip_pro.png",
+    image: "/images/IMG_4352.png",
     align: "center",
     x: 335,
     y: 171,
@@ -288,11 +288,11 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
 ];
 
 const PORTFOLIO_BG_RIGHT_INITIAL: PortfolioBgRightInit = {
-  widthVw: 70,
+  widthVw: 66,
   heightVh: 86,
   maxHeightPx: 938,
   offsetX: 196,
-  offsetY: 89,
+  offsetY: 67,
   rotate: 0,
   lockAspect: true,
   aspectW: 1065,
@@ -476,6 +476,7 @@ export default function PortfolioPage() {
 
   const portfolioHydratedRef = useRef(false);
   useLayoutEffect(() => {
+    if (!ENABLE_EDITOR) return;
     if (portfolioHydratedRef.current) return;
     portfolioHydratedRef.current = true;
     try {
@@ -970,7 +971,7 @@ export default function PortfolioPage() {
             />
           </div>
 
-          {false && settingsOpen && (
+          {ENABLE_EDITOR && settingsOpen && (
             <div className="hidden lg:block fixed left-4 top-[11rem] z-[100] max-h-[min(70vh,calc(100dvh-12rem))] w-[min(380px,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/30 bg-black/75 p-4 text-white shadow-xl backdrop-blur-sm">
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-sm font-semibold uppercase tracking-[0.09em] text-amber-300">
@@ -1816,8 +1817,9 @@ export default function PortfolioPage() {
                                     originY: card.y,
                                   });
                                 }}
-                                >
-                                {card.id === "summoners-era" && !ENABLE_EDITOR ? (
+                              >
+                                {card.id === "summoners-era" &&
+                                !ENABLE_EDITOR ? (
                                   <Link
                                     href="/portfolio/summoner-era"
                                     aria-label="Open Summoner Era project detail"
