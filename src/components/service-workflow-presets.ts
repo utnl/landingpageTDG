@@ -176,7 +176,7 @@ export const service2DVfxWorkflowConfig: ServiceWorkflowConfig = {
     {
       title: "Delivery",
       description: "Libraries and variants shipped with clear usage notes.",
-      image: "/images/xoa_nen_vip_pro.png",
+      image: "/images/IMG_4352.png",
     },
   ],
   pillars: [
