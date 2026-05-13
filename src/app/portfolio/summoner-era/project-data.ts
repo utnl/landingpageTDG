@@ -1,60 +1,60 @@
 export const projectMeta = {
   title: "ANIMATION/VFX - HEROES LIGHT/DARK | SUMMONER ERA",
-  eyebrow: "Portfolio Detail",
+  titleLines: [
+    [{ text: "ANIMATION/VFX" }],
+    [
+      { text: "HEROES " },
+      { text: "LIGHT", color: "light" },
+      { text: "/" },
+      { text: "DARK", color: "dark" },
+    ],
+    [{ text: "SUMMONER ERA" }],
+  ] as const,
+  eyebrow: "Case study",
   summary:
-    "A long-form showcase for Summoner Era hero login-screen animations, built around looping character motion, key-art presentation, and promo-ready VFX passes.",
-  publishedAt: "May 24, 2024",
-  appreciations: "208",
-  views: "2.3K",
-  comments: "5",
+    "Login-screen hero packages for Summoner Era: looping character motion, key-art presentation, and VFX passes tuned for in-game and promo use.",
+  heroFacts: [
+    { value: "2024", label: "Showcase", icon: "calendar" },
+    { value: "Multi-hero", label: "Scope", icon: "users" },
+    { value: "Spine + AE", label: "Pipeline", icon: "cube" },
+  ] as const,
+  deliverables: [
+    "Hero login loops (light / dark themes)",
+    "Character motion & polish passes",
+    "VFX integrated with key art",
+  ] as const,
+  overview: {
+    body: "We created a set of hero login animations and VFX for Summoner Era, combining stylized character motion with impactful visual effects to enhance both the in-game experience and promotional materials.",
+    stats: [
+      { value: "12+", label: "Heroes Animated" },
+      { value: "30+", label: "VFX Assets" },
+      { value: "2", label: "Themes" },
+      { value: "3", label: "Weeks" },
+    ],
+  },
   behanceUrl:
     "https://www.behance.net/gallery/199358443/ANIMATIONVFX-HEROES-LIGHTDARK-SUMMONER-ERA",
-  coverImage:
-    "https://mir-s3-cdn-cf.behance.net/projects/404/a8f476199358443.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
+  coverImage: "/images/summonerDetail.png",
   copyright: "All Rights Reserved",
-  copyrightNote: "No use is allowed without explicit permission from owner.",
+  copyrightNote: "No use without explicit permission from TD Games.",
   tools: ["Spine 2D", "After Effects"],
   fields: ["Animation", "Game Design", "Visual Effects"],
   tags: [
     "2D Animation",
-    "Character design",
-    "character animation",
-    "concept art",
-    "Game Animation",
-    "game design",
-    "spine",
-    "vfx",
-    "SUMMONER",
+    "Character Design",
+    "Character Animation",
+    "Concept Art",
+    "Login Screen",
+    "Key Art",
+    "Summoner Era",
   ],
 } as const;
-
-export const owners = [
-  {
-    name: "TD GAMES",
-    location: "Vietnam",
-    href: "https://www.behance.net/tdgames",
-    avatar:
-      "https://pps.services.adobe.com/api/profile/237D044D62D81A570A495FED@AdobeID/image/71a7ceba-10dd-404b-8ff1-7a6758f0349f/100",
-  },
-  {
-    name: "Toan Dang",
-    location: "Hanoi, Vietnam",
-    href: "https://www.behance.net/toan1874",
-    avatar:
-      "https://pps.services.adobe.com/api/profile/C1813E80599AEEDC0A495ED0@AdobeID/image/9262336b-19e1-4a76-b09a-2c6f124ec1db/100",
-  },
-] as const;
 
 export const showcaseModules = [
   {
     id: "m01",
     variant: "full",
     src: "https://mir-s3-cdn-cf.behance.net/project_modules/source/11aa30199358443.664fff555d264.gif",
-  },
-  {
-    id: "m02",
-    variant: "strip",
-    src: "https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/4c6e82199358443.664fff5559df3.png",
   },
   {
     id: "m03",
@@ -163,7 +163,7 @@ export const showcaseModules = [
   },
   {
     id: "m24",
-    variant: "strip",
+    variant: "full",
     src: "https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/fb46e9199358443.664fff555a498.png",
   },
 ] as const;
