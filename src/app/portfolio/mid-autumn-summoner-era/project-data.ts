@@ -1,22 +1,42 @@
+import type {
+  ProjectMeta,
+  RelatedProject,
+  ShowcaseModule,
+} from "@/components/portfolio/case-study-types";
+
 const D = "https://mir-s3-cdn-cf.behance.net/project_modules/disp";
 const MW = "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp";
 const SRC = "https://mir-s3-cdn-cf.behance.net/project_modules/source";
 
-export const projectMeta = {
+export const projectMeta: ProjectMeta = {
   title: "Mid Autumn Animation for Summoner Era",
   eyebrow: "Case study",
   summary:
     "Mid-Autumn event drop for Summoner Era. Spine character pack with festival-themed costumes, intro splash, hero name plates, and a closing reel — bouncy keyframes built for short loops on mobile.",
+  heroTitle: {
+    primary: [
+      { text: "Mid Autumn", color: "accent" },
+      { text: " ", color: "white" },
+      { text: "Animation", color: "accentSoft" },
+    ],
+    subtitle: [
+      { text: "Summoner Era", color: "soft" },
+      { text: " — ", color: "divider" },
+      { text: "event drop", color: "accent" },
+      { text: " · ", color: "divider" },
+      { text: "festival hero pack", color: "muted" },
+    ],
+  },
   heroFacts: [
     { value: "Jan 2021", label: "Published", icon: "calendar" },
     { value: "Event content", label: "Project type", icon: "cube" },
     { value: "Spine 2D", label: "Pipeline", icon: "users" },
-  ] as const,
+  ],
   deliverables: [
     "Splash & banner art",
     "8 hero spine loops",
     "Name plates + closing reel",
-  ] as const,
+  ],
   overview: {
     body: "A seasonal Mid-Autumn pack for Summoner Era. We rigged eight heroes in festival skins, paired each with a stylised name plate, opened with a banner splash, and closed with a celebratory wide-shot. Loops were optimised to feel snappy on mobile login + lobby screens.",
     stats: [
@@ -32,8 +52,8 @@ export const projectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/4cd319112053013.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
-  tools: ["Spine 2D"] as const,
-  fields: ["Animation", "Game Design", "Motion Graphics"] as const,
+  tools: ["Spine 2D"],
+  fields: ["Animation", "Game Design", "Motion Graphics"],
   tags: [
     "2D animation",
     "character",
@@ -44,12 +64,23 @@ export const projectMeta = {
     "spine 2D",
     "spine animation",
     "summoner",
-  ] as const,
-} as const;
-
-export type ShowcaseModule =
-  | { id: string; variant: "fullGif"; src: string }
-  | { id: string; variant: "banner"; src: string };
+  ],
+  theme: {
+    accent: "#fbbf24",
+    accentSoft: "#fb7185",
+    heroBackground:
+      "radial-gradient(circle at top left, rgba(251,191,36,0.20), transparent 42%), radial-gradient(circle at top right, rgba(251,113,133,0.16), transparent 42%), linear-gradient(180deg, #14100a 0%, #050708 75%)",
+    showcaseSectionBg: "#13100a",
+    showcasePanelBg: "#1b1610",
+    sectionLabelBg: "#15110b",
+  },
+  workflow: [
+    { n: "01", t: "Art prep", sub: "Photoshop" },
+    { n: "02", t: "Skinning", sub: "Spine 2D" },
+    { n: "03", t: "Animation", sub: "Loops" },
+    { n: "04", t: "Ship", sub: "Event drop" },
+  ],
+};
 
 export const showcaseModules: readonly ShowcaseModule[] = [
   { id: "m01", variant: "fullGif", src: `${D}/888d70112053013.600da2b1df5ce.gif` },
@@ -74,7 +105,7 @@ export const showcaseModules: readonly ShowcaseModule[] = [
   { id: "m20", variant: "fullGif", src: `${SRC}/3da343112053013.600ee18d72524.gif` },
 ] as const;
 
-export const relatedProjects = [
+export const relatedProjects: readonly RelatedProject[] = [
   {
     id: "summoner-era-heroes",
     title: "ANIMATION/VFX - HEROES LIGHT/DARK | SUMMONER ERA",
@@ -163,4 +194,4 @@ export const relatedProjects = [
     appreciations: "446",
     views: "7.5K",
   },
-] as const;
+];

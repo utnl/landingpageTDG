@@ -1,22 +1,42 @@
+import type {
+  ProjectMeta,
+  RelatedProject,
+  ShowcaseModule,
+} from "@/components/portfolio/case-study-types";
+
 const M = "https://mir-s3-cdn-cf.behance.net/project_modules/1400";
 const MW = "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp";
 const HD = "https://mir-s3-cdn-cf.behance.net/project_modules/hd";
 
-export const projectMeta = {
+export const projectMeta: ProjectMeta = {
   title: "Character animation for Puzzle Wonderland",
   eyebrow: "Case study",
   summary:
     "Spine 2D character pack for Puzzle Wonderland — a casual mobile puzzle game. Includes a portrait login splash, seven player hero loops, and five boss reactions, all rigged and animated to feel snappy, cute, and replayable on tiny screens.",
+  heroTitle: {
+    primary: [
+      { text: "Puzzle", color: "accentSoft" },
+      { text: " " },
+      { text: "Wonderland", color: "accent" },
+    ],
+    subtitle: [
+      { text: "Character", color: "soft" },
+      { text: " · ", color: "divider" },
+      { text: "animation", color: "accent" },
+      { text: " — ", color: "divider" },
+      { text: "cute mobile puzzle", color: "muted" },
+    ],
+  },
   heroFacts: [
     { value: "Jul 2018", label: "Published", icon: "calendar" },
     { value: "Casual mobile", label: "Project type", icon: "cube" },
     { value: "Spine 2D", label: "Pipeline", icon: "users" },
-  ] as const,
+  ],
   deliverables: [
     "Portrait login splash",
     "7 player hero loops",
     "5 boss reaction loops",
-  ] as const,
+  ],
   overview: {
     body: "A cute-style Spine 2D animation pack for a casual mobile puzzle title. We took Hung Ngo's character art and rigged each hero with snappy keyframes built for tiny mobile screens — bouncy idles, victory pops, and boss reactions. A portrait login splash anchors the pack, then seven hero loops and five boss reactions cover the in-game lobby + match-end beats.",
     stats: [
@@ -34,9 +54,9 @@ export const projectMeta = {
   credits: [
     { role: "Artist", name: "Hung Ngo" },
     { role: "Animator", name: "Toan Dang" },
-  ] as const,
-  tools: ["Spine 2D"] as const,
-  fields: ["Animation", "Visual Effects", "Digital Art"] as const,
+  ],
+  tools: ["Spine 2D"],
+  fields: ["Animation", "Visual Effects", "Digital Art"],
   tags: [
     "animation",
     "spine 2D",
@@ -44,15 +64,23 @@ export const projectMeta = {
     "puzzle game",
     "game mobile",
     "character animation",
-  ] as const,
-} as const;
-
-export type ShowcaseModule =
-  | { id: string; variant: "banner"; src: string }
-  | { id: string; variant: "fullGif"; src: string }
-  | { id: string; variant: "square"; src: string }
-  | { id: string; variant: "sectionLabel"; label: string }
-  | { id: string; variant: "videoEmbed"; src: string; aspect: number };
+  ],
+  theme: {
+    accent: "#22d3ee",
+    accentSoft: "#fbbf24",
+    heroBackground:
+      "radial-gradient(circle at top left, rgba(34,211,238,0.20), transparent 42%), radial-gradient(circle at top right, rgba(251,191,36,0.16), transparent 42%), radial-gradient(ellipse at 70% 0%, rgba(244,114,182,0.10), transparent 45%), linear-gradient(180deg, #06141a 0%, #050708 75%)",
+    showcaseSectionBg: "#08161c",
+    showcasePanelBg: "#0b1d24",
+    sectionLabelBg: "#0a1418",
+  },
+  workflow: [
+    { n: "01", t: "Art prep", sub: "Photoshop" },
+    { n: "02", t: "Skinning", sub: "Spine 2D" },
+    { n: "03", t: "Animation", sub: "Loops" },
+    { n: "04", t: "Ship", sub: "Mobile" },
+  ],
+};
 
 export const showcaseModules: readonly ShowcaseModule[] = [
   { id: "m01", variant: "banner", src: `${MW}/c93a5b67614633.5fbd2e1664ce9.png` },
@@ -77,17 +105,17 @@ export const showcaseModules: readonly ShowcaseModule[] = [
   { id: "m15", variant: "square", src: `${HD}/a7aa3067614633.5fbd2e166479a.gif` },
   { id: "m16", variant: "square", src: `${HD}/04b04567614633.5fbd2e1665e99.gif` },
   { id: "m17", variant: "square", src: `${HD}/47661867614633.5fbd2e1665283.gif` },
-] as const;
+];
 
-export const relatedProjects = [
+export const relatedProjects: readonly RelatedProject[] = [
   {
     id: "summoner-era-arena-of-heroes",
     title: "Animation for Summoner Era - Arena of Heroes",
     href: "/portfolio/summoner-era-arena-of-heroes",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
-      "https://mir-s3-cdn-cf.behance.net/projects/404/d4a408104755019.5f9b97c0a0f8a.png",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/d4a408104755019.5f9b97c0a0f8a.png",
     appreciations: "136",
     views: "2.2K",
   },
@@ -95,7 +123,7 @@ export const relatedProjects = [
     id: "mid-autumn-summoner-era",
     title: "Mid Autumn Animation for Summoner Era",
     href: "/portfolio/mid-autumn-summoner-era",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/4cd319112053013.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
@@ -106,7 +134,7 @@ export const relatedProjects = [
     id: "animation-contest-sky-mavis",
     title: "Animation Contest - Sky Mavis",
     href: "/portfolio/animation-contest-sky-mavis",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/33e83e130561969.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -117,7 +145,7 @@ export const relatedProjects = [
     id: "summoner-era-2020",
     title: "Summoner Era - Login Screen Animations (2020)",
     href: "/portfolio/summoner-era-2020",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/1efef4144430837.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
@@ -128,7 +156,7 @@ export const relatedProjects = [
     id: "game-animation-vfx-3q",
     title: "GAME ANIMATION/VFX - 3Q",
     href: "/portfolio/game-animation-vfx-3q",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/c4e25d143388227.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -139,7 +167,7 @@ export const relatedProjects = [
     id: "battle-of-the-gods-mytheria",
     title: "Battle of the Gods | Mytheria - Login Screen",
     href: "/portfolio/battle-of-the-gods-mytheria",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/d5b456134047127.Y3JvcCwyMzkyLDE4NzAsMCww.png",
@@ -150,7 +178,7 @@ export const relatedProjects = [
     id: "boss-animation",
     title: "BOSS ANIMATION - THE TWINS",
     href: "/portfolio/boss-animation",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/9e2264152981257.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -161,11 +189,11 @@ export const relatedProjects = [
     id: "heroes-fire",
     title: "ANIMATION/VFX - HEROES FIRE | SUMMONER ERA",
     href: "/portfolio/heroes-fire",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/d50de7152527397.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "627",
     views: "6.0K",
   },
-] as const;
+];

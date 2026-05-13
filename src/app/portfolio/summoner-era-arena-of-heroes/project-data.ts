@@ -1,22 +1,42 @@
+import type {
+  ProjectMeta,
+  RelatedProject,
+  ShowcaseModule,
+} from "@/components/portfolio/case-study-types";
+
 const DISP = "https://mir-s3-cdn-cf.behance.net/project_modules/disp";
 const MW = "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp";
 const M = "https://mir-s3-cdn-cf.behance.net/project_modules/1400";
 
-export const projectMeta = {
+export const projectMeta: ProjectMeta = {
   title: "Animation for Summoner Era - Arena of Heroes",
   eyebrow: "Case study",
   summary:
     "Cinematic hero showcase for Summoner Era's Arena of Heroes mode. Seven champions, each shipped with a name plate, splash, full Spine battle reel, and a two-up combo loop — built to feed the in-game arena lobby and marketing pipeline.",
+  heroTitle: {
+    primary: [
+      { text: "Arena", color: "accentSoft" },
+      { text: " of ", color: "soft" },
+      { text: "Heroes", color: "accent" },
+    ],
+    subtitle: [
+      { text: "Animation", color: "soft" },
+      { text: " — ", color: "divider" },
+      { text: "Summoner Era", color: "accent" },
+      { text: " · ", color: "divider" },
+      { text: "cinematic hero pack", color: "muted" },
+    ],
+  },
   heroFacts: [
     { value: "Oct 2020", label: "Published", icon: "calendar" },
     { value: "7 heroes", label: "Roster", icon: "users" },
     { value: "Spine + AE", label: "Pipeline", icon: "cube" },
-  ] as const,
+  ],
   deliverables: [
     "Hero splash + name plates",
     "7 cinematic battle reels",
     "14 combo / VFX loops",
-  ] as const,
+  ],
   overview: {
     body: "A 7-hero spotlight pack for Summoner Era's Arena of Heroes. Each champion ships with a stylised name plate, a full splash banner, a 1400-wide Spine battle reel, plus a two-up GIF combo isolating signature skills. After Effects handled VFX layers and motion graphics; Spine 2D drove the character rig. Output feeds the arena lobby loop and the marketing team's social pipeline.",
     stats: [
@@ -31,8 +51,8 @@ export const projectMeta = {
   madeForLabel: "AnimVFX Clan",
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage: `${MW}/d4a408104755019.5f9b97c0a0f8a.png`,
-  tools: ["After Effects", "Spine 2D"] as const,
-  fields: ["Animation", "Visual Effects", "Motion Graphics"] as const,
+  tools: ["After Effects", "Spine 2D"],
+  fields: ["Animation", "Visual Effects", "Motion Graphics"],
   tags: [
     "after effects",
     "animation",
@@ -43,13 +63,23 @@ export const projectMeta = {
     "spine",
     "summoner",
     "character",
-  ] as const,
-} as const;
-
-export type ShowcaseModule =
-  | { id: string; variant: "fullGif"; src: string }
-  | { id: string; variant: "banner"; src: string }
-  | { id: string; variant: "duo"; srcs: [string, string] };
+  ],
+  theme: {
+    accent: "#10b981",
+    accentSoft: "#facc15",
+    heroBackground:
+      "radial-gradient(circle at top left, rgba(16,185,129,0.20), transparent 42%), radial-gradient(circle at top right, rgba(250,204,21,0.16), transparent 42%), linear-gradient(180deg, #0a1410 0%, #050708 75%)",
+    showcaseSectionBg: "#091410",
+    showcasePanelBg: "#0b1d16",
+    sectionLabelBg: "#0a1813",
+  },
+  workflow: [
+    { n: "01", t: "Concept", sub: "Sketch" },
+    { n: "02", t: "Spine rig", sub: "Spine 2D" },
+    { n: "03", t: "VFX", sub: "After Effects" },
+    { n: "04", t: "Ship", sub: "Arena loop" },
+  ],
+};
 
 export const showcaseModules: readonly ShowcaseModule[] = [
   { id: "m01", variant: "banner", src: `${MW}/d4a408104755019.5f9b97c0a0f8a.png` },
@@ -134,7 +164,7 @@ export const showcaseModules: readonly ShowcaseModule[] = [
   { id: "m38", variant: "banner", src: `${MW}/3b20ee104755019.5f99afb45afec.png` },
 ] as const;
 
-export const relatedProjects = [
+export const relatedProjects: readonly RelatedProject[] = [
   {
     id: "summoner-era-heroes",
     title: "ANIMATION/VFX - HEROES LIGHT/DARK | SUMMONER ERA",
@@ -223,4 +253,4 @@ export const relatedProjects = [
     appreciations: "218",
     views: "3.2K",
   },
-] as const;
+];

@@ -1,21 +1,39 @@
+import type {
+  ProjectMeta,
+  RelatedProject,
+  ShowcaseModule,
+} from "@/components/portfolio/case-study-types";
+
 const DISP = "https://mir-s3-cdn-cf.behance.net/project_modules/disp";
 const W1400 = "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp";
 
-export const projectMeta = {
+export const projectMeta: ProjectMeta = {
   title: "Battle of the Gods | Mytheria - Login Screen",
   eyebrow: "Case study",
   summary:
     "Login-screen package for Mytheria — Battle of the Gods. Six character animation loops with VFX, plus a hero reveal cinematic intro tuned for the title screen.",
+  heroTitle: {
+    primary: [
+      { text: "Battle", color: "accent" },
+      { text: " of the ", color: "muted" },
+      { text: "Gods", color: "accentSoft" },
+    ],
+    subtitle: [
+      { text: "Mytheria", color: "soft" },
+      { text: " · ", color: "divider" },
+      { text: "Login Screen", color: "accent" },
+    ],
+  },
   heroFacts: [
     { value: "Jan 2022", label: "Published", icon: "calendar" },
     { value: "Mytheria (Mobile)", label: "Project type", icon: "cube" },
     { value: "Ae · Ps · Spine", label: "Pipeline", icon: "users" },
-  ] as const,
+  ],
   deliverables: [
     "Cinematic intro composite",
     "6 hero login loops with VFX",
     "Final motion graphics banner",
-  ] as const,
+  ],
   overview: {
     body: "A login-screen drop for Mytheria — Battle of the Gods. We delivered a short cinematic intro, six character motion + VFX loops shown two-up to compare poses and effects, and a final banner that ties the lineup together for marketing.",
     stats: [
@@ -31,10 +49,8 @@ export const projectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/d5b456134047127.Y3JvcCwyMzkyLDE4NzAsMCww.png",
-  videoEmbed:
-    "https://player.vimeo.com/video/661196669?h=913b280609&badge=0&autopause=0",
-  tools: ["After Effects", "Photoshop", "Spine 2D"] as const,
-  fields: ["Animation", "Motion Graphics", "Visual Effects"] as const,
+  tools: ["After Effects", "Photoshop", "Spine 2D"],
+  fields: ["Animation", "Motion Graphics", "Visual Effects"],
   tags: [
     "battle",
     "character animation",
@@ -43,13 +59,23 @@ export const projectMeta = {
     "login screen",
     "motion graphics",
     "mytheria",
-  ] as const,
-} as const;
-
-export type ShowcaseModule =
-  | { id: string; variant: "video"; src: string }
-  | { id: string; variant: "duo"; srcs: [string, string] }
-  | { id: string; variant: "full"; src: string };
+  ],
+  theme: {
+    accent: "#f5b84a",
+    accentSoft: "#a78bfa",
+    heroBackground:
+      "radial-gradient(circle at top left, rgba(245,184,74,0.18), transparent 40%), radial-gradient(circle at top right, rgba(167,139,250,0.18), transparent 42%), radial-gradient(ellipse at 70% 0%, rgba(124,58,237,0.12), transparent 45%), linear-gradient(180deg, #13101e 0%, #070510 75%)",
+    showcaseSectionBg: "#191919",
+    showcasePanelBg: "#222221",
+    sectionLabelBg: "#191919",
+  },
+  workflow: [
+    { n: "01", t: "Concept", sub: "Brief · ref" },
+    { n: "02", t: "Spine", sub: "Hero rig" },
+    { n: "03", t: "VFX", sub: "After Effects" },
+    { n: "04", t: "Comp", sub: "Login reel" },
+  ],
+};
 
 export const showcaseModules: readonly ShowcaseModule[] = [
   {
@@ -86,14 +112,14 @@ export const showcaseModules: readonly ShowcaseModule[] = [
     variant: "full",
     src: `${W1400}/489aca134047127.61cdce85c2c17.png`,
   },
-] as const;
+];
 
-export const relatedProjects = [
+export const relatedProjects: readonly RelatedProject[] = [
   {
     id: "summoner-era-heroes",
     title: "ANIMATION/VFX - HEROES LIGHT/DARK | SUMMONER ERA",
     href: "/portfolio/summoner-era",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/a8f476199358443.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
@@ -104,7 +130,7 @@ export const relatedProjects = [
     id: "heroes-fire",
     title: "ANIMATION/VFX - HEROES FIRE | SUMMONER ERA",
     href: "/portfolio/heroes-fire",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/d50de7152527397.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -115,7 +141,7 @@ export const relatedProjects = [
     id: "summoner-era-2020",
     title: "Summoner Era - Login Screen Animations (2020)",
     href: "/portfolio/summoner-era-2020",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/1efef4144430837.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
@@ -126,7 +152,7 @@ export const relatedProjects = [
     id: "game-animation-vfx-3q",
     title: "GAME ANIMATION/VFX - 3Q",
     href: "/portfolio/game-animation-vfx-3q",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/c4e25d143388227.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -137,7 +163,7 @@ export const relatedProjects = [
     id: "kayn-snow-moon",
     title: "Kayn Snow Moon | League of Legends - Login Screen",
     href: "/portfolio/kayn-snow-moon",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/5ad036149524063.Y3JvcCwxOTgxLDE1NTAsMCww.png",
@@ -148,7 +174,7 @@ export const relatedProjects = [
     id: "boss-animation",
     title: "BOSS ANIMATION - THE TWINS",
     href: "/portfolio/boss-animation",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/9e2264152981257.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -159,7 +185,7 @@ export const relatedProjects = [
     id: "axie-infinity-origins",
     title: "Axie Infinity - Origins | Animation",
     href: "/portfolio/axie-infinity-origins",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/924075153491527.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -170,7 +196,7 @@ export const relatedProjects = [
     id: "horse-racing",
     title: "Horse Racing - Splash Art Animation",
     href: "/portfolio/horse-racing",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/cad425183792791.Y3JvcCwyMzkyLDE4NzAsMCww.jpg",
@@ -181,11 +207,11 @@ export const relatedProjects = [
     id: "animation-contest-sky-mavis",
     title: "Animation Contest - Sky Mavis",
     href: "/portfolio/animation-contest-sky-mavis",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/33e83e130561969.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "218",
     views: "3.2K",
   },
-] as const;
+];

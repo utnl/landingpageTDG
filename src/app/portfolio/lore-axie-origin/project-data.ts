@@ -1,18 +1,34 @@
-export const projectMeta = {
+import type {
+  ProjectMeta,
+  RelatedProject,
+  ShowcaseModule,
+} from "@/components/portfolio/case-study-types";
+
+export const projectMeta: ProjectMeta = {
   title: "LORE AXIE ORIGIN | CINEMATIC",
   eyebrow: "Case study",
   summary:
     "Cinematic lore trailer for Axie Infinity Origins — storyboard-led motion sequence with character beats, environment FX, and pacing tuned for an in-world reveal.",
+  heroTitle: {
+    primary: [
+      { text: "Lore", color: "white" },
+      { text: " " },
+      { text: "Axie", color: "accent" },
+      { text: " " },
+      { text: "Origin", color: "white" },
+    ],
+    subtitle: [{ text: "Cinematic · Motion graphics", color: "soft" }],
+  },
   heroFacts: [
     { value: "Feb 2023", label: "Published", icon: "calendar" },
     { value: "Cinematic", label: "Project type", icon: "cube" },
     { value: "AE · Ps", label: "Pipeline", icon: "users" },
-  ] as const,
+  ],
   deliverables: [
     "Cinematic lore animation",
     "Storyboard & shot breakdown",
     "Motion FX & sequence edit",
-  ] as const,
+  ],
   overview: {
     body: "A cinematic lore piece for the Axie Infinity Origins world — built from a beat-driven storyboard, animated with stylized 2D motion, then composited with FX and a final color pass for a clean in-world reveal.",
     stats: [
@@ -28,10 +44,8 @@ export const projectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/project_modules/fs_webp/9d5c36163362313.63e48c008691b.png",
-  coverVideoEmbed:
-    "https://player.vimeo.com/video/797221932?h=2e959771c9&autoplay=1&loop=1&color=3F3F3F&title=0&byline=0&portrait=0&muted=1&dnt=1",
-  tools: ["After Effects", "Photoshop"] as const,
-  fields: ["Motion Graphics", "Animation", "Storyboarding"] as const,
+  tools: ["After Effects", "Photoshop"],
+  fields: ["Motion Graphics", "Animation", "Storyboarding"],
   tags: [
     "after effects",
     "animation",
@@ -42,99 +56,108 @@ export const projectMeta = {
     "storyboard",
     "storytelling",
     "Video Editing",
-  ] as const,
-} as const;
+  ],
+  theme: {
+    accent: "#ffb000",
+    accentSoft: "#ff8c3a",
+    heroBackground:
+      "radial-gradient(circle at top left, rgba(255,176,0,0.16), transparent 36%), radial-gradient(circle at top right, rgba(255,140,58,0.16), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
+    showcaseSectionBg: "#191919",
+    showcasePanelBg: "#222221",
+    sectionLabelBg: "#191919",
+  },
+  workflow: [
+    { n: "01", t: "Storyboard", sub: "Beat · framing" },
+    { n: "02", t: "Animate", sub: "2D · key acting" },
+    { n: "03", t: "FX & Comp", sub: "After Effects" },
+    { n: "04", t: "Edit", sub: "Grade · pacing" },
+  ],
+};
 
-export const showcaseModules = [
+export const showcaseModules: readonly ShowcaseModule[] = [
   {
     id: "m01",
-    variant: "full" as const,
+    variant: "full",
     src: "https://mir-s3-cdn-cf.behance.net/project_modules/fs_webp/9d5c36163362313.63e48c008691b.png",
-    width: 1400,
-    height: 735,
   },
   {
     id: "m02",
-    variant: "vimeo" as const,
+    variant: "vimeo",
     embedSrc:
       "https://player.vimeo.com/video/797221932?h=2e959771c9&autoplay=1&loop=1&color=3F3F3F&title=0&byline=0&portrait=0&muted=1",
-    aspectRatio: "1920 / 1080",
+    aspectRatio: 1920 / 1080,
   },
   {
     id: "m03",
-    variant: "full" as const,
+    variant: "full",
     src: "https://mir-s3-cdn-cf.behance.net/project_modules/fs_webp/3a4660163362313.63e48c0087f51.png",
-    width: 1400,
-    height: 2822,
   },
   {
     id: "m04",
-    variant: "duo" as const,
+    variant: "duo",
     srcs: [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d5e804163362313.63e48bfb14d39.gif",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/98fb7a163362313.63e48bfb15ba4.gif",
-    ] as const,
+    ],
   },
   {
     id: "m05",
-    variant: "duo" as const,
+    variant: "duo",
     srcs: [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/1e45f2163362313.63e48bfbc3e82.gif",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/c6f720163362313.63e48bfbc4df2.gif",
-    ] as const,
+    ],
   },
   {
     id: "m06",
-    variant: "duo" as const,
+    variant: "duo",
     srcs: [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/4c8ad3163362313.63e48bfc90be9.gif",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/1e7d63163362313.63e48bfc92564.gif",
-    ] as const,
+    ],
   },
   {
     id: "m07",
-    variant: "duo" as const,
+    variant: "duo",
     srcs: [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/f0a1e0163362313.63e48bfd57f81.gif",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/8e3963163362313.63e48bfd58f38.gif",
-    ] as const,
+    ],
   },
   {
     id: "m08",
-    variant: "duo" as const,
+    variant: "duo",
     srcs: [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/191a20163362313.63e48bfdd7132.gif",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/49f25a163362313.63e48bfdd8595.gif",
-    ] as const,
+    ],
   },
   {
     id: "m09",
-    variant: "duo" as const,
+    variant: "duo",
     srcs: [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/6aa7a5163362313.63e48bfee5c18.gif",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/ee3318163362313.63e48bfee527e.gif",
-    ] as const,
+    ],
   },
   {
     id: "m10",
-    variant: "full" as const,
+    variant: "full",
     src: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/3a475f163362313.63e48bff7a44c.png",
-    width: 1400,
-    height: 783,
   },
   {
     id: "m11",
-    variant: "fullGif" as const,
+    variant: "fullGif",
     src: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/fb059d163362313.63e48bffe60e7.gif",
   },
-] as const;
+];
 
-export const relatedProjects = [
+export const relatedProjects: readonly RelatedProject[] = [
   {
     id: "summoner-era-heroes",
     title: "ANIMATION/VFX - HEROES LIGHT/DARK | SUMMONER ERA",
     href: "/portfolio/summoner-era",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/a8f476199358443.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
@@ -145,7 +168,7 @@ export const relatedProjects = [
     id: "horse-racing",
     title: "Horse Racing - Splash Art Animation",
     href: "/portfolio/horse-racing",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/cad425183792791.Y3JvcCwyMzkyLDE4NzAsMCww.jpg",
@@ -156,7 +179,7 @@ export const relatedProjects = [
     id: "kayn-snow-moon",
     title: "Kayn Snow Moon | League of Legends - Login Screen",
     href: "/portfolio/kayn-snow-moon",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/5ad036149524063.Y3JvcCwxOTgxLDE1NTAsMCww.png",
@@ -167,7 +190,7 @@ export const relatedProjects = [
     id: "axie-infinity-origins",
     title: "Axie Infinity - Origins | Animation",
     href: "/portfolio/axie-infinity-origins",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/924075153491527.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -178,7 +201,7 @@ export const relatedProjects = [
     id: "boss-animation",
     title: "BOSS ANIMATION - THE TWINS",
     href: "/portfolio/boss-animation",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/9e2264152981257.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -189,7 +212,7 @@ export const relatedProjects = [
     id: "heroes-fire",
     title: "ANIMATION/VFX - HEROES FIRE | SUMMONER ERA",
     href: "/portfolio/heroes-fire",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/d50de7152527397.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -200,7 +223,7 @@ export const relatedProjects = [
     id: "summoner-era-2020",
     title: "Summoner Era - Login Screen Animations (2020)",
     href: "/portfolio/summoner-era-2020",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/1efef4144430837.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
@@ -211,7 +234,7 @@ export const relatedProjects = [
     id: "game-animation-vfx-3q",
     title: "GAME ANIMATION/VFX - 3Q",
     href: "/portfolio/game-animation-vfx-3q",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/c4e25d143388227.Y3JvcCwxOTgxLDE1NTAsOSww.png",
@@ -222,7 +245,7 @@ export const relatedProjects = [
     id: "battle-of-the-gods-mytheria",
     title: "Battle of the Gods | Mytheria - Login Screen",
     href: "/portfolio/battle-of-the-gods-mytheria",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/d5b456134047127.Y3JvcCwyMzkyLDE4NzAsMCww.png",
@@ -233,11 +256,11 @@ export const relatedProjects = [
     id: "animation-contest-sky-mavis",
     title: "Animation Contest - Sky Mavis",
     href: "/portfolio/animation-contest-sky-mavis",
-    internal: true as const,
+    internal: true,
     badge: "Case study",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/33e83e130561969.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "218",
     views: "3.2K",
   },
-] as const;
+];
