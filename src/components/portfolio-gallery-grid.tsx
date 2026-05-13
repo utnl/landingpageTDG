@@ -15,80 +15,114 @@ export type PortfolioGalleryItem = {
 /** 10 dự án — chỉnh trong production */
 const DEFAULT_ITEMS: PortfolioGalleryItem[] = [
   {
-    id: "p1",
-    title: "Dragon warrior",
-    tag: "Character · IP",
-    image: "/images/f8e2e81a-e72c-431b-b4ec-5ab7af73ea12.png",
-    href: "#portfolio-gallery",
+    id: "kayn-snow-moon",
+    title: "Kayn Snow Moon | League of Legends - Login Screen",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/5ad036149524063.Y3JvcCwxOTgxLDE1NTAsMCww.png",
+    href: "/portfolio/kayn-snow-moon",
   },
   {
-    id: "p2",
-    title: "Energy VFX suite",
-    tag: "Real-time VFX",
-    image: "/images/21f8a0a6-048f-4a5c-9946-3a89f6303fcd.png",
-    href: "#portfolio-gallery",
+    id: "horse-racing",
+    title: "Horse Racing - Splash Art Animation",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/cad425183792791.Y3JvcCwyMzkyLDE4NzAsMCww.jpg",
+    href: "/portfolio/horse-racing",
   },
   {
-    id: "p3",
-    title: "Summoners Era",
-    tag: "Key art pack",
-    image: "/images/3067c837-e030-403f-b7c5-0c7246bfe15f.png",
-    href: "/portfolio/summoner-era",
+    id: "lore-axie-origin",
+    title: "Lore Axie Origin | Cinematic",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/501fca163362313.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    href: "/portfolio/lore-axie-origin",
   },
   {
-    id: "p4",
-    title: "Temple night scene",
-    tag: "Environment 3D",
-    image: "/images/f0d05f71-5089-4b3f-b453-7a8d19afc013.png",
-    href: "#portfolio-gallery",
+    id: "axie-infinity-origins",
+    title: "Axie Infinity - Origins | Animation",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/924075153491527.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    href: "/portfolio/axie-infinity-origins",
   },
   {
-    id: "p5",
-    title: "Hero key visual",
-    tag: "Marketing",
-    image: "/images/IMG_4352.png",
-    href: "#portfolio-gallery",
+    id: "boss-animation",
+    title: "Boss Animation - The Twins",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/9e2264152981257.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    href: "/portfolio/boss-animation",
   },
   {
-    id: "p6",
-    title: "Isometric world",
-    tag: "2D isometry",
-    image: "/images/Isometry_art-1024x683.jpg",
-    href: "#portfolio-gallery",
+    id: "heroes-fire",
+    title: "Animation/VFX - Heroes Fire | Summoner Era",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/d50de7152527397.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    href: "/portfolio/heroes-fire",
   },
   {
-    id: "p7",
-    title: "Casual roster",
-    tag: "Character 2D",
-    image: "/images/Casual_character-1024x683.jpg",
-    href: "#portfolio-gallery",
+    id: "summoner-era-2020",
+    title: "Summoner Era - Login Screen Animations (2020)",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/1efef4144430837.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
+    href: "/portfolio/summoner-era-2020",
   },
   {
-    id: "p8",
-    title: "Slot production",
-    tag: "Casino art",
-    image: "/images/Slot_Art-1024x683.jpg",
-    href: "#portfolio-gallery",
+    id: "game-animation-vfx-3q",
+    title: "Game Animation/VFX - 3Q",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/c4e25d143388227.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    href: "/portfolio/game-animation-vfx-3q",
   },
   {
-    id: "p9",
-    title: "Concept exploration",
-    tag: "Pre-production",
-    image: "/images/Character_Concept-1024x683.jpg",
-    href: "#portfolio-gallery",
+    id: "battle-of-the-gods-mytheria",
+    title: "Battle of the Gods | Mytheria - Login Screen",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/d5b456134047127.Y3JvcCwyMzkyLDE4NzAsMCww.png",
+    href: "/portfolio/battle-of-the-gods-mytheria",
   },
   {
-    id: "p10",
-    title: "Biome concepts",
-    tag: "Environment 2D",
-    image: "/images/Environment_Art-1024x683.jpg",
-    href: "#portfolio-gallery",
+    id: "animation-contest-sky-mavis",
+    title: "Animation Contest - Sky Mavis",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/33e83e130561969.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    href: "/portfolio/animation-contest-sky-mavis",
+  },
+  {
+    id: "mid-autumn-summoner-era",
+    title: "Mid Autumn Animation for Summoner Era",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/4cd319112053013.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
+    href: "/portfolio/mid-autumn-summoner-era",
+  },
+  {
+    id: "summoner-era-arena-of-heroes",
+    title: "Animation for Summoner Era - Arena of Heroes",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/d4a408104755019.5f9b97c0a0f8a.png",
+    href: "/portfolio/summoner-era-arena-of-heroes",
+  },
+  {
+    id: "puzzle-wonderland",
+    title: "Character Animation for Puzzle Wonderland",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/c93a5b67614633.5fbd2e1664ce9.png",
+    href: "/portfolio/puzzle-wonderland",
   },
 ];
 
 /**
- * Lưới kín (lg+): 3 cột × 12 hàng đồng cao (1fr) + 2 hàng banner.
- * Mỗi cột tổng row-span = 12 → không lỗ; card 10 trải full 3 cột ở hàng 13–16 (gấp đôi cao so với 2 track).
+ * Lưới kín (lg+): 3 cột × 12 hàng đồng cao (1fr) + 4 hàng banner cuối.
+ * Mỗi cột tổng row-span = 12 ở 12 hàng đầu; hàng banner 13–16 chia đều 3 ô.
  */
 const BENTO_LG: string[] = [
   "lg:col-start-1 lg:row-start-1 lg:row-span-4",
@@ -100,7 +134,10 @@ const BENTO_LG: string[] = [
   "lg:col-start-1 lg:row-start-9 lg:row-span-4",
   "lg:col-start-2 lg:row-start-9 lg:row-span-4",
   "lg:col-start-3 lg:row-start-9 lg:row-span-4",
-  "lg:col-span-3 lg:row-start-13 lg:row-span-4",
+  "lg:col-start-1 lg:row-start-13 lg:row-span-4",
+  "lg:col-start-2 lg:row-start-13 lg:row-span-4",
+  "lg:col-start-3 lg:row-start-13 lg:row-span-4",
+  "lg:col-start-1 lg:col-span-3 lg:row-start-17 lg:row-span-4",
 ];
 
 export default function PortfolioGalleryGrid({
@@ -124,7 +161,7 @@ export default function PortfolioGalleryGrid({
             </span>
             <div className="h-px w-10 shrink-0 bg-white/10" />
             <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">
-              10 projects
+              13 projects
             </span>
           </div>
           <h2
@@ -142,7 +179,7 @@ export default function PortfolioGalleryGrid({
           </p>
         </header>
 
-        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:min-h-[200vh] lg:grid-cols-3 lg:grid-rows-[repeat(16,minmax(0,1fr))] lg:gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:min-h-[250vh] lg:grid-cols-3 lg:grid-rows-[repeat(20,minmax(0,1fr))] lg:gap-3">
           {items.map((item, index) => {
             const n = String(index + 1).padStart(2, "0");
             const lg = BENTO_LG[index] ?? "";

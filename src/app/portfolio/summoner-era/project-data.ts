@@ -172,7 +172,7 @@ export const relatedProjects = [
   {
     id: "kayn-snow-moon",
     title: "Kayn Snow Moon | League of Legends - Login Screen",
-    href: "https://www.behance.net/gallery/149524063/Kayn-Snow-Moon-League-of-Legends-Login-Screen",
+    href: "/portfolio/kayn-snow-moon",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/5ad036149524063.Y3JvcCwxOTgxLDE1NTAsMCww.png",
     appreciations: "446",
@@ -180,8 +180,8 @@ export const relatedProjects = [
   },
   {
     id: "horse-racing",
-    title: "Horse Racing - Slpash Art Animation",
-    href: "https://www.behance.net/gallery/183792791/Horse-Racing-Slpash-Art-Animation",
+    title: "Horse Racing - Splash Art Animation",
+    href: "/portfolio/horse-racing",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/cad425183792791.Y3JvcCwyMzkyLDE4NzAsMCww.jpg",
     appreciations: "143",
@@ -190,16 +190,16 @@ export const relatedProjects = [
   {
     id: "lore-axie-origin",
     title: "LORE AXIE ORIGIN | CINEMATIC",
-    href: "https://www.behance.net/gallery/163362313/LORE-AXIE-ORIGIN-CINEMATIC",
+    href: "/portfolio/lore-axie-origin",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/501fca163362313.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "138",
     views: "1.8K",
   },
   {
-    id: "axie-origins",
+    id: "axie-infinity-origins",
     title: "Axie Infinity - Origins | Animation",
-    href: "https://www.behance.net/gallery/153491527/Axie-Infinity-Origins-Animation",
+    href: "/portfolio/axie-infinity-origins",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/924075153491527.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "1.1K",
@@ -208,7 +208,7 @@ export const relatedProjects = [
   {
     id: "boss-animation",
     title: "BOSS ANIMATION - THE TWINS",
-    href: "https://www.behance.net/gallery/152981257/BOSS-ANIMATION-THE-TWINS",
+    href: "/portfolio/boss-animation",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/9e2264152981257.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "261",
@@ -217,7 +217,7 @@ export const relatedProjects = [
   {
     id: "heroes-fire",
     title: "ANIMATION/VFX - HEROES FIRE | SUMMONER ERA",
-    href: "https://www.behance.net/gallery/152527397/ANIMATIONVFX-HEROES-FIRE-SUMMONER-ERA",
+    href: "/portfolio/heroes-fire",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/d50de7152527397.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "627",
@@ -226,7 +226,7 @@ export const relatedProjects = [
   {
     id: "summoner-era-2020",
     title: "Summoner Era - Login Screen Animations (2020)",
-    href: "https://www.behance.net/gallery/144430837/Summoner-Era-Login-Screen-Animations-%282020%29",
+    href: "/portfolio/summoner-era-2020",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/1efef4144430837.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
     appreciations: "89",
@@ -235,10 +235,28 @@ export const relatedProjects = [
   {
     id: "game-animation-vfx-3q",
     title: "GAME ANIMATION/VFX - 3Q",
-    href: "https://www.behance.net/gallery/143388227/GAME-ANIMATIONVFX-3Q",
+    href: "/portfolio/game-animation-vfx-3q",
     image:
       "https://mir-s3-cdn-cf.behance.net/projects/404/c4e25d143388227.Y3JvcCwxOTgxLDE1NTAsOSww.png",
     appreciations: "193",
     views: "2.5K",
+  },
+  {
+    id: "battle-of-the-gods-mytheria",
+    title: "Battle of the Gods | Mytheria - Login Screen",
+    href: "/portfolio/battle-of-the-gods-mytheria",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/d5b456134047127.Y3JvcCwyMzkyLDE4NzAsMCww.png",
+    appreciations: "112",
+    views: "1.9K",
+  },
+  {
+    id: "animation-contest-sky-mavis",
+    title: "Animation Contest - Sky Mavis",
+    href: "/portfolio/animation-contest-sky-mavis",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/33e83e130561969.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    appreciations: "218",
+    views: "3.2K",
   },
 ] as const;
