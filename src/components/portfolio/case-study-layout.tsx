@@ -21,6 +21,18 @@ const TOOL_LOGOS: Record<string, string> = {
   "Premiere Pro": "/images/premiere-pro-logo.png",
 };
 
+function toolAbbrev(tool: string): string {
+  const words = tool.trim().split(/\s+/).filter(Boolean);
+  if (words.length >= 2) {
+    return words
+      .map((w) => w[0] ?? "")
+      .join("")
+      .slice(0, 4)
+      .toUpperCase();
+  }
+  return tool.slice(0, 2).toUpperCase();
+}
+
 function hexToRgba(hex: string, alpha: number) {
   const v = hex.replace("#", "");
   const full =
@@ -161,7 +173,7 @@ function PanelWorkflow({
 }) {
   const lineGradient = `linear-gradient(to right, ${hexToRgba(theme.accent, 0.55)}, ${hexToRgba(theme.accentSoft, 0.35)}, rgba(255,255,255,0.08))`;
   return (
-    <div className="mt-4 flex h-full flex-col rounded-2xl border border-white/10 bg-white/2 p-5">
+    <div className="mt-4 flex flex-col rounded-2xl border border-white/10 bg-white/2 p-5">
       <div className="flex items-center justify-between">
         <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-white/40">
           Workflow
@@ -171,7 +183,7 @@ function PanelWorkflow({
         </div>
       </div>
 
-      <div className="relative mt-5 flex-1">
+      <div className="relative mt-5">
         <div
           className="pointer-events-none absolute left-[12%] right-[12%] top-[20px] h-px"
           style={{ background: lineGradient }}
@@ -641,15 +653,19 @@ export default function CaseStudyLayout({
       <SiteHeader />
       <main className="bg-[#080808] text-white">
         <section
-          className="relative overflow-hidden border-b border-white/10 pt-20 md:pt-24"
+          className="relative overflow-hidden border-b border-white/10"
           style={{ background: heroBg }}
         >
-          <div
-            className="relative mx-auto grid gap-8 px-4 pb-6 sm:px-0 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch lg:pb-8"
-            style={{ width: "min(var(--layout-width, 88%), 1280px)" }}
-          >
-            {/* LEFT COLUMN */}
-            <div className="flex flex-col">
+          {/* First screen: min full viewport; hero + overview flow naturally (no flex-grow on hero grid — that was pushing overview below the fold) */}
+          <div className="flex min-h-svh flex-col">
+            <div className="flex flex-col pt-[96px] md:pt-[104px]">
+              <div
+                className="relative mx-auto flex flex-col px-4 pb-6 sm:px-0 lg:pb-8"
+                style={{ width: "min(var(--layout-width, 88%), 1280px)" }}
+              >
+                <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
+                  {/* LEFT COLUMN */}
+                  <div className="flex min-h-0 flex-col">
               <Link
                 href="/portfolio"
                 className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.24em] text-white/55 transition-colors hover:text-white"
@@ -764,15 +780,15 @@ export default function CaseStudyLayout({
               <PanelWorkflow workflow={workflow} theme={theme} />
             </div>
 
-            {/* RIGHT COLUMN */}
-            <div className="flex h-full flex-col">
-              <div
-                className="relative aspect-video w-full overflow-hidden rounded-[26px] border border-white/10"
-                style={{
-                  backgroundColor: "#0a0d12",
-                  boxShadow: `0 28px 70px -28px ${accentRing}, 0 32px 85px -32px ${accentSoftRing}`,
-                }}
-              >
+                  {/* RIGHT COLUMN: stretch with left on lg so metadata card can flex-1 and fill vertical gap */}
+                  <div className="flex min-h-0 flex-col lg:h-full">
+                    <div
+                      className="relative aspect-video w-full shrink-0 overflow-hidden rounded-[26px] border border-white/10"
+                      style={{
+                        backgroundColor: "#0a0d12",
+                        boxShadow: `0 28px 70px -28px ${accentRing}, 0 32px 85px -32px ${accentSoftRing}`,
+                      }}
+                    >
                 <Image
                   src={meta.coverImage}
                   alt={meta.title}
@@ -785,131 +801,135 @@ export default function CaseStudyLayout({
                   className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 via-black/5 to-black/40"
                   aria-hidden
                 />
-                <div
-                  className="pointer-events-none absolute inset-0 rounded-[26px] ring-1 ring-inset ring-white/10"
-                  aria-hidden
-                />
-              </div>
-
-              <div className="mt-4 flex-1 grid gap-4 rounded-2xl border border-white/10 bg-white/2 p-5 md:grid-cols-3">
-                <div className="flex h-full flex-col">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
-                    Deliverables
-                  </div>
-                  <ul className="mt-3 flex flex-1 flex-col justify-around gap-2 text-[12.5px] leading-snug text-white/75">
-                    {meta.deliverables.map((line) => (
-                      <li key={line} className="flex gap-2">
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke={theme.accent}
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="mt-0.5 h-4 w-4 shrink-0"
-                          aria-hidden
-                        >
-                          <circle cx="12" cy="12" r="9" />
-                          <path d="m8.5 12.5 2.5 2.5 4.5-5" />
-                        </svg>
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="flex h-full flex-col">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
-                    Tools
-                  </div>
-                  <ul className="mt-3 flex flex-1 flex-col justify-around gap-2 text-[12.5px] text-white/80">
-                    {meta.tools.map((tool) => {
-                      const logo = TOOL_LOGOS[tool];
-                      return (
-                        <li key={tool} className="flex items-center gap-2">
-                          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white/8">
-                            {logo ? (
-                              /* eslint-disable-next-line @next/next/no-img-element */
-                              <img
-                                src={logo}
-                                alt={tool}
-                                className="h-full w-full object-contain"
-                                loading="lazy"
-                              />
-                            ) : (
-                              <span className="text-[10px] font-black uppercase text-white/80">
-                                {tool.slice(0, 2)}
-                              </span>
-                            )}
-                          </span>
-                          {tool}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-
-                <div className="flex h-full flex-col">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
-                    Creative Fields
-                  </div>
-                  <div className="mt-3 flex flex-1 flex-wrap content-around gap-2.5">
-                    {meta.fields.map((field) => (
-                      <span
-                        key={field}
-                        className="h-fit rounded-full border px-3 py-1.5 text-[11px] font-semibold"
-                        style={{
-                          borderColor: accentChipBorder,
-                          backgroundColor: accentChipBg,
-                          color: theme.accent,
-                        }}
-                      >
-                        {field}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Overview */}
-          <div
-            className="relative mx-auto px-4 pb-8 sm:px-0 lg:pb-10"
-            style={{ width: "min(var(--layout-width, 88%), 1280px)" }}
-          >
-            <div className="border-t border-white/10 pt-5 md:pt-6">
-              <div className="grid gap-6 md:grid-cols-[1.1fr_1fr] md:items-center">
-                <div>
-                  <div
-                    className="text-[11px] font-bold uppercase tracking-[0.34em]"
-                    style={{ color: theme.accent }}
-                  >
-                    Project Overview
-                  </div>
-                  <p className="mt-2.5 max-w-xl text-[13px] leading-6 text-white/72 md:text-sm">
-                    {meta.overview.body}
-                  </p>
-                </div>
-                <div
-                  className="grid gap-3"
-                  style={{
-                    gridTemplateColumns: `repeat(${meta.overview.stats.length}, minmax(0, 1fr))`,
-                  }}
-                >
-                  {meta.overview.stats.map((s) => (
-                    <div key={s.label}>
                       <div
-                        className="text-2xl font-black tracking-tight text-white md:text-3xl"
-                        style={{ fontFamily: "var(--font-rajdhani)" }}
-                      >
-                        {s.value}
-                      </div>
-                      <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">
-                        {s.label}
+                        className="pointer-events-none absolute inset-0 rounded-[26px] ring-1 ring-inset ring-white/10"
+                        aria-hidden
+                      />
+                    </div>
+
+                    <div className="mt-4 flex min-h-0 flex-col rounded-2xl border border-white/10 bg-white/2 p-5 lg:flex-1">
+                      <div className="grid min-h-0 grid-cols-1 gap-6 md:h-full md:grid-cols-3 md:items-stretch md:gap-4">
+                        <div className="flex min-h-0 flex-col md:h-full">
+                          <div className="shrink-0 text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
+                            Deliverables
+                          </div>
+                          <ul className="mt-3 flex min-h-0 flex-col gap-2 text-[12.5px] leading-snug text-white/75 md:flex-1 md:justify-evenly md:gap-3">
+                          {meta.deliverables.map((line) => (
+                            <li key={line} className="flex gap-2">
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke={theme.accent}
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="mt-0.5 h-4 w-4 shrink-0"
+                                aria-hidden
+                              >
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                              </svg>
+                              <span>{line}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        </div>
+
+                        <div className="flex min-h-0 flex-col md:h-full">
+                          <div className="shrink-0 text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
+                            Tools
+                          </div>
+                          <ul className="mt-3 flex min-h-0 flex-col gap-2 text-[12.5px] text-white/80 md:flex-1 md:justify-evenly md:gap-3">
+                          {meta.tools.map((tool, toolIdx) => {
+                            const logo = TOOL_LOGOS[tool];
+                            return (
+                              <li
+                                key={`${tool}-${toolIdx}`}
+                                className="flex items-center gap-2"
+                              >
+                                <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white/8">
+                                  {logo ? (
+                                    /* eslint-disable-next-line @next/next/no-img-element */
+                                    <img
+                                      src={logo}
+                                      alt=""
+                                      className="h-full w-full object-contain"
+                                      loading="lazy"
+                                      aria-hidden
+                                    />
+                                  ) : (
+                                    <span className="text-[10px] font-black uppercase text-white/80">
+                                      {toolAbbrev(tool)}
+                                    </span>
+                                  )}
+                                </span>
+                                {tool}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                        </div>
+
+                        <div className="flex min-h-0 flex-col md:h-full">
+                          <div className="shrink-0 text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
+                            Creative Fields
+                          </div>
+                          <div className="mt-3 flex min-h-0 flex-wrap gap-2.5 md:flex-1 md:content-evenly md:gap-x-2.5 md:gap-y-3">
+                          {meta.fields.map((field) => (
+                            <span
+                              key={field}
+                              className="h-fit rounded-full border px-3 py-1.5 text-[11px] font-semibold"
+                              style={{
+                                borderColor: accentChipBorder,
+                                backgroundColor: accentChipBg,
+                                color: theme.accent,
+                              }}
+                            >
+                              {field}
+                            </span>
+                          ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                </div>
+
+                {/* Project overview: same intro screen as hero (not pushed below a forced full-viewport hero) */}
+                <div className="mt-8 border-t border-white/10 pt-6 md:mt-10 md:pt-8 lg:pb-2">
+                  <div className="grid gap-6 md:grid-cols-[1.1fr_1fr] md:items-center">
+                    <div>
+                      <div
+                        className="text-[11px] font-bold uppercase tracking-[0.34em]"
+                        style={{ color: theme.accent }}
+                      >
+                        Project Overview
+                      </div>
+                      <p className="mt-2.5 max-w-xl text-[13px] leading-6 text-white/72 md:text-sm">
+                        {meta.overview.body}
+                      </p>
+                    </div>
+                    <div
+                      className="grid gap-3"
+                      style={{
+                        gridTemplateColumns: `repeat(${meta.overview.stats.length}, minmax(0, 1fr))`,
+                      }}
+                    >
+                      {meta.overview.stats.map((s) => (
+                        <div key={s.label}>
+                          <div
+                            className="text-2xl font-black tracking-tight text-white md:text-3xl"
+                            style={{ fontFamily: "var(--font-rajdhani)" }}
+                          >
+                            {s.value}
+                          </div>
+                          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">
+                            {s.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
