@@ -118,11 +118,18 @@ const DEFAULT_ITEMS: PortfolioGalleryItem[] = [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/c93a5b67614633.5fbd2e1664ce9.png",
     href: "/portfolio/puzzle-wonderland",
   },
+  {
+    id: "reaper-lady-project-overdrive",
+    title: "Game Animation - Reaper & Lady - Project: OverDrive",
+    tag: "Behance Project",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/2bd1c365344203.5f702ed1b2566.png",
+    href: "/portfolio/reaper-lady-project-overdrive",
+  },
 ];
 
 /**
- * Lưới kín (lg+): 3 cột × 12 hàng đồng cao (1fr) + 4 hàng banner cuối.
- * Mỗi cột tổng row-span = 12 ở 12 hàng đầu; hàng banner 13–16 chia đều 3 ô.
+ * Lưới kín (lg+): 3 cột × 12 hàng mosaic + 2 dải banner full-width (hàng 17–20, 21–24).
  */
 const BENTO_LG: string[] = [
   "lg:col-start-1 lg:row-start-1 lg:row-span-4",
@@ -138,6 +145,7 @@ const BENTO_LG: string[] = [
   "lg:col-start-2 lg:row-start-13 lg:row-span-4",
   "lg:col-start-3 lg:row-start-13 lg:row-span-4",
   "lg:col-start-1 lg:col-span-3 lg:row-start-17 lg:row-span-4",
+  "lg:col-start-1 lg:col-span-3 lg:row-start-21 lg:row-span-4",
 ];
 
 export default function PortfolioGalleryGrid({
@@ -161,7 +169,7 @@ export default function PortfolioGalleryGrid({
             </span>
             <div className="h-px w-10 shrink-0 bg-white/10" />
             <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">
-              13 projects
+              14 projects
             </span>
           </div>
           <h2
@@ -179,7 +187,7 @@ export default function PortfolioGalleryGrid({
           </p>
         </header>
 
-        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:min-h-[250vh] lg:grid-cols-3 lg:grid-rows-[repeat(20,minmax(0,1fr))] lg:gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:min-h-[300vh] lg:grid-cols-3 lg:grid-rows-[repeat(24,minmax(0,1fr))] lg:gap-3">
           {items.map((item, index) => {
             const n = String(index + 1).padStart(2, "0");
             const lg = BENTO_LG[index] ?? "";

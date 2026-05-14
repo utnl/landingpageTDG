@@ -10,9 +10,13 @@ import type {
   HeroTitleColor,
   ProjectTheme,
   RelatedProject,
-  ShowcaseModule,
   WorkflowStep,
 } from "./case-study-types";
+import { hexToRgba } from "./portfolio-color-utils";
+import {
+  CaseStudyShowcaseWithSettings,
+  type SavedShowcaseUiV4,
+} from "./case-study-showcase-with-settings";
 
 const TOOL_LOGOS: Record<string, string> = {
   "Spine 2D": "/images/spinelogo.jpg",
@@ -31,21 +35,6 @@ function toolAbbrev(tool: string): string {
       .toUpperCase();
   }
   return tool.slice(0, 2).toUpperCase();
-}
-
-function hexToRgba(hex: string, alpha: number) {
-  const v = hex.replace("#", "");
-  const full =
-    v.length === 3
-      ? v
-          .split("")
-          .map((c) => c + c)
-          .join("")
-      : v;
-  const r = parseInt(full.slice(0, 2), 16);
-  const g = parseInt(full.slice(2, 4), 16);
-  const b = parseInt(full.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 function defaultHeroBackground(theme: ProjectTheme) {
@@ -332,313 +321,12 @@ function RelatedCard({
   );
 }
 
-function ShowcaseSectionLabel({
-  label,
-  theme,
-}: {
-  label: string;
-  theme: ProjectTheme;
-}) {
-  const bg = theme.sectionLabelBg ?? "#0a1418";
-  return (
-    <div
-      className="flex items-center justify-center px-6 py-8 md:py-12"
-      style={{ backgroundColor: bg }}
-    >
-      <div className="flex items-center gap-4">
-        <span
-          className="h-px w-12 shrink-0"
-          style={{ backgroundColor: hexToRgba(theme.accent, 0.33) }}
-          aria-hidden
-        />
-        <h3
-          className="text-2xl font-black uppercase tracking-[0.16em] md:text-3xl"
-          style={{ color: theme.accent, fontFamily: "var(--font-rajdhani)" }}
-        >
-          {label}
-        </h3>
-        <span
-          className="h-px w-12 shrink-0"
-          style={{ backgroundColor: hexToRgba(theme.accent, 0.33) }}
-          aria-hidden
-        />
-      </div>
-    </div>
-  );
-}
-
-function ShowcaseRenderer({
-  modules,
-  title,
-  theme,
-}: {
-  modules: readonly ShowcaseModule[];
-  title: string;
-  theme: ProjectTheme;
-}) {
-  const panelBg = theme.showcasePanelBg ?? "#0b1d24";
-  const labelBg = theme.sectionLabelBg ?? "#0a1418";
-  return (
-    <div
-      className="overflow-hidden rounded-[28px]"
-      style={{ backgroundColor: panelBg }}
-    >
-      {modules.map((module) => {
-        const altBase = `${title} module ${module.id}`;
-
-        if (module.variant === "sectionLabel") {
-          return (
-            <ShowcaseSectionLabel
-              key={module.id}
-              label={module.label}
-              theme={theme}
-            />
-          );
-        }
-
-        if (module.variant === "video") {
-          const aspect = module.aspect ?? 16 / 9;
-          return (
-            <div
-              key={module.id}
-              className="flex justify-center px-4 py-6 md:py-10"
-              style={{ backgroundColor: labelBg }}
-            >
-              <div
-                className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black"
-                style={{ aspectRatio: `${aspect}` }}
-              >
-                <iframe
-                  src={module.src}
-                  title={`${title} video reel`}
-                  loading="lazy"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 h-full w-full"
-                />
-              </div>
-            </div>
-          );
-        }
-
-        if (module.variant === "vimeo") {
-          const aspect = module.aspectRatio ?? 16 / 9;
-          return (
-            <div key={module.id} className="bg-black">
-              <div
-                className="relative mx-auto w-full max-w-[1600px]"
-                style={{ aspectRatio: `${aspect}` }}
-              >
-                <iframe
-                  src={module.embedSrc}
-                  title={`${title} video — ${module.id}`}
-                  loading="lazy"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 h-full w-full border-0"
-                />
-              </div>
-            </div>
-          );
-        }
-
-        if (module.variant === "videoEmbed") {
-          return (
-            <div
-              key={module.id}
-              className="flex justify-center px-4 py-6 md:py-10"
-              style={{ backgroundColor: labelBg }}
-            >
-              <div
-                className="relative w-full max-w-[420px] overflow-hidden rounded-2xl border border-white/10 bg-black"
-                style={{ aspectRatio: `${module.aspect}` }}
-              >
-                <iframe
-                  src={module.src}
-                  title={`${title} portrait reel`}
-                  loading="lazy"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 h-full w-full"
-                />
-              </div>
-            </div>
-          );
-        }
-
-        if (module.variant === "duo") {
-          return (
-            <div
-              key={module.id}
-              className="grid grid-cols-1 gap-2 md:grid-cols-2"
-              style={{ backgroundColor: panelBg }}
-            >
-              {module.srcs.map((src, idx) => (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  key={`${module.id}-${idx}`}
-                  src={src}
-                  alt={altBase}
-                  className="block h-auto w-full"
-                  loading="lazy"
-                />
-              ))}
-            </div>
-          );
-        }
-
-        if (module.variant === "trio") {
-          return (
-            <div
-              key={module.id}
-              className="grid grid-cols-1 px-3 py-6 sm:grid-cols-3 sm:px-4 md:py-10"
-              style={{ backgroundColor: panelBg }}
-            >
-              {module.srcs.map((src, idx) => (
-                <div
-                  key={`${module.id}-${idx}`}
-                  className="flex justify-center px-2 py-3"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={src}
-                    alt={`${altBase} ${idx + 1}`}
-                    className="block h-auto max-h-[560px] w-full max-w-[420px] object-contain"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-          );
-        }
-
-        if (module.variant === "square") {
-          const maxW = module.maxWidth ?? 680;
-          return (
-            <div
-              key={module.id}
-              className="flex justify-center px-4 py-3"
-              style={{ backgroundColor: labelBg }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={module.src}
-                alt={altBase}
-                className="block h-auto w-full rounded-lg"
-                style={{ maxWidth: `${maxW}px` }}
-                loading="lazy"
-              />
-            </div>
-          );
-        }
-
-        if (module.variant === "portrait") {
-          const maxW = module.maxWidth ?? 420;
-          return (
-            <div
-              key={module.id}
-              className="flex justify-center px-4 py-6 md:py-10"
-              style={{ backgroundColor: panelBg }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={module.src}
-                alt={altBase}
-                className="block h-auto w-full"
-                style={{ maxWidth: `${maxW}px` }}
-                loading="lazy"
-              />
-            </div>
-          );
-        }
-
-        if (module.variant === "closing") {
-          const isLarge = (module.size ?? "lg") === "lg";
-          const color =
-            module.color ?? (isLarge ? theme.accent : "rgba(255,255,255,0.55)");
-          return (
-            <div
-              key={module.id}
-              className={`flex items-center justify-center px-6 ${isLarge ? "py-16 md:py-24" : "py-14 md:py-20"}`}
-              style={{ backgroundColor: "#000" }}
-            >
-              {isLarge ? (
-                <h3
-                  className="text-center text-3xl font-black uppercase tracking-[0.08em] md:text-5xl"
-                  style={{ color, fontFamily: "var(--font-rajdhani)" }}
-                >
-                  {module.text}
-                </h3>
-              ) : (
-                <p
-                  className="text-center text-[22px] font-bold md:text-[25px]"
-                  style={{ color }}
-                >
-                  {module.text}
-                </p>
-              )}
-            </div>
-          );
-        }
-
-        if (module.variant === "info") {
-          return (
-            <div
-              key={module.id}
-              className="flex items-center justify-center bg-black px-6 py-10 md:py-12"
-            >
-              <div className="text-center">
-                <a
-                  href={module.linkUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] underline underline-offset-4 transition-opacity hover:opacity-80 md:text-base"
-                  style={{ color: theme.accent }}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden
-                    className="h-4 w-4"
-                  >
-                    <path d="M3.6 3.2c-.3.3-.5.7-.5 1.2v15.2c0 .5.2.9.5 1.2L12 12 3.6 3.2Zm10.4 7.4 2.6 1.5L19 14.4 13.7 9 14 10.6Zm-1.7 1-8.3 8.3c.3 0 .7-.1 1-.3l9.4-5.4-2.1-2.6Zm9.1-2.7L18 10.1l-2.5 1.4 2.5 1.4 3.5 2.1c.6-.3 1-.9 1-1.7v-2.3c0-.8-.4-1.4-1.1-1.7ZM4.6 3.1l8.3 8.3 2.1-2.1L5.6 3.4c-.3-.2-.7-.3-1-.3Z" />
-                  </svg>
-                  {module.linkLabel}
-                </a>
-                <p className="mt-3 text-[13px] italic leading-6 text-white/55 md:text-sm">
-                  Role in project:{" "}
-                  <span className="font-semibold not-italic text-white/80">
-                    {module.role}
-                  </span>
-                  <br />
-                  {module.note}
-                </p>
-              </div>
-            </div>
-          );
-        }
-
-        // banner | full | fullGif → full-width image
-        return (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            key={module.id}
-            src={module.src}
-            alt={altBase}
-            className="block h-auto w-full"
-            loading="lazy"
-          />
-        );
-      })}
-    </div>
-  );
-}
-
 export default function CaseStudyLayout({
   meta,
   modules,
   related,
-}: CaseStudyProps) {
+  showcaseUiInit = null,
+}: CaseStudyProps & { showcaseUiInit?: SavedShowcaseUiV4 | null }) {
   const { theme, workflow } = meta;
   const heroBg = theme.heroBackground ?? defaultHeroBackground(theme);
   const showcaseBg = theme.showcaseSectionBg ?? "#08161c";
@@ -950,10 +638,11 @@ export default function CaseStudyLayout({
               title="Project Modules"
               accent={theme.accent}
             />
-            <ShowcaseRenderer
+            <CaseStudyShowcaseWithSettings
               modules={modules}
               title={meta.title}
               theme={theme}
+              showcaseUiInit={showcaseUiInit}
             />
           </div>
         </section>

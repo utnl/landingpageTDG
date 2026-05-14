@@ -9,6 +9,8 @@ export type ProjectTheme = {
   showcaseSectionBg?: string;
   /** CSS background for the showcase media frame (the rounded container). */
   showcasePanelBg?: string;
+  /** Optional fill behind GIF grids (trio/duo cells). Defaults to showcasePanelBg. */
+  showcaseMediaBg?: string;
   /** CSS background for the section-label divider band. */
   sectionLabelBg?: string;
 };
