@@ -8,11 +8,11 @@ export type PortfolioGalleryItem = {
   title: string;
   tag: string;
   image: string;
-  /** Link nút VIEW PROJECT */
+  /** Link for VIEW PROJECT button */
   href?: string;
 };
 
-/** 10 dự án — chỉnh trong production */
+/** 10 projects — adjust in production */
 const DEFAULT_ITEMS: PortfolioGalleryItem[] = [
   {
     id: "kayn-snow-moon",
@@ -129,7 +129,7 @@ const DEFAULT_ITEMS: PortfolioGalleryItem[] = [
 ];
 
 /**
- * Lưới kín (lg+): 3 cột × 12 hàng mosaic + 2 dải banner full-width (hàng 17–20, 21–24).
+ * Tight grid (lg+): 3 columns × 12 rows mosaic + 2 full-width banner strips (rows 17–20, 21–24).
  */
 const BENTO_LG: string[] = [
   "lg:col-start-1 lg:row-start-1 lg:row-span-4",
@@ -182,8 +182,7 @@ export default function PortfolioGalleryGrid({
             className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base"
             style={{ fontFamily: "var(--font-geist-sans), sans-serif" }}
           >
-            Ba cột mosaic khớp kín (không lỗ): mỗi cột cùng tổng chiều cao 12
-            lát; banner cuối trải full ngang.
+            Three tightly-fitted mosaic columns (no gaps): each column has a total height of 12 tiles; final banner stretches full width.
           </p>
         </header>
 

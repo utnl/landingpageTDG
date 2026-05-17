@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         hostname: "pps.services.adobe.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
     ],
   },
 };

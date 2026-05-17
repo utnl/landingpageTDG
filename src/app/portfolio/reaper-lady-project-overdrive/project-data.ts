@@ -124,7 +124,7 @@ export const showcaseModules: readonly ShowcaseModule[] = [
   { id: "m08", variant: "banner", src: `${MW}/13c8a965344203.5f702ed1b1519.png` },
 ];
 
-/** Mặc định lần đầu (khi chưa có localStorage showcase). */
+/** Default for first load (when no localStorage showcase exists). */
 export const showcaseUiInit: SavedShowcaseUiV4 = {
   v: 4,
   grid: {

@@ -511,3 +511,8 @@ html {
 .nav-link.services-trigger::after {
   display: none;
 }
+
+/* Portfolio grid fade-in animation */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}

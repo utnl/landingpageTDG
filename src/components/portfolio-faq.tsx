@@ -4,34 +4,34 @@ import ServiceFaqSection, {
 
 export const portfolioFaqItems: ServiceFaqItem[] = [
   {
-    question: "TD Games có outsource theo dự án hay retainer không?",
+    question: "Does TD Games offer project-based or retainer outsourcing?",
     answer:
-      "Có cả hai: milestone theo giai đoạn (concept → production → polish) hoặc gói giờ / team cố định cho dự án dài. Chúng tôi linh hoạt theo scope và lịch ship của bạn.",
+      "Both: milestone-based phases (concept → production → polish) or fixed hourly/team packages for long-term projects. We're flexible based on your scope and shipping schedule.",
   },
   {
-    question: "Pipeline giao nhận file thường dùng là gì?",
+    question: "What's your typical file delivery pipeline?",
     answer:
-      "PSD / PNG / Spine / JSON theo engine; có thể chỉnh theo Confluence, Notion hoặc Slack của studio bạn. Chúng tôi ưu tiên versioning rõ ràng và naming convention thống nhất.",
+      "PSD / PNG / Spine / JSON based on your engine; can adapt to your studio's Confluence, Notion, or Slack. We prioritize clear versioning and consistent naming conventions.",
   },
   {
-    question: "Thời gian phản hồi báo giá và kick-off trung bình bao lâu?",
+    question: "What's the average response time for quotes and kick-off?",
     answer:
-      "Brief đầy đủ: báo giá sơ bộ trong 24–48h làm việc. Sau khi chốt scope, team có thể kick-off trong tuần tùy tải production hiện tại.",
+      "With a complete brief: preliminary quote within 24–48 business hours. After scope confirmation, the team can kick off within the week depending on current production load.",
   },
   {
-    question: "Có ký NDA và giữ bản quyền tài sạn không?",
+    question: "Do you sign NDAs and protect asset rights?",
     answer:
-      "Có. NDA hai chiều là chuẩn trước khi xem art confidential. Quyền sử dụng cuối cùng theo hợp đồng (work-for-hire hoặc license) — luôn ghi rõ trong proposal.",
+      "Yes. Two-way NDAs are standard before viewing confidential art. Final usage rights per contract (work-for-hire or license) — always clearly stated in the proposal.",
   },
   {
-    question: "Có làm cả 2D art, animation và VFX trong một dự án không?",
+    question: "Can you handle 2D art, animation, and VFX in one project?",
     answer:
-      "Có. Bạn có thể gom 2D Art, 2D Animation và 2D VFX trong một roadmap để đồng bộ style, palette và technical spec — giảm friction khi tích hợp vào game.",
+      "Yes. You can bundle 2D Art, 2D Animation, and 2D VFX in one roadmap to synchronize style, palette, and technical specs — reducing friction during game integration.",
   },
   {
-    question: "Muốn xem thêm case hoặc test một nhân vật mẫu thì sao?",
+    question: "Want to see more cases or test a sample character?",
     answer:
-      "Gửi brief ngắn qua form Contact bên dưới hoặc email hello@tdgames.com. Với một số dự án lớn chúng tôi có thể thảo luận art test có phí / miễn phí tùy scope.",
+      "Send a short brief via the Contact form below or email hello@tdgames.com. For larger projects, we can discuss paid/unpaid art tests depending on scope.",
   },
 ];
 
@@ -40,7 +40,7 @@ export default function PortfolioFaq() {
     <ServiceFaqSection
       id="portfolio-faq"
       sectionStep="// 03"
-      intro="Câu hỏi thường gặp khi làm việc với TD Games — pipeline, hợp đồng và cách bắt đầu nhanh."
+      intro="Common questions when working with TD Games — pipeline, contracts, and how to get started quickly."
       items={portfolioFaqItems}
     />
   );

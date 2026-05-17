@@ -79,8 +79,8 @@ const BOARD_CONFIG = {
   height: 520,
 };
 /**
- * Sàn tối thiểu (px logic); kích thước thật = max(bounds cards, min này) để JSON/export
- * không lệch scale khi chỉnh layout.
+ * Minimum floor (logical px); actual size = max(card bounds, this min) so JSON/export
+ * doesn't scale incorrectly when adjusting layout.
  */
 const BOARD_DESIGN_MIN = { w: 1065, h: 800 } as const;
 
@@ -107,7 +107,7 @@ function computeBoardDesignSize(cards: CardConfig[]): {
   return { w, h, topPad };
 }
 
-/** Tỉ lệ pixel gốc của public/images/bgright.png (chỉnh trong settings nếu đổi file). */
+/** Original pixel ratio of public/images/bgright.png (adjust in settings if changing file). */
 const BG_RIGHT_NATURAL = { w: 1065, h: 938 } as const;
 
 type InteractionState =
@@ -148,7 +148,7 @@ type InteractionState =
     }
   | null;
 
-/** Snapshot BG Right panel (+ scale ảnh bgright). `boardFitScale` không lưu — tính lại theo viewport. */
+/** Snapshot BG Right panel (+ bgright image scale). `boardFitScale` not saved — recalculated per viewport. */
 type PortfolioBgRightInit = {
   widthVw: number;
   heightVh: number;
@@ -409,6 +409,14 @@ const ADDITIONAL_PROJECTS: ProjectCard[] = [
     image: "/images/summonerDetail.png",
     slug: "summoner-era",
   },
+  {
+    id: "art-study",
+    title: "Art Study",
+    subtitle: "Character Design · Digital Art",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/3a9c4e56034977.599d9bd554857.jpg",
+    slug: "art-study",
+  },
 ];
 
 const PORTFOLIO_BG_RIGHT_INITIAL: PortfolioBgRightInit = {
@@ -424,7 +432,7 @@ const PORTFOLIO_BG_RIGHT_INITIAL: PortfolioBgRightInit = {
   imageScale: 1.2,
 };
 
-/** Khớp Init JSON export (không derive từ compute để tránh lệch 1px). */
+/** Match Init JSON export (don't derive from compute to avoid 1px offset). */
 const PORTFOLIO_DESIGN_CANVAS_INITIAL: {
   w: number;
   h: number;
@@ -462,7 +470,7 @@ function applyPortfolioInitPayload(
   },
 ) {
   if (typeof data.background === "string") {
-    // Không cho phép dùng bgright.png làm background full-page (nó sẽ "to đùng" và trùng với khối phải)
+    // Don't allow bgright.png as full-page background (it will be huge and overlap with right block)
     apply.setBgImage(
       /bgright\.png/i.test(data.background) ||
         /a0a5dab6-1e06-4a1b-af95-af0b51fc27e6\.png/i.test(data.background)
@@ -516,7 +524,7 @@ function applyPortfolioInitPayload(
 
 export default function PortfolioPage() {
   const ENABLE_EDITOR = false;
-  /** Bật lại `true` khi cần: takeover nền + scale khi hover card. */
+  /** Re-enable `true` when needed: background takeover + scale on card hover. */
   const ENABLE_PORTFOLIO_HOVER_FX = true;
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [introCardsReady, setIntroCardsReady] = useState(false);
@@ -536,11 +544,11 @@ export default function PortfolioPage() {
   const [bgRightOffsetY, setBgRightOffsetY] = useState(
     PORTFOLIO_PAGE_DEFAULTS.bgRight.offsetY,
   );
-  /** Xoay riêng nền bgright (card vẫn dùng BOARD_CONFIG.rotate). */
+  /** Rotate bgright background separately (cards still use BOARD_CONFIG.rotate). */
   const [bgRightRotate, setBgRightRotate] = useState(
     PORTFOLIO_PAGE_DEFAULTS.bgRight.rotate,
   );
-  /** Bật: chiều cao khối theo đúng tỉ lệ ảnh (width vw × aspect). Tắt: dùng vh + max px như cũ. */
+  /** Enable: block height follows image aspect ratio (width vw × aspect). Disable: use vh + max px as before. */
   const [bgRightLockAspect, setBgRightLockAspect] = useState(
     PORTFOLIO_PAGE_DEFAULTS.bgRight.lockAspect,
   );
@@ -696,7 +704,7 @@ export default function PortfolioPage() {
     setPickHint(
       availableImageSet.has(nextPath)
         ? null
-        : `Không thấy file trong public/images: ${nextPath}`,
+        : `File not found in public/images: ${nextPath}`,
     );
   };
 
@@ -709,7 +717,7 @@ export default function PortfolioPage() {
     setPickHint(
       availableImageSet.has(nextPath)
         ? null
-        : `Không thấy file trong public/images: ${nextPath}`,
+        : `File not found in public/images: ${nextPath}`,
     );
   };
 
@@ -1777,7 +1785,7 @@ export default function PortfolioPage() {
                       borderColor: "var(--hero-btn-bg, #f59e0b)",
                     }}
                   >
-                    Get in Contact
+                    Get in Touch
                   </Link>
                 </div>
               </div>
@@ -2217,12 +2225,12 @@ export default function PortfolioPage() {
                 Selected <AccentHighlight>Works</AccentHighlight>
               </h2>
               <p className="mt-4 max-w-xl text-left text-sm leading-relaxed text-white/65 md:text-base">
-                Tuyển chọn các dự án game art tiêu biểu của TD Games — 2D Art, Animation, Concept Art và Environment.
+                Featured game art projects from TD Games — 2D Art, Animation, Concept Art, and Environment Design.
               </p>
             </header>
 
             <div className="mt-10 md:mt-12">
-              <PortfolioGrid projects={ADDITIONAL_PROJECTS} itemsPerPage={12} />
+              <PortfolioGrid projects={ADDITIONAL_PROJECTS} />
             </div>
           </div>
         </section>

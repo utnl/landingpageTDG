@@ -6,7 +6,7 @@ import { Changa_One } from "next/font/google";
 
 const changaOne = Changa_One({ weight: "400", subsets: ["latin"] });
 
-// Mock data - trong thực tế sẽ fetch từ API/database
+// Mock data - in production, fetch from API/database
 const MOCK_PROJECTS: ProjectCard[] = [
   {
     id: "1",

@@ -275,7 +275,7 @@ export default function HomePageLower() {
                 CHARACTER <AccentHighlight>SHOWCASE</AccentHighlight>
               </h3>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-white/60">
-                Hover để chạy chậm lại, và giữ chuột kéo trái/phải để xem thêm.
+                Bringing game characters to life through expressive animation, dynamic poses, and polished visual effects.
               </p>
             </div>
             <div className="hidden items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-white/35 md:flex">

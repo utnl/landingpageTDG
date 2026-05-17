@@ -19,12 +19,12 @@ export const service2DArtWorkflowConfig: ServiceWorkflowConfig = {
     {
       title: "Rough concept",
       description: "Explore ideas with quick sketches and compositions.",
-      image: "/images/scribble.png",
+      image: "/images/Casual_character-1024x683.jpg",
     },
     {
       title: "Lineart (if necessary)",
       description: "Refine the sketch with clean lines and details.",
-      image: "/images/trieuvan.png",
+      image: "/images/Isometry_art-1024x683.jpg",
     },
     {
       title: "Color concept",

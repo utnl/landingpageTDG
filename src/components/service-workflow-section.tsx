@@ -240,7 +240,7 @@ export default function ServiceWorkflowSection(config: ServiceWorkflowConfig) {
               </div>
             </div>
             <p className="mt-2 text-center text-[10px] text-white/40 lg:mt-1 lg:text-[9px]">
-              Chọn bước bên dưới hoặc phím ← →
+              Select step below or use ← → keys
             </p>
           </div>
 

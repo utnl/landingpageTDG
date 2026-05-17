@@ -159,7 +159,7 @@ export default function SiteFooter() {
                     </svg>
                   </ContactIconBox>
                   <span className="min-w-0 pt-1.5 leading-snug">
-                    505 Minh Khai, Hà Nội
+                    505 Minh Khai, Hanoi, Vietnam
                   </span>
                 </li>
                 <li>

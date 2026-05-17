@@ -60,7 +60,7 @@ export default function CareersPage() {
       <main
         className={`min-h-screen bg-[#090a10] text-white ${nunitoSans.className}`}
       >
-        <section className="relative min-h-[min(88svh,820px)] overflow-hidden border-b border-white/10">
+        <section className="relative h-[100vh] overflow-hidden border-b border-white/10">
           <div className="pointer-events-none absolute inset-0 z-0">
             <Image
               src="/images/f0d05f71-5089-4b3f-b453-7a8d19afc013.png"
@@ -70,29 +70,27 @@ export default function CareersPage() {
               sizes="100vw"
               priority
             />
-            <div className="absolute inset-0 bg-linear-to-t from-[#090a10] via-black/75 to-black/50" />
           </div>
 
           <div
-            className="relative z-10 mx-auto flex min-h-[min(88svh,820px)] items-end px-4 pb-16 pt-28 md:items-center md:pb-24 md:pt-32"
+            className="relative z-10 mx-auto flex h-[100vh] items-end px-4 pb-16 pt-28 md:items-center md:pb-24 md:pt-32"
             style={{ width: "var(--layout-width, 75%)" }}
           >
             <div className="max-w-2xl">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#ff9f1a]">
-                [Mock] Hiring
+                Hiring
               </p>
               <h1
                 className={`mt-4 text-5xl font-black uppercase leading-[0.98] tracking-tight sm:text-6xl md:text-7xl ${changaOne.className}`}
               >
-                Build games{" "}
+                Build games
+                <br />
                 <span className="text-[#f59e0b] drop-shadow-[0_0_24px_rgba(245,158,11,0.35)]">
                   with us
                 </span>
               </h1>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-white/90 md:text-lg">
-                Trang <strong className="text-white">careers nháp</strong>. Thay
-                copy bằng giọng điệu employer brand; nối form ATS hoặc email HR
-                khi có JD thật.
+                Join our creative team and bring stunning game art to life. We're looking for passionate artists who love crafting characters, environments, and visual effects that players remember.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <a

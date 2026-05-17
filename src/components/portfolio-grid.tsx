@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Nunito_Sans } from "next/font/google";
@@ -21,27 +21,43 @@ export type ProjectCard = {
 
 type PortfolioGridProps = {
   projects: ProjectCard[];
-  itemsPerPage?: number;
 };
 
-export default function PortfolioGrid({
-  projects,
-  itemsPerPage = 12,
-}: PortfolioGridProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+export default function PortfolioGrid({ projects }: PortfolioGridProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  const totalPages = Math.ceil(projects.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentProjects = projects.slice(startIndex, endIndex);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className={`w-full ${nunitoSans.className}`}>
+    <div ref={sectionRef} className={`w-full ${nunitoSans.className}`}>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {currentProjects.map((project) => (
+        {projects.map((project, index) => (
           <article
             key={project.id}
-            className="group relative overflow-hidden rounded-xl bg-white/5 shadow-xl transition-all duration-500 hover:scale-105"
+            className={`group relative overflow-hidden rounded-xl bg-white/5 shadow-xl transition-all duration-500 hover:scale-105 ${
+              isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-8"
+            }`}
+            style={{
+              animationDelay: `${index * 50}ms`,
+            }}
           >
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/50">
               <Image
@@ -76,45 +92,9 @@ export default function PortfolioGrid({
         ))}
       </div>
 
-      {currentProjects.length === 0 && (
+      {projects.length === 0 && (
         <div className="py-20 text-center">
           <p className="text-xl text-white/60">No projects found.</p>
-        </div>
-      )}
-
-      {totalPages > 1 && (
-        <div className="mt-12 flex items-center justify-center gap-2">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
-            className="rounded-lg border-2 border-white/20 px-4 py-2 text-sm font-semibold text-white transition-all hover:border-amber-500 disabled:opacity-30"
-          >
-            Previous
-          </button>
-
-          <div className="flex gap-2">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`min-w-[40px] rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
-                  currentPage === page
-                    ? "bg-amber-500 text-black"
-                    : "border-2 border-white/20 text-white hover:border-amber-500"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
-            className="rounded-lg border-2 border-white/20 px-4 py-2 text-sm font-semibold text-white transition-all hover:border-amber-500 disabled:opacity-30"
-          >
-            Next
-          </button>
         </div>
       )}
     </div>
