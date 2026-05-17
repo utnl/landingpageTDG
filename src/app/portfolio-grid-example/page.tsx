@@ -154,7 +154,7 @@ export default function PortfolioGridExamplePage() {
         {/* Portfolio Grid Section */}
         <section className="bg-black py-16">
           <div className="container mx-auto px-4">
-            <PortfolioGrid projects={MOCK_PROJECTS} itemsPerPage={12} />
+            <PortfolioGrid projects={MOCK_PROJECTS} />
           </div>
         </section>
 

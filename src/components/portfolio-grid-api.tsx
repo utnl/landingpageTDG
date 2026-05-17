@@ -54,16 +54,16 @@ export default function PortfolioGridApi({
         const response = await fetch(`/api/projects?${params}`);
         if (!response.ok) throw new Error("Failed to fetch projects");
 
-        const data = await response.json();
+        const data = (await response.json()) as { projects: ProjectCard[]; total: number };
         setProjects(data.projects);
         setTotal(data.total);
 
         // Extract unique categories (only on first load)
         if (categories.length === 1) {
-          const uniqueCategories = [
-            "all",
-            ...new Set(data.projects.map((p: ProjectCard) => p.category)),
-          ];
+          const categoryList: string[] = data.projects
+            .map((p) => p.category)
+            .filter((cat): cat is string => typeof cat === "string");
+          const uniqueCategories: string[] = ["all", ...Array.from(new Set(categoryList))];
           setCategories(uniqueCategories);
         }
       } catch (err) {
