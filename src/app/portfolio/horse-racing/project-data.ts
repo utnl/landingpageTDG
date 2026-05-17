@@ -12,8 +12,8 @@ export const projectMeta: ProjectMeta = {
   heroTitle: {
     primary: [
       { text: "Horse", color: "accent" },
-      { text: " " },
-      { text: "Racing", color: "white" },
+      { text: " ", color: "white" },
+      { text: "Racing", color: "accentSoft" },
     ],
     subtitle: [{ text: "Splash Art · Animation", color: "soft" }],
   },
@@ -57,10 +57,10 @@ export const projectMeta: ProjectMeta = {
     "nft",
   ],
   theme: {
-    accent: "#ffb000",
-    accentSoft: "#ff7700",
+    accent: "#ec4899",
+    accentSoft: "#06b6d4",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(255,176,0,0.16), transparent 36%), radial-gradient(circle at top right, rgba(255,140,58,0.16), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
+      "radial-gradient(circle at top left, rgba(236,72,153,0.16), transparent 36%), radial-gradient(circle at top right, rgba(6,182,212,0.16), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
     showcaseSectionBg: "#191919",
     showcasePanelBg: "#222221",
     sectionLabelBg: "#191919",
@@ -93,7 +93,7 @@ export const showcaseModules: readonly ShowcaseModule[] = [
     variant: "closing",
     text: "THANK FOR WATCHING!!",
     size: "lg",
-    color: "#ff7700",
+    color: "#ec4899",
   },
 ];
 

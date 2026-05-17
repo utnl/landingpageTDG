@@ -11,7 +11,7 @@ export const projectMeta: ProjectMeta = {
     "Cinematic lore trailer for Axie Infinity Origins — storyboard-led motion sequence with character beats, environment FX, and pacing tuned for an in-world reveal.",
   heroTitle: {
     primary: [
-      { text: "Lore", color: "white" },
+      { text: "Lore", color: "accentSoft" },
       { text: " " },
       { text: "Axie", color: "accent" },
       { text: " " },
@@ -58,12 +58,13 @@ export const projectMeta: ProjectMeta = {
     "Video Editing",
   ],
   theme: {
-    accent: "#ffb000",
-    accentSoft: "#ff8c3a",
+    accent: "#f5deb3",
+    accentSoft: "#8b7355",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(255,176,0,0.16), transparent 36%), radial-gradient(circle at top right, rgba(255,140,58,0.16), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
+      "radial-gradient(circle at top left, rgba(245,222,179,0.18), transparent 36%), radial-gradient(circle at top right, rgba(139,115,85,0.16), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
     showcaseSectionBg: "#191919",
     showcasePanelBg: "#222221",
+    showcaseMediaBg: "#2a2520",
     sectionLabelBg: "#191919",
   },
   workflow: [

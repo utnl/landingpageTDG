@@ -67,9 +67,9 @@ export const projectMeta: ProjectMeta = {
   ],
   theme: {
     accent: "#fbbf24",
-    accentSoft: "#fb7185",
+    accentSoft: "#ef4444",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(251,191,36,0.20), transparent 42%), radial-gradient(circle at top right, rgba(251,113,133,0.16), transparent 42%), linear-gradient(180deg, #14100a 0%, #050708 75%)",
+      "radial-gradient(circle at top left, rgba(251,191,36,0.20), transparent 42%), radial-gradient(circle at top right, rgba(239,68,68,0.18), transparent 42%), linear-gradient(180deg, #1a1108 0%, #0a0604 75%)",
     showcaseSectionBg: "#13100a",
     showcasePanelBg: "#1b1610",
     sectionLabelBg: "#15110b",

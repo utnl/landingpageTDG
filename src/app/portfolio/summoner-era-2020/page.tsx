@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,7 +8,8 @@ import SiteFooter from "@/components/site-footer";
 import { projectMeta, relatedProjects, showcaseModules } from "./project-data";
 
 function FactIcon({ name }: { name: string }) {
-  const common = "h-5 w-5 text-[#a78bfa]";
+  const accentColor = projectMeta.theme?.accent || "#22d3ee";
+  const common = `h-5 w-5`;
   if (name === "calendar") {
     return (
       <svg
@@ -17,6 +20,7 @@ function FactIcon({ name }: { name: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
         className={common}
+        style={{ color: accentColor }}
         aria-hidden
       >
         <rect x="3.5" y="5" width="17" height="15" rx="2.5" />
@@ -34,6 +38,7 @@ function FactIcon({ name }: { name: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
         className={common}
+        style={{ color: accentColor }}
         aria-hidden
       >
         <circle cx="9" cy="8.5" r="3.5" />
@@ -52,6 +57,7 @@ function FactIcon({ name }: { name: string }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={common}
+      style={{ color: accentColor }}
       aria-hidden
     >
       <path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" />
@@ -61,21 +67,46 @@ function FactIcon({ name }: { name: string }) {
 }
 
 function HeroTitle() {
+  const { heroTitle, theme } = projectMeta;
+  
+  if (!heroTitle) {
+    return (
+      <h1
+        className="mt-3 text-[28px] font-black uppercase leading-[0.98] tracking-tight text-white md:text-[40px]"
+        style={{ fontFamily: "var(--font-rajdhani)" }}
+      >
+        {projectMeta.title}
+      </h1>
+    );
+  }
+
+  const getColor = (color: string) => {
+    if (color === "accent") return theme?.accent || "#22d3ee";
+    if (color === "accentSoft") return theme?.accentSoft || "#ffffff";
+    if (color === "white") return "#ffffff";
+    if (color === "soft") return "rgba(255,255,255,0.55)";
+    if (color === "divider") return "rgba(255,255,255,0.40)";
+    return "#ffffff";
+  };
+
   return (
     <h1
       className="mt-3 text-[28px] font-black uppercase leading-[0.98] tracking-tight text-white md:text-[40px]"
       style={{ fontFamily: "var(--font-rajdhani)" }}
     >
       <span className="block">
-        <span className="text-[#a78bfa]">Summoner</span>{" "}
-        <span className="text-[#ffd966]">Era</span>
+        {heroTitle.primary.map((segment, i) => (
+          <span key={i} style={{ color: getColor(segment.color) }}>
+            {segment.text}
+          </span>
+        ))}
       </span>
       <span className="mt-1 block text-[0.62em] font-black tracking-[0.06em] md:text-[0.58em]">
-        <span className="text-white/72">Login Screen</span>
-        <span className="text-white/40"> · </span>
-        <span className="text-[#a78bfa]">Animation</span>
-        <span className="text-white/40"> · </span>
-        <span className="text-white/55">2020</span>
+        {heroTitle.subtitle.map((segment, i) => (
+          <span key={i} style={{ color: getColor(segment.color) }}>
+            {segment.text}
+          </span>
+        ))}
       </span>
     </h1>
   );
@@ -87,7 +118,8 @@ const TOOL_LOGOS: Record<string, string> = {
 };
 
 function PanelWorkflow() {
-  const steps = [
+  const accentColor = projectMeta.theme?.accent || "#22d3ee";
+  const steps = projectMeta.workflow || [
     { n: "01", t: "Concept", sub: "Art handoff" },
     { n: "02", t: "Rig", sub: "Ps · Spine 2D" },
     { n: "03", t: "Animate", sub: "Ae · VFX" },
@@ -105,11 +137,23 @@ function PanelWorkflow() {
       </div>
 
       <div className="relative mt-5 flex-1">
-        <div className="pointer-events-none absolute left-[12%] right-[12%] top-[20px] h-px bg-linear-to-r from-[#a78bfa]/55 via-[#a78bfa]/25 to-white/10" />
+        <div 
+          className="pointer-events-none absolute left-[12%] right-[12%] top-[20px] h-px" 
+          style={{ 
+            background: `linear-gradient(to right, ${accentColor}88, ${accentColor}40, rgba(255,255,255,0.1))` 
+          }}
+        />
         <div className="relative grid grid-cols-4 gap-1">
           {steps.map((s, i) => (
             <div key={s.n} className="flex flex-col items-center text-center">
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-full border border-[#a78bfa]/55 bg-[#141124] text-[12px] font-black text-[#a78bfa] shadow-[0_0_0_3px_rgba(20,20,20,1)]">
+              <div 
+                className="relative flex h-10 w-10 items-center justify-center rounded-full text-[12px] font-black shadow-[0_0_0_3px_rgba(20,20,20,1)]"
+                style={{
+                  border: `1px solid ${accentColor}88`,
+                  backgroundColor: '#141124',
+                  color: accentColor
+                }}
+              >
                 {s.n}
                 {i < steps.length - 1 && (
                   <svg
@@ -119,7 +163,8 @@ function PanelWorkflow() {
                     strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="absolute right-[-10px] top-1/2 h-3 w-3 -translate-y-1/2 text-[#a78bfa]/70"
+                    className="absolute right-[-10px] top-1/2 h-3 w-3 -translate-y-1/2"
+                    style={{ color: `${accentColor}b3` }}
                     aria-hidden
                   >
                     <path d="M9 6l6 6-6 6" />
@@ -141,9 +186,13 @@ function PanelWorkflow() {
 }
 
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
+  const accentColor = projectMeta.theme?.accent || "#22d3ee";
   return (
     <div className="mb-8">
-      <div className="text-[11px] font-bold uppercase tracking-[0.34em] text-[#a78bfa]">
+      <div 
+        className="text-[11px] font-bold uppercase tracking-[0.34em]"
+        style={{ color: accentColor }}
+      >
         {eyebrow}
       </div>
       <h2
@@ -161,8 +210,13 @@ function RelatedCard({
 }: {
   project: (typeof relatedProjects)[number];
 }) {
+  const accentColor = projectMeta.theme?.accent || "#22d3ee";
   const className =
-    "group overflow-hidden rounded-[24px] border border-white/10 bg-[#131013] transition-colors hover:border-[#a78bfa]/40";
+    "group overflow-hidden rounded-[24px] border border-white/10 bg-[#131013] transition-colors";
+  const hoverStyle = { 
+    borderColor: `${accentColor}66` 
+  };
+  
   const body = (
     <>
       <div className="relative h-52 w-full overflow-hidden">
@@ -175,7 +229,10 @@ function RelatedCard({
         />
       </div>
       <div className="p-5">
-        <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#a78bfa]">
+        <div 
+          className="text-[11px] font-bold uppercase tracking-[0.22em]"
+          style={{ color: accentColor }}
+        >
           {project.badge}
         </div>
         <h3
@@ -197,6 +254,12 @@ function RelatedCard({
       <Link
         href={project.href}
         className={className}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = hoverStyle.borderColor;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+        }}
         aria-label={`Open ${project.title}`}
       >
         {body}
@@ -210,6 +273,12 @@ function RelatedCard({
       target="_blank"
       rel="noreferrer"
       className={className}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = hoverStyle.borderColor;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+      }}
     >
       {body}
     </a>
@@ -221,7 +290,7 @@ export default function SummonerEra2020DetailPage() {
     <>
       <SiteHeader />
       <main className="bg-[#080808] text-white">
-        <section className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(167,139,250,0.22),transparent_42%),radial-gradient(circle_at_top_right,rgba(255,217,102,0.16),transparent_42%),radial-gradient(ellipse_at_60%_0%,rgba(99,102,241,0.18),transparent_50%),linear-gradient(180deg,#15102a_0%,#0a0814_75%)] pt-20 md:pt-24">
+        <section className="relative overflow-hidden border-b border-white/10 pt-20 md:pt-24" style={{ background: projectMeta.theme?.heroBackground || "radial-gradient(circle at top left, rgba(34,211,238,0.18), transparent 35%), radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 38%), linear-gradient(180deg, #0a1a1f 0%, #050a0c 75%)" }}>
           <div
             className="relative mx-auto grid gap-8 px-4 pb-6 sm:px-0 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch lg:pb-8"
             style={{ width: "min(var(--layout-width, 88%), 1280px)" }}
@@ -234,7 +303,10 @@ export default function SummonerEra2020DetailPage() {
                 <span aria-hidden>←</span>
                 Back to Portfolio
               </Link>
-              <div className="mt-4 text-[11px] font-bold uppercase tracking-[0.34em] text-[#a78bfa]">
+              <div 
+                className="mt-4 text-[11px] font-bold uppercase tracking-[0.34em]"
+                style={{ color: projectMeta.theme?.accent || "#22d3ee" }}
+              >
                 {projectMeta.eyebrow}
               </div>
 
@@ -261,7 +333,17 @@ export default function SummonerEra2020DetailPage() {
                   href={projectMeta.behanceUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#a78bfa] px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-black transition-colors hover:bg-[#bea3ff]"
+                  className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-black transition-colors"
+                  style={{ 
+                    backgroundColor: projectMeta.theme?.accent || "#22d3ee",
+                  }}
+                  onMouseEnter={(e) => {
+                    const color = projectMeta.theme?.accent || "#22d3ee";
+                    e.currentTarget.style.backgroundColor = `${color}dd`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = projectMeta.theme?.accent || "#22d3ee";
+                  }}
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -280,7 +362,16 @@ export default function SummonerEra2020DetailPage() {
                 </a>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-colors hover:border-[#a78bfa]/50 hover:bg-[#a78bfa]/10"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-colors"
+                  onMouseEnter={(e) => {
+                    const color = projectMeta.theme?.accent || "#22d3ee";
+                    e.currentTarget.style.borderColor = `${color}80`;
+                    e.currentTarget.style.backgroundColor = `${color}1a`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+                    e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
+                  }}
                 >
                   Ask for Similar Work
                   <svg
@@ -349,11 +440,11 @@ export default function SummonerEra2020DetailPage() {
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
-                          stroke="#a78bfa"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           className="mt-0.5 h-4 w-4 shrink-0"
+                          style={{ stroke: projectMeta.theme?.accent || "#22d3ee" }}
                           aria-hidden
                         >
                           <circle cx="12" cy="12" r="9" />
@@ -404,7 +495,12 @@ export default function SummonerEra2020DetailPage() {
                     {projectMeta.fields.map((field) => (
                       <span
                         key={field}
-                        className="h-fit rounded-full border border-[#a78bfa]/25 bg-[#a78bfa]/10 px-3 py-1.5 text-[11px] font-semibold text-[#d8caff]"
+                        className="h-fit rounded-full px-3 py-1.5 text-[11px] font-semibold"
+                        style={{
+                          border: `1px solid ${projectMeta.theme?.accent || "#22d3ee"}40`,
+                          backgroundColor: `${projectMeta.theme?.accent || "#22d3ee"}1a`,
+                          color: `${projectMeta.theme?.accentSoft || "#ffffff"}dd`
+                        }}
                       >
                         {field}
                       </span>
@@ -422,7 +518,10 @@ export default function SummonerEra2020DetailPage() {
             <div className="border-t border-white/10 pt-5 md:pt-6">
               <div className="grid gap-6 md:grid-cols-[1.1fr_1fr] md:items-center">
                 <div>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.34em] text-[#a78bfa]">
+                  <div 
+                    className="text-[11px] font-bold uppercase tracking-[0.34em]"
+                    style={{ color: projectMeta.theme?.accent || "#22d3ee" }}
+                  >
                     Project Overview
                   </div>
                   <p className="mt-2.5 max-w-xl text-[13px] leading-6 text-white/72 md:text-sm">
@@ -449,35 +548,42 @@ export default function SummonerEra2020DetailPage() {
           </div>
         </section>
 
-        <section className="border-b border-white/8 bg-[#191919] py-14 md:py-18">
+        <section className="border-b border-white/8 py-14 md:py-18" style={{ backgroundColor: projectMeta.theme?.showcaseSectionBg || "#0f1f24" }}>
           <div
             className="mx-auto px-4 sm:px-0"
             style={{ width: "min(var(--layout-width, 86%), 1280px)" }}
           >
             <SectionTitle eyebrow="Showcase" title="Login Screen Chapters" />
-            <div className="overflow-hidden rounded-[28px] bg-[#dbc5a5]">
+            <div className="overflow-hidden rounded-[28px]" style={{ backgroundColor: projectMeta.theme?.showcasePanelBg || "#1a2a2f" }}>
               {showcaseModules.map((module) => {
                 if (module.variant === "intro") {
                   return (
                     <div
                       key={module.id}
-                      className="bg-[#dbc5a5] px-6 py-10 sm:px-10 md:px-14 md:py-14"
+                      className="px-6 py-10 sm:px-10 md:px-14 md:py-14"
+                      style={{ backgroundColor: projectMeta.theme?.showcasePanelBg || "#1a2a2f" }}
                     >
                       <div className="mx-auto max-w-[880px]">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.34em] text-[#7c3aed]">
+                        <div 
+                          className="text-[10px] font-bold uppercase tracking-[0.34em]"
+                          style={{ color: projectMeta.theme?.accent || "#22d3ee" }}
+                        >
                           Chapter 00
                         </div>
                         <h3
-                          className="mt-2 text-2xl font-black uppercase tracking-tight text-[#1f1530] md:text-[28px]"
-                          style={{ fontFamily: "var(--font-rajdhani)" }}
+                          className="mt-2 text-2xl font-black uppercase tracking-tight md:text-[28px]"
+                          style={{ fontFamily: "var(--font-rajdhani)", color: "#ffffff" }}
                         >
                           {module.title}
                         </h3>
-                        <div className="mt-4 h-px w-16 bg-[#7c3aed]/40" />
-                        <p className="mt-5 text-[14px] leading-7 text-[#3a2e4f] md:text-[15px]">
+                        <div 
+                          className="mt-4 h-px w-16"
+                          style={{ backgroundColor: `${projectMeta.theme?.accent || "#22d3ee"}66` }}
+                        />
+                        <p className="mt-5 text-[14px] leading-7 text-white/80 md:text-[15px]">
                           {module.body}
                         </p>
-                        <p className="mt-4 text-[13px] leading-7 italic text-[#5a4a72] md:text-sm">
+                        <p className="mt-4 text-[13px] leading-7 italic text-white/60 md:text-sm">
                           {module.closing}
                         </p>
                       </div>
@@ -486,11 +592,11 @@ export default function SummonerEra2020DetailPage() {
                 }
                 if (module.variant === "chapter") {
                   return (
-                    <div key={module.id} className="bg-[#222223]">
+                    <div key={module.id} style={{ backgroundColor: projectMeta.theme?.showcasePanelBg || "#1a2a2f" }}>
                       <div className="px-6 pt-10 sm:px-10 md:px-14 md:pt-12">
                         <div
                           className="text-[10px] font-bold uppercase tracking-[0.34em]"
-                          style={{ color: "#7c3aed" }}
+                          style={{ color: projectMeta.theme?.accent || "#22d3ee" }}
                         >
                           Chapter · {module.id.replace("ch", "")}
                         </div>
@@ -498,24 +604,20 @@ export default function SummonerEra2020DetailPage() {
                           className="mt-2 text-[26px] font-black uppercase leading-[1] tracking-tight md:text-[34px]"
                           style={{
                             fontFamily: "var(--font-rajdhani)",
-                            color: "#1f1530",
                           }}
                         >
                           <span
                             style={{
-                              color: "#1f1530",
-                              backgroundImage: `linear-gradient(90deg, ${module.accent}cc, ${module.accent}55)`,
-                              WebkitBackgroundClip: "text",
-                              backgroundClip: "text",
+                              color: "#ffffff",
                             }}
                           >
                             {module.title}
                           </span>
-                          <span className="ml-3 text-[#1f1530]/55">
+                          <span className="ml-3" style={{ color: projectMeta.theme?.accent || "#22d3ee" }}>
                             — {module.subtitle}
                           </span>
                         </h3>
-                        <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#3a2e4f]/65">
+                        <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: projectMeta.theme?.accent || "#22d3ee" }}>
                           {module.role}
                         </div>
                       </div>
@@ -541,17 +643,24 @@ export default function SummonerEra2020DetailPage() {
                   return (
                     <div
                       key={module.id}
-                      className="bg-[#dbc5a5] px-6 py-14 text-center sm:px-10 md:py-20"
+                      className="px-6 py-14 text-center sm:px-10 md:py-20"
+                      style={{ backgroundColor: projectMeta.theme?.showcasePanelBg || "#1a2a2f" }}
                     >
                       <div className="mx-auto max-w-[680px]">
-                        <div className="mx-auto h-px w-16 bg-[#7c3aed]/40" />
+                        <div 
+                          className="mx-auto h-px w-16"
+                          style={{ backgroundColor: `${projectMeta.theme?.accent || "#22d3ee"}66` }}
+                        />
                         <p
-                          className="mt-6 text-[20px] font-black uppercase leading-[1.2] tracking-[0.04em] text-[#1f1530] md:text-[26px]"
-                          style={{ fontFamily: "var(--font-rajdhani)" }}
+                          className="mt-6 text-[20px] font-black uppercase leading-[1.2] tracking-[0.04em] md:text-[26px]"
+                          style={{ fontFamily: "var(--font-rajdhani)", color: "#ffffff" }}
                         >
                           {module.text}
                         </p>
-                        <div className="mx-auto mt-6 h-px w-16 bg-[#7c3aed]/40" />
+                        <div 
+                          className="mx-auto mt-6 h-px w-16"
+                          style={{ backgroundColor: `${projectMeta.theme?.accent || "#22d3ee"}66` }}
+                        />
                       </div>
                     </div>
                   );

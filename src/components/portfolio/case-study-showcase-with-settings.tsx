@@ -2,11 +2,18 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
+import { usePathname } from "next/navigation";
 
 import type { ProjectTheme, ShowcaseModule } from "./case-study-types";
 import { hexToRgba } from "./portfolio-color-utils";
 
-const STORAGE_KEY = "tdg-case-study-showcase-ui-v1";
+/** Tiền tố localStorage — mỗi URL case study có key riêng (tránh Lưu ở trang A ghi đè màu/grid trang B). */
+const STORAGE_KEY_PREFIX = "tdg-case-study-showcase-ui-v1";
+
+function showcaseStorageKeyForPath(pathname: string | null): string {
+  const p = (pathname ?? "").replace(/\/+$/, "") || "/";
+  return `${STORAGE_KEY_PREFIX}::${p}`;
+}
 
 export type GifBreakpointRow = {
   /** Max-width ảnh GIF trong ô (px) */
@@ -174,7 +181,7 @@ function normalizeHexInput(raw: string): string {
   return "";
 }
 
-function loadSavedAll(): {
+function loadSavedAll(storageKey: string): {
   grid: GifGridDims;
   slots: Record<string, GifSlotDims>;
   panelHex: string;
@@ -189,7 +196,7 @@ function loadSavedAll(): {
     };
   }
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(storageKey);
     if (!raw) {
       return {
         grid: defaultGifGrid(),
@@ -425,7 +432,7 @@ function GifClickableCell({
   return (
     <div
       className={`flex min-h-0 w-full flex-col items-center justify-center ${cellShell} ${gifRowCellClass}`}
-      style={{ order: orderVal }}
+      style={{ order: orderVal, backgroundColor: mediaCanvas }}
       role="button"
       tabIndex={0}
       aria-label={`Chọn ${alt} để chỉnh khung`}
@@ -838,9 +845,15 @@ export function CaseStudyShowcaseWithSettings({
   const [copiedJsonToast, setCopiedJsonToast] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const pathname = usePathname();
+  const storageKey = useMemo(
+    () => showcaseStorageKeyForPath(pathname),
+    [pathname],
+  );
+
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(storageKey);
     if (!raw && showcaseUiInit?.v === 4) {
       setGrid(sanitizeGrid(showcaseUiInit.grid));
       setSlots(sanitizeSlots(showcaseUiInit.slots));
@@ -856,12 +869,12 @@ export function CaseStudyShowcaseWithSettings({
       );
       return;
     }
-    const { grid: g, slots: sl, panelHex, mediaHex } = loadSavedAll();
+    const { grid: g, slots: sl, panelHex, mediaHex } = loadSavedAll(storageKey);
     setGrid(g);
     setSlots(sl);
     setPanelHexDraft(panelHex);
     setMediaHexDraft(mediaHex);
-  }, [showcaseUiInit]);
+  }, [showcaseUiInit, storageKey]);
 
   const gridPreview = useMemo(() => sanitizeGrid(grid), [grid]);
 
@@ -987,10 +1000,11 @@ export function CaseStudyShowcaseWithSettings({
       panelHex: panel,
       mediaHex: media,
     };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    localStorage.setItem(storageKey, JSON.stringify(payload));
     setSavedToast(true);
     window.setTimeout(() => setSavedToast(false), 2000);
   }, [
+    storageKey,
     grid,
     slots,
     selectedSlot,
@@ -1057,7 +1071,7 @@ export function CaseStudyShowcaseWithSettings({
   ]);
 
   const resetAll = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(storageKey);
     setGrid(defaultGifGrid());
     setSlots({});
     setSelectedSlot(null);
@@ -1071,7 +1085,7 @@ export function CaseStudyShowcaseWithSettings({
     setMediaHexDraft("");
     setError(null);
     setOpen(false);
-  }, []);
+  }, [storageKey]);
 
   const bpRows: {
     key: keyof GifGridDims;
@@ -1102,7 +1116,8 @@ export function CaseStudyShowcaseWithSettings({
         onSelectSlot={handleSelectSlot}
       />
 
-      <button
+      {/* Settings button - commented out for production */}
+      {/* <button
         type="button"
         aria-label="Cài đặt hiển thị showcase"
         aria-expanded={open}
@@ -1118,7 +1133,7 @@ export function CaseStudyShowcaseWithSettings({
         >
           <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.48-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
         </svg>
-      </button>
+      </button> */}
 
       {savedToast && (
         <div
@@ -1139,7 +1154,8 @@ export function CaseStudyShowcaseWithSettings({
         </div>
       )}
 
-      {open ? (
+      {/* Settings modal - commented out for production */}
+      {/* {open ? (
         <div
           className="fixed inset-0 z-[100] flex justify-end bg-black/55 p-3 sm:p-4"
           role="dialog"
@@ -1543,7 +1559,7 @@ export function CaseStudyShowcaseWithSettings({
             </div>
           </div>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

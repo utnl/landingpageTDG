@@ -15,7 +15,12 @@ export const projectMeta: ProjectMeta = {
       { text: " " },
       { text: "Animation", color: "white" },
     ],
-    subtitle: [{ text: "The Twins · Spine 2D Reels", color: "soft" }],
+    subtitle: [
+      { text: "The ", color: "soft" },
+      { text: "Twins", color: "accent" },
+      { text: " · ", color: "divider" },
+      { text: "Spine 2D Reels", color: "soft" },
+    ],
   },
   heroFacts: [
     { value: "Sep 2022", label: "Published", icon: "calendar" },
@@ -41,7 +46,7 @@ export const projectMeta: ProjectMeta = {
   madeForLabel: "AnimVFX Clan",
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
-    "https://mir-s3-cdn-cf.behance.net/projects/404/9e2264152981257.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7b9dcd152981257.632887fbcdc1a.png",
   tools: ["Spine 2D"],
   fields: ["Animation", "Game Design", "Character Design"],
   tags: [
@@ -53,10 +58,10 @@ export const projectMeta: ProjectMeta = {
     "game design",
   ],
   theme: {
-    accent: "#ff8c3a",
-    accentSoft: "#ffb000",
+    accent: "#fbbf24",
+    accentSoft: "#22d3ee",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(255,176,0,0.16), transparent 36%), radial-gradient(circle at top right, rgba(255,140,58,0.16), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
+      "radial-gradient(circle at top left, rgba(34,211,238,0.16), transparent 36%), radial-gradient(circle at top right, rgba(251,191,36,0.18), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
     showcaseSectionBg: "#191919",
     showcasePanelBg: "#222221",
     sectionLabelBg: "#191919",

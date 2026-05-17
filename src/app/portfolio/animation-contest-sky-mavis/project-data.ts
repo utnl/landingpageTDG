@@ -14,14 +14,14 @@ export const projectMeta: ProjectMeta = {
     "Spine + After Effects entry for the Sky Mavis Animation Contest. A short cinematic reel and three character action loops showcasing combat timing, secondary motion, and stylised VFX.",
   heroTitle: {
     primary: [
-      { text: "Animation", color: "accent" },
+      { text: "Animation", color: "soft" },
       { text: " " },
-      { text: "Contest", color: "accentSoft" },
+      { text: "Contest", color: "accent" },
     ],
     subtitle: [
-      { text: "Sky Mavis", color: "soft" },
+      { text: "Sky Mavis", color: "white" },
       { text: " · ", color: "divider" },
-      { text: "Reel + Loops", color: "accent" },
+      { text: "Reel + Loops", color: "accentSoft" },
     ],
   },
   heroFacts: [
@@ -63,13 +63,13 @@ export const projectMeta: ProjectMeta = {
     "vfx",
   ],
   theme: {
-    accent: "#38bdf8",
-    accentSoft: "#f472b6",
+    accent: "#10b981",
+    accentSoft: "#6ee7b7",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 40%), radial-gradient(circle at top right, rgba(244,114,182,0.16), transparent 42%), radial-gradient(ellipse at 70% 0%, rgba(14,116,144,0.12), transparent 45%), linear-gradient(180deg, #0a1320 0%, #06080e 75%)",
-    showcaseSectionBg: "#191919",
-    showcasePanelBg: "#222221",
-    sectionLabelBg: "#191919",
+      "radial-gradient(circle at top left, rgba(16,185,129,0.15), transparent 38%), radial-gradient(circle at top right, rgba(110,231,183,0.12), transparent 40%), radial-gradient(ellipse at 60% 0%, rgba(6,78,59,0.18), transparent 45%), linear-gradient(180deg, #0f1a1a 0%, #070a0a 75%)",
+    showcaseSectionBg: "#141414",
+    showcasePanelBg: "#1a1a1a",
+    sectionLabelBg: "#141414",
   },
   workflow: [
     { n: "01", t: "Brief", sub: "Concept" },

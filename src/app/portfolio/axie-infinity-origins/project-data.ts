@@ -16,10 +16,10 @@ export const projectMeta: ProjectMeta = {
     primary: [
       { text: "Axie Infinity", color: "accent" },
       { text: " " },
-      { text: "Origins", color: "white" },
+      { text: "Origins", color: "accentSoft" },
     ],
     subtitle: [
-      { text: "Animation", color: "accentSoft" },
+      { text: "Animation", color: "soft" },
       { text: " · ", color: "divider" },
       { text: "Spine 2D", color: "soft" },
     ],
@@ -64,10 +64,10 @@ export const projectMeta: ProjectMeta = {
     "spine animation",
   ],
   theme: {
-    accent: "#ffb000",
-    accentSoft: "#ff8c3a",
+    accent: "#ff8c3a",
+    accentSoft: "#38bdf8",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(56,189,248,0.12), transparent 40%), radial-gradient(circle at top right, rgba(255,140,58,0.15), transparent 42%), radial-gradient(ellipse at 70% 0%, rgba(255,176,0,0.08), transparent 45%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
+      "radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 40%), radial-gradient(circle at top right, rgba(255,140,58,0.18), transparent 42%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
     showcaseSectionBg: "#191919",
     showcasePanelBg: "#dbc5a5",
     sectionLabelBg: "#dbc5a5",

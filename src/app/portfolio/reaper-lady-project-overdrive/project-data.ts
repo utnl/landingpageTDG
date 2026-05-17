@@ -72,7 +72,7 @@ export const projectMeta: ProjectMeta = {
       "radial-gradient(circle at 50% 0%, rgba(168,85,247,0.35), transparent 55%), radial-gradient(circle at 80% 20%, rgba(192,132,252,0.12), transparent 45%), linear-gradient(180deg, #14101a 0%, #0a080c 78%)",
     showcaseSectionBg: "#141414",
     showcasePanelBg: "#2b2b2b",
-    showcaseMediaBg: "#2b2b2b",
+    showcaseMediaBg: "#333333",
     sectionLabelBg: "#2b2b2b",
   },
   workflow: [
@@ -155,7 +155,7 @@ export const showcaseUiInit: SavedShowcaseUiV4 = {
       hPx: 420,
       frameX: -320,
       frameY: -16,
-      scale: 1.25,
+      scale: 1.3,
       stackOrder: 0,
     },
     "m07:0": {
@@ -167,16 +167,19 @@ export const showcaseUiInit: SavedShowcaseUiV4 = {
       stackOrder: 1,
     },
     "m06:0": {
-      wPx: 560,
-      hPx: 420,
-      frameX: 64,
+      wPx: 270,
+      hPx: 330,
+      frameX: 2,
       frameY: 16,
-      scale: 1.35,
+      scale: 1.6,
       stackOrder: 0,
     },
   },
-  panelHex: "#333333",
-  mediaHex: "#333333",
+  panelHex: projectMeta.theme.showcasePanelBg ?? "",
+  mediaHex:
+    projectMeta.theme.showcaseMediaBg ??
+    projectMeta.theme.showcasePanelBg ??
+    "",
 };
 
 export const relatedProjects: readonly RelatedProject[] = [

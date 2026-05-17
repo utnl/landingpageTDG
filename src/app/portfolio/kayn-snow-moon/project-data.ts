@@ -59,6 +59,7 @@ export const projectMeta: ProjectMeta = {
       "radial-gradient(circle at top left, rgba(125,211,252,0.14), transparent 36%), radial-gradient(circle at top right, rgba(255,140,58,0.14), transparent 38%), linear-gradient(180deg, #141414 0%, #0a0a0a 75%)",
     showcaseSectionBg: "#191919",
     showcasePanelBg: "#222221",
+    showcaseMediaBg: "#020a14",
     sectionLabelBg: "#191919",
   },
   workflow: [

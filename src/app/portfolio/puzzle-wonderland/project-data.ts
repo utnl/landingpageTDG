@@ -15,9 +15,9 @@ export const projectMeta: ProjectMeta = {
     "Spine 2D character pack for Puzzle Wonderland — a casual mobile puzzle game. Includes a portrait login splash, seven player hero loops, and five boss reactions, all rigged and animated to feel snappy, cute, and replayable on tiny screens.",
   heroTitle: {
     primary: [
-      { text: "Puzzle", color: "accentSoft" },
+      { text: "Puzzle", color: "accent" },
       { text: " " },
-      { text: "Wonderland", color: "accent" },
+      { text: "Wonderland", color: "accentSoft" },
     ],
     subtitle: [
       { text: "Character", color: "soft" },
@@ -66,13 +66,13 @@ export const projectMeta: ProjectMeta = {
     "character animation",
   ],
   theme: {
-    accent: "#22d3ee",
+    accent: "#84cc16",
     accentSoft: "#fbbf24",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(34,211,238,0.20), transparent 42%), radial-gradient(circle at top right, rgba(251,191,36,0.16), transparent 42%), radial-gradient(ellipse at 70% 0%, rgba(244,114,182,0.10), transparent 45%), linear-gradient(180deg, #06141a 0%, #050708 75%)",
-    showcaseSectionBg: "#08161c",
-    showcasePanelBg: "#0b1d24",
-    sectionLabelBg: "#0a1418",
+      "radial-gradient(circle at top left, rgba(132,204,22,0.18), transparent 40%), radial-gradient(circle at top right, rgba(251,191,36,0.16), transparent 42%), radial-gradient(ellipse at 60% 0%, rgba(101,163,13,0.12), transparent 45%), linear-gradient(180deg, #0f1a0a 0%, #060a04 75%)",
+    showcaseSectionBg: "#0f1508",
+    showcasePanelBg: "#151f0c",
+    sectionLabelBg: "#0f1508",
   },
   workflow: [
     { n: "01", t: "Art prep", sub: "Photoshop" },

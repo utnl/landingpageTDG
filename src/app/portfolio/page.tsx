@@ -12,6 +12,8 @@ import {
   useState,
 } from "react";
 import SiteHeader from "@/components/site-header";
+import PortfolioGrid, { ProjectCard } from "@/components/portfolio-grid";
+import { AccentHighlight } from "@/components/accent-highlight";
 
 const PortfolioLowerSections = dynamic(
   () => import("@/components/portfolio-lower-sections"),
@@ -284,6 +286,128 @@ const PORTFOLIO_CARDS_INITIAL: CardConfig[] = [
     imageOffsetY: 62,
     imageScale: 0.9,
     showText: true,
+  },
+];
+
+// Real projects from /portfolio/[slug] pages
+const ADDITIONAL_PROJECTS: ProjectCard[] = [
+  {
+    id: "kayn-snow-moon",
+    title: "Kayn Snow Moon | League of Legends - Login Screen",
+    subtitle: "Animation · Motion Graphics · VFX",
+    image: "/images/Screenshot 2026-05-13 232709.png",
+    slug: "kayn-snow-moon",
+  },
+  {
+    id: "horse-racing",
+    title: "Horse Racing - Splash Art Animation",
+    subtitle: "Animation · Motion Graphics",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/cad425183792791.Y3JvcCwyMzkyLDE4NzAsMCww.jpg",
+    slug: "horse-racing",
+  },
+  {
+    id: "lore-axie-origin",
+    title: "Lore Axie Origin | Cinematic",
+    subtitle: "Animation · Cinematic",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/fs_webp/9d5c36163362313.63e48c008691b.png",
+    slug: "lore-axie-origin",
+  },
+  {
+    id: "axie-infinity-origins",
+    title: "Axie Infinity - Origins | Animation",
+    subtitle: "Animation · Game Design",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/max_808/924075153491527.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    slug: "axie-infinity-origins",
+  },
+  {
+    id: "boss-animation",
+    title: "Boss Animation - The Twins",
+    subtitle: "Animation · VFX",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/404/9e2264152981257.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    slug: "boss-animation",
+  },
+  {
+    id: "heroes-fire",
+    title: "Animation/VFX - Heroes Fire | Summoner Era",
+    subtitle: "Animation · VFX",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/max_808/d50de7152527397.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    slug: "heroes-fire",
+  },
+  {
+    id: "summoner-era-2020",
+    title: "Summoner Era - Login Screen Animations (2020)",
+    subtitle: "Animation · Motion Graphics",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/max_808/1efef4144430837.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
+    slug: "summoner-era-2020",
+  },
+  {
+    id: "game-animation-vfx-3q",
+    title: "Game Animation/VFX - 3Q",
+    subtitle: "Animation · VFX",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/max_808/c4e25d143388227.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    slug: "game-animation-vfx-3q",
+  },
+  {
+    id: "battle-of-the-gods-mytheria",
+    title: "Battle of the Gods | Mytheria - Login Screen",
+    subtitle: "Animation · Motion Graphics",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/max_808/d5b456134047127.Y3JvcCwyMzkyLDE4NzAsMCww.png",
+    slug: "battle-of-the-gods-mytheria",
+  },
+  {
+    id: "animation-contest-sky-mavis",
+    title: "Animation Contest - Sky Mavis",
+    subtitle: "Animation · VFX",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/max_808/33e83e130561969.Y3JvcCwxOTgxLDE1NTAsOSww.png",
+    slug: "animation-contest-sky-mavis",
+  },
+  {
+    id: "mid-autumn-summoner-era",
+    title: "Mid Autumn Animation for Summoner Era",
+    subtitle: "Animation",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/projects/max_808/4cd319112053013.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
+    slug: "mid-autumn-summoner-era",
+  },
+  {
+    id: "summoner-era-arena-of-heroes",
+    title: "Animation for Summoner Era - Arena of Heroes",
+    subtitle: "Animation · Motion Graphics",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/d4a408104755019.5f9b97c0a0f8a.png",
+    slug: "summoner-era-arena-of-heroes",
+  },
+  {
+    id: "puzzle-wonderland",
+    title: "Character animation for Puzzle Wonderland",
+    subtitle: "Animation",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/c93a5b67614633.5fbd2e1664ce9.png",
+    slug: "puzzle-wonderland",
+  },
+  {
+    id: "reaper-lady-project-overdrive",
+    title: "Game Animation - Reaper & Lady - Project: OverDrive",
+    subtitle: "Animation · VFX",
+    image:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/2bd1c365344203.5f702ed1b2566.png",
+    slug: "reaper-lady-project-overdrive",
+  },
+  {
+    id: "summoner-era",
+    title: "Animation/VFX - Heroes Light/Dark | Summoner Era",
+    subtitle: "Animation · VFX",
+    image: "/images/summonerDetail.png",
+    slug: "summoner-era",
   },
 ];
 
@@ -2064,6 +2188,44 @@ export default function PortfolioPage() {
             </div>
           </section>
         </div>
+
+        {/* Selected Works Grid Section */}
+        <section className="relative overflow-hidden border-t border-[#ff8c3a]/20 bg-[linear-gradient(165deg,#14151f_0%,#0e0f14_42%,#0a0a10_100%)] py-14 text-white md:py-20 lg:py-24">
+          <div
+            className="pointer-events-none absolute -left-24 top-0 h-[320px] w-[320px] rounded-full bg-[#ff8c3a]/08 blur-[100px]"
+            aria-hidden
+          />
+          <div
+            className="relative mx-auto"
+            style={{ width: "var(--layout-width, 75%)" }}
+          >
+            <header>
+              <div className="mb-4 flex items-center gap-4">
+                <span className="text-sm font-black italic tracking-tighter text-[#ffb04a] drop-shadow-[0_0_12px_rgba(255,176,74,0.35)]">
+                  // 02
+                </span>
+                <div className="h-px w-12 shrink-0 bg-linear-to-r from-[#ff8c3a]/55 to-white/12" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#ffcc8e]/80">
+                  {ADDITIONAL_PROJECTS.length} Projects
+                </span>
+              </div>
+
+              <h2
+                className="text-left text-3xl font-black uppercase leading-[1.08] tracking-tight text-white md:text-4xl lg:text-[2.75rem]"
+                style={{ fontFamily: "var(--font-rajdhani)" }}
+              >
+                Selected <AccentHighlight>Works</AccentHighlight>
+              </h2>
+              <p className="mt-4 max-w-xl text-left text-sm leading-relaxed text-white/65 md:text-base">
+                Tuyển chọn các dự án game art tiêu biểu của TD Games — 2D Art, Animation, Concept Art và Environment.
+              </p>
+            </header>
+
+            <div className="mt-10 md:mt-12">
+              <PortfolioGrid projects={ADDITIONAL_PROJECTS} itemsPerPage={12} />
+            </div>
+          </div>
+        </section>
 
         <PortfolioLowerSections />
       </main>

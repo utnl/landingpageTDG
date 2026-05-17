@@ -19,9 +19,9 @@ export const projectMeta: ProjectMeta = {
       { text: "Gods", color: "accentSoft" },
     ],
     subtitle: [
-      { text: "Mytheria", color: "soft" },
+      { text: "Mytheria", color: "white" },
       { text: " · ", color: "divider" },
-      { text: "Login Screen", color: "accent" },
+      { text: "Login Screen", color: "soft" },
     ],
   },
   heroFacts: [
@@ -61,13 +61,13 @@ export const projectMeta: ProjectMeta = {
     "mytheria",
   ],
   theme: {
-    accent: "#f5b84a",
-    accentSoft: "#a78bfa",
+    accent: "#f97316",
+    accentSoft: "#3b82f6",
     heroBackground:
-      "radial-gradient(circle at top left, rgba(245,184,74,0.18), transparent 40%), radial-gradient(circle at top right, rgba(167,139,250,0.18), transparent 42%), radial-gradient(ellipse at 70% 0%, rgba(124,58,237,0.12), transparent 45%), linear-gradient(180deg, #13101e 0%, #070510 75%)",
-    showcaseSectionBg: "#191919",
-    showcasePanelBg: "#222221",
-    sectionLabelBg: "#191919",
+      "radial-gradient(circle at top left, rgba(249,115,22,0.20), transparent 38%), radial-gradient(circle at top right, rgba(59,130,246,0.18), transparent 40%), radial-gradient(ellipse at 60% 0%, rgba(30,64,175,0.14), transparent 45%), linear-gradient(180deg, #0f1419 0%, #070a0d 75%)",
+    showcaseSectionBg: "#141414",
+    showcasePanelBg: "#1a1a1a",
+    sectionLabelBg: "#141414",
   },
   workflow: [
     { n: "01", t: "Concept", sub: "Brief · ref" },
