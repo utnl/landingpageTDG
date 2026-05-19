@@ -315,25 +315,25 @@ const BENEFITS = [
     title: "Friendliness and support",
     desc: "We create an atmosphere where everyone feels comfortable and can be themselves. There is no place for formalities in our team — only mutual assistance, warmth and team spirit.",
     icon: "friendliness",
-    color: "#a855f7",
+    color: "#f59e0b",
   },
   {
     title: "Comfort and care",
     desc: "We care about the well-being of each team member, providing comfortable working conditions and support in any situation. Together we create an environment where everyone feels like part of a big family.",
     icon: "comfort",
-    color: "#3b82f6",
+    color: "#f59e0b",
   },
   {
     title: "Shared growth",
     desc: "Passionate about mentoring, we support ongoing learning, internal R&D, and community engagement to grow skills, confidence, and studio expertise in every team member.",
     icon: "growth",
-    color: "#10b981",
+    color: "#f59e0b",
   },
   {
     title: "Work-life balance",
     desc: "We respect your time outside work. Flexible hours, clear boundaries, and a culture that values rest help our team stay creative and motivated for the long run.",
     icon: "balance",
-    color: "#ec4899",
+    color: "#f59e0b",
   },
 ];
 
