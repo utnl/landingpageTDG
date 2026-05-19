@@ -566,12 +566,7 @@ export default function CareersPage() {
                 >
                   Open roles
                 </a>
-                <Link
-                  href="/contact"
-                  className="inline-flex rounded-xl border-2 border-white/35 px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:border-[#f59e0b] hover:text-[#f59e0b] md:text-base"
-                >
-                  Speculative application
-                </Link>
+                
               </div>
             </div>
           </div>
