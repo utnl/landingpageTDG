@@ -271,261 +271,120 @@ export default function CaseStudyLayout({
     <>
       <SiteHeader />
       <main className="bg-[#080808] text-white">
+        {/* ─── VERTICAL HERO: text left-aligned top, image fills bottom ─── */}
         <section
-          className="relative overflow-hidden border-b border-white/10"
+          className="relative h-[100svh] min-h-[640px] overflow-hidden border-b border-white/10"
           style={{ background: heroBg }}
         >
-          {/* First screen: min full viewport; hero + overview flow naturally. */}
-          <div className="flex min-h-svh flex-col">
-            <div className="flex flex-col pt-[96px] md:pt-[104px]">
-              <div
-                className="relative mx-auto flex flex-col px-4 pb-6 sm:px-0 lg:pb-8"
-                style={{ width: "min(var(--layout-width, 88%), 1280px)" }}
+          <div
+            className="mx-auto flex h-full flex-col px-4 sm:px-0"
+            style={{ width: "min(var(--layout-width, 88%), 1280px)" }}
+          >
+            {/* TOP — ← Back + 2-col: left text / right CTA buttons */}
+            <div className="shrink-0 pt-[88px] pb-8 md:pt-[104px] md:pb-10">
+              {/* ← Back */}
+              <Link
+                href="/portfolio"
+                className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.24em] text-white/55 transition-colors hover:text-white"
               >
-                <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
-                  <div className="flex min-h-0 flex-col">
-                    <Link
-                      href="/portfolio"
-                      className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.24em] text-white/55 transition-colors hover:text-white"
-                    >
-                      <span aria-hidden>&larr;</span>
-                      Back to Portfolio
-                    </Link>
+                <span aria-hidden>&larr;</span>
+                Back to Portfolio
+              </Link>
 
-                    <div
-                      className="mt-4 text-[11px] font-bold uppercase tracking-[0.34em]"
-                      style={{ color: theme.accent }}
-                    >
-                      {meta.eyebrow}
-                    </div>
+              {/* Row: left text + right buttons */}
+              <div className="mt-5 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
 
-                    <HeroTitleBlock heroTitle={meta.heroTitle} theme={theme} />
+                {/* LEFT — eyebrow, title, desc, credits */}
+                <div className="min-w-0">
+                  <div
+                    className="text-[11px] font-bold uppercase tracking-[0.36em]"
+                    style={{ color: theme.accent }}
+                  >
+                    {meta.eyebrow}
+                  </div>
 
-                    <p className="mt-4 max-w-xl text-[13px] leading-6 text-white/70 md:text-sm">
-                      {meta.summary}
-                    </p>
+                  <HeroTitleBlock heroTitle={meta.heroTitle} theme={theme} />
 
-                    {meta.credits && meta.credits.length > 0 && (
-                      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-white/55">
-                        {meta.credits.map((c) => (
-                          <span key={c.role}>
-                            <span className="text-white/40">{c.role}:</span>{" "}
-                            <span
-                              className="font-semibold"
-                              style={{ color: theme.accentSoft }}
-                            >
-                              {c.name}
-                            </span>
+                  <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-white/70 md:text-[15px]">
+                    {meta.summary}
+                  </p>
+
+                  {meta.credits && meta.credits.length > 0 && (
+                    <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-[12px] text-white/55">
+                      {meta.credits.map((c) => (
+                        <span key={c.role}>
+                          <span className="text-white/35">{c.role}:</span>{" "}
+                          <span className="font-semibold" style={{ color: theme.accentSoft }}>
+                            {c.name}
                           </span>
-                        ))}
-                      </div>
-                    )}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
-                    {meta.madeForLabel && meta.madeForUrl && (
-                      <div className="mt-1 text-[12px] text-white/55">
-                        Made for:{" "}
-                        <a
-                          href={meta.madeForUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-semibold underline-offset-2 hover:underline"
-                          style={{ color: theme.accent }}
-                        >
-                          {meta.madeForLabel}
-                        </a>
-                      </div>
-                    )}
-
-                    <div className="mt-5 flex flex-wrap gap-3">
+                  {meta.madeForLabel && meta.madeForUrl && (
+                    <div className="mt-1 text-[12px] text-white/50">
+                      Made for:{" "}
                       <a
-                        href={meta.behanceUrl}
+                        href={meta.madeForUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-black transition-opacity hover:opacity-90"
-                        style={{ backgroundColor: theme.accent }}
+                        className="font-semibold underline-offset-2 hover:underline"
+                        style={{ color: theme.accent }}
                       >
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="h-4 w-4"
-                          aria-hidden
-                        >
-                          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
-                        View Project on Behance
+                        {meta.madeForLabel}
                       </a>
-
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-colors hover:bg-white/10"
-                      >
-                        Ask for Similar Work
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="h-4 w-4"
-                          aria-hidden
-                        >
-                          <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z" />
-                        </svg>
-                      </Link>
                     </div>
-
-                    <div className="mt-7 space-y-4">
-                      <div className="grid gap-2.5 sm:grid-cols-3">
-                        {meta.heroFacts.map((fact) => (
-                          <div
-                            key={fact.label}
-                            className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3"
-                          >
-                            <FactIcon name={fact.icon} accent={theme.accent} />
-                            <div className="mt-2 text-base font-black tracking-tight text-white md:text-lg">
-                              {fact.value}
-                            </div>
-                            <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">
-                              {fact.label}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="rounded-[24px] border border-white/10 bg-white/[0.025] p-4 md:p-5">
-                        <div className="flex items-center gap-3">
-                          <span
-                            className="h-2.5 w-2.5 rounded-full"
-                            style={{ backgroundColor: theme.accent }}
-                          />
-                          <div className="text-[11px] font-bold uppercase tracking-[0.34em] text-white/60">
-                            Snapshot
-                          </div>
-                        </div>
-                        {snapshotBody && (
-                          <p className="mt-3 max-w-xl text-[12.5px] leading-6 text-white/68">
-                            {snapshotBody}
-                          </p>
-                        )}
-                        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                          {meta.overview.stats.map((s) => (
-                            <div key={s.label}>
-                              <div
-                                className="text-2xl font-black tracking-tight text-white md:text-3xl"
-                                style={{ fontFamily: "var(--font-rajdhani)" }}
-                              >
-                                {s.value}
-                              </div>
-                              <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">
-                                {s.label}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex min-h-0 flex-col lg:h-full">
-                    <div
-                      className="relative aspect-video w-full shrink-0 overflow-hidden rounded-[26px] border border-white/10"
-                      style={{
-                        backgroundColor: "#0a0d12",
-                        boxShadow: `0 28px 70px -28px ${accentRing}, 0 32px 85px -32px ${accentSoftRing}`,
-                      }}
-                    >
-                      <Image
-                        src={meta.coverImage}
-                        alt={meta.title}
-                        fill
-                        priority
-                        sizes="(max-width: 1280px) 55vw, 640px"
-                        className="object-cover"
-                      />
-                      <div
-                        className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 via-black/5 to-black/40"
-                        aria-hidden
-                      />
-                      <div
-                        className="pointer-events-none absolute inset-0 rounded-[26px] ring-1 ring-inset ring-white/10"
-                        aria-hidden
-                      />
-                    </div>
-
-                    <div className="mt-4 grid gap-4 rounded-[24px] border border-white/10 bg-white/[0.025] p-5 md:grid-cols-3">
-                      <div className="flex h-full flex-col">
-                        <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
-                          Deliverables
-                        </div>
-                        <ul className="mt-3 flex flex-1 flex-col justify-around gap-2 text-[12.5px] leading-snug text-white/75">
-                          {meta.deliverables.map((line) => (
-                            <li key={line} className="flex gap-2">
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="mt-0.5 h-4 w-4 shrink-0"
-                                style={{ stroke: theme.accent }}
-                                aria-hidden
-                              >
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="m8.5 12.5 2.5 2.5 4.5-5" />
-                              </svg>
-                              <span>{line}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="flex h-full flex-col">
-                        <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
-                          Tools
-                        </div>
-                        <div className="mt-3 flex flex-1 flex-wrap content-start gap-2">
-                          {meta.tools.map((tool) => (
-                            <span
-                              key={tool}
-                              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold text-white/80"
-                            >
-                              {tool}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex h-full flex-col">
-                        <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
-                          Creative Fields
-                        </div>
-                        <div className="mt-3 flex flex-1 flex-wrap content-start gap-2">
-                          {meta.fields.map((field) => (
-                            <span
-                              key={field}
-                              className="rounded-md px-3 py-1.5 text-[11px] font-medium transition-all duration-200 hover:scale-105"
-                              style={{
-                                background: `linear-gradient(135deg, ${theme.accent}20 0%, ${theme.accent}10 100%)`,
-                                border: `1px solid ${theme.accent}50`,
-                                color: `${theme.accentSoft}ff`,
-                                boxShadow: `0 2px 8px ${theme.accent}15`,
-                              }}
-                            >
-                              {field}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </div>
+
+                {/* RIGHT — CTA buttons, aligned bottom-right */}
+                <div className="flex shrink-0 flex-col items-start gap-2.5 lg:items-end">
+                  <a
+                    href={meta.behanceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-black transition-opacity hover:opacity-85"
+                    style={{ backgroundColor: theme.accent }}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden>
+                      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    View Project on Behance
+                  </a>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/6 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-colors hover:bg-white/12"
+                  >
+                    Ask for Similar Work
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden>
+                      <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z" />
+                    </svg>
+                  </Link>
+                </div>
+
               </div>
+            </div>
+
+            {/* BOTTOM — image fills remaining height */}
+            <div className="relative min-h-0 flex-1 overflow-hidden rounded-t-[20px] border border-b-0 border-white/10"
+              style={{
+                boxShadow: `0 -16px 48px -12px ${accentRing}`,
+              }}
+            >
+              <Image
+                src={meta.coverImage}
+                alt={meta.title}
+                fill
+                priority
+                sizes="(max-width: 1280px) 88vw, 1200px"
+                className="object-cover object-top"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/10"
+                aria-hidden
+              />
             </div>
           </div>
         </section>
