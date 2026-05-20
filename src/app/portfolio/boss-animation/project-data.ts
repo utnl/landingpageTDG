@@ -8,7 +8,7 @@ export const projectMeta: ProjectMeta = {
   title: "BOSS ANIMATION - THE TWINS",
   eyebrow: "Case study",
   summary:
-    "Animation Boss for the game project: The Twins — a series of in-game boss reels covering Samurai and supporting creatures, animated in Spine 2D as both contributor and animation mentor.",
+    "Boss for the game project: The Twins — a series of in-game boss reels covering Samurai and supporting creatures.",
   heroTitle: {
     primary: [
       { text: "Boss", color: "accentSoft" },
@@ -25,12 +25,12 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Sep 2022", label: "Published", icon: "calendar" },
     { value: "Game (Mobile)", label: "Project type", icon: "cube" },
-    { value: "Spine 2D", label: "Pipeline", icon: "users" },
+    { value: "", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
-    "Boss Samurai animation set",
+    "Boss set",
     "10× boss reels for in-game use",
-    "Animation mentoring & polish pass",
+    "Mentoring & polish pass",
   ],
   overview: {
     body: "Boss animation pack for The Twins — Legend of Shadow Ninja Monster Hunter. The release contains ten boss reels animated in Spine 2D; I led animation on Boss Samurai and mentored the broader animation pass across the rest of the set.",
@@ -47,8 +47,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7b9dcd152981257.632887fbcdc1a.png",
-  tools: ["Spine 2D"],
-  fields: ["Animation", "Game Design", "Character Design"],
+  tools: [],
+  fields: ["Game Design", "Character Design"],
   tags: [
     "2D",
     "animation",

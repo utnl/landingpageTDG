@@ -8,7 +8,7 @@ export const projectMeta: ProjectMeta = {
   title: "Kayn Snow Moon | League of Legends - Login Screen",
   eyebrow: "Case study",
   summary:
-    "Login screen animation for Kayn Snow Moon — a fan-made League of Legends piece: looping hero motion, snow-moon atmosphere, and compositing tuned for a cinematic client-style login.",
+    "Login screen for Kayn Snow Moon — a fan-made League of Legends piece: looping hero motion, snow-moon atmosphere, and compositing tuned for a cinematic client-style login.",
   heroTitle: {
     primary: [
       { text: "Kayn", color: "accent" },
@@ -20,7 +20,7 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Aug 2022", label: "Published", icon: "calendar" },
     { value: "Fanmade", label: "Project type", icon: "cube" },
-    { value: "AE · Ps · Spine · Maya", label: "Pipeline", icon: "cube" },
+    { value: "Ps", label: "Pipeline", icon: "cube" },
   ],
   deliverables: [
     "Login screen hero loop & timing",
@@ -39,8 +39,8 @@ export const projectMeta: ProjectMeta = {
   behanceUrl:
     "https://www.behance.net/gallery/149524063/Kayn-Snow-Moon-League-of-Legends-Login-Screen",
   coverImage: "/images/Screenshot 2026-05-13 232709.png",
-  tools: ["After Effects", "Photoshop", "Spine 2D", "Autodesk Maya"],
-  fields: ["Animation", "Motion Graphics", "Visual Effects"],
+  tools: [],
+  fields: ["Visual Effects"],
   tags: [
     "character animation",
     "creatures",

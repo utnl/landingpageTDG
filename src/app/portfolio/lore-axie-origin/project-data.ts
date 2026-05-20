@@ -8,7 +8,7 @@ export const projectMeta: ProjectMeta = {
   title: "LORE AXIE ORIGIN | CINEMATIC",
   eyebrow: "Case study",
   summary:
-    "Cinematic lore trailer for Axie Infinity Origins — storyboard-led motion sequence with character beats, environment FX, and pacing tuned for an in-world reveal.",
+    "Cinematic lore trailer for Axie Infinity Origins — storyboard-led sequence with character beats, environment FX, and pacing tuned for an in-world reveal.",
   heroTitle: {
     primary: [
       { text: "Lore", color: "accentSoft" },
@@ -22,12 +22,12 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Feb 2023", label: "Published", icon: "calendar" },
     { value: "Cinematic", label: "Project type", icon: "cube" },
-    { value: "AE · Ps", label: "Pipeline", icon: "users" },
+    { value: "Ps", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
-    "Cinematic lore animation",
+    "Cinematic lore piece",
     "Storyboard & shot breakdown",
-    "Motion FX & sequence edit",
+    "FX & sequence edit",
   ],
   overview: {
     body: "A cinematic lore piece for the Axie Infinity Origins world — built from a beat-driven storyboard, animated with stylized 2D motion, then composited with FX and a final color pass for a clean in-world reveal.",
@@ -44,8 +44,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/project_modules/fs_webp/9d5c36163362313.63e48c008691b.png",
-  tools: ["After Effects", "Photoshop"],
-  fields: ["Motion Graphics", "Animation", "Storyboarding"],
+  tools: [],
+  fields: ["Storyboarding"],
   tags: [
     "after effects",
     "animation",

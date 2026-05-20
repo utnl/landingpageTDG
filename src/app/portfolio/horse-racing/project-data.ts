@@ -8,27 +8,28 @@ export const projectMeta: ProjectMeta = {
   title: "Horse Racing - Splash Art Animation",
   eyebrow: "Case study",
   summary:
-    "Splash-art animation for INVINCIBLE GG's Owners Club horse racing website — a full animation & FX pass laid over their painted key art for a web-ready hero loop.",
+    "Partnership with INVINCIBLE GG to bring their painted horse racing key art to life - character motion, environmental FX, and atmospheric passes integrated into a looping splash for their owners club site.",
+  showOverviewSection: false,
   heroTitle: {
     primary: [
       { text: "Horse", color: "accent" },
       { text: " ", color: "white" },
       { text: "Racing", color: "accentSoft" },
     ],
-    subtitle: [{ text: "Splash Art · Animation", color: "soft" }],
+    subtitle: [{ text: "Splash Art / Animation", color: "soft" }],
   },
   heroFacts: [
     { value: "Nov 2023", label: "Published", icon: "calendar" },
     { value: "Client work", label: "Project type", icon: "users" },
-    { value: "AE · Ps · Spine", label: "Pipeline", icon: "cube" },
+    { value: "Ps", label: "Pipeline", icon: "cube" },
   ],
   deliverables: [
-    "Hero splash art animation",
+    "Hero splash art",
     "FX integration over key art",
     "Looping web-ready renders",
   ],
   overview: {
-    body: "Partnership with INVINCIBLE GG to bring their painted horse racing key art to life — character motion, environmental FX, and atmospheric passes integrated into a looping splash for their owners club site.",
+    body: "Partnership with INVINCIBLE GG to bring their painted horse racing key art to life - character motion, environmental FX, and atmospheric passes integrated into a looping splash for their owners club site.",
     stats: [
       { value: "143+", label: "Appreciations" },
       { value: "1.7K", label: "Views" },
@@ -38,12 +39,12 @@ export const projectMeta: ProjectMeta = {
   },
   behanceUrl:
     "https://www.behance.net/gallery/183792791/Horse-Racing-Slpash-Art-Animation",
-  madeForLabel: "INVINCIBLE GG — Owners Club",
+  madeForLabel: "INVINCIBLE GG - Owners Club",
   madeForUrl: "https://ownersclub.invinciblegg.com/",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/404/cad425183792791.Y3JvcCwyMzkyLDE4NzAsMCww.jpg",
-  tools: ["After Effects", "Photoshop", "Spine 2D"],
-  fields: ["Animation", "Motion Graphics"],
+  tools: [],
+  fields: [],
   tags: [
     "animation",
     "character animation",
@@ -66,10 +67,10 @@ export const projectMeta: ProjectMeta = {
     sectionLabelBg: "#191919",
   },
   workflow: [
-    { n: "01", t: "Brief & refs", sub: "Splash · client mood" },
+    { n: "01", t: "Brief & refs", sub: "Splash / client mood" },
     { n: "02", t: "Animate", sub: "Spine 2D" },
     { n: "03", t: "FX & Comp", sub: "After Effects" },
-    { n: "04", t: "Deliver", sub: "Web loop · QA" },
+    { n: "04", t: "Deliver", sub: "Web loop / QA" },
   ],
 };
 

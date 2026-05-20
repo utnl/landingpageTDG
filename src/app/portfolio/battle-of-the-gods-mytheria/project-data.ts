@@ -11,7 +11,7 @@ export const projectMeta: ProjectMeta = {
   title: "Battle of the Gods | Mytheria - Login Screen",
   eyebrow: "Case study",
   summary:
-    "Login-screen package for Mytheria — Battle of the Gods. Six character animation loops with VFX, plus a hero reveal cinematic intro tuned for the title screen.",
+    "Login-screen package for Mytheria — Battle of the Gods. Six character loops with VFX, plus a hero reveal cinematic intro tuned for the title screen.",
   heroTitle: {
     primary: [
       { text: "Battle", color: "accent" },
@@ -27,12 +27,12 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Jan 2022", label: "Published", icon: "calendar" },
     { value: "Mytheria (Mobile)", label: "Project type", icon: "cube" },
-    { value: "Ae · Ps · Spine", label: "Pipeline", icon: "users" },
+    { value: "Ps", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
     "Cinematic intro composite",
     "6 hero login loops with VFX",
-    "Final motion graphics banner",
+    "Final graphics banner",
   ],
   overview: {
     body: "A login-screen drop for Mytheria — Battle of the Gods. We delivered a short cinematic intro, six character motion + VFX loops shown two-up to compare poses and effects, and a final banner that ties the lineup together for marketing.",
@@ -49,8 +49,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/d5b456134047127.Y3JvcCwyMzkyLDE4NzAsMCww.png",
-  tools: ["After Effects", "Photoshop", "Spine 2D"],
-  fields: ["Animation", "Motion Graphics", "Visual Effects"],
+  tools: [],
+  fields: ["Visual Effects"],
   tags: [
     "battle",
     "character animation",

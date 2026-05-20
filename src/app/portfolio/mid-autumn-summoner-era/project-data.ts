@@ -30,11 +30,11 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Jan 2021", label: "Published", icon: "calendar" },
     { value: "Event content", label: "Project type", icon: "cube" },
-    { value: "Spine 2D", label: "Pipeline", icon: "users" },
+    { value: "", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
     "Splash & banner art",
-    "8 hero spine loops",
+    "8 hero loops",
     "Name plates + closing reel",
   ],
   overview: {
@@ -52,8 +52,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/4cd319112053013.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
-  tools: ["Spine 2D"],
-  fields: ["Animation", "Game Design", "Motion Graphics"],
+  tools: [],
+  fields: ["Game Design"],
   tags: [
     "2D animation",
     "character",

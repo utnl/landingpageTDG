@@ -31,11 +31,11 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "May 2018", label: "Published", icon: "calendar" },
     { value: "Mobile F2P", label: "Project type", icon: "cube" },
-    { value: "Spine 2D", label: "Pipeline", icon: "users" },
+    { value: "", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
-    "Hero combat & idle Spine loops",
-    "Boss-scale animation passes",
+    "Hero combat & idle loops",
+    "Boss-scale motion passes",
     "In-game ready GIF exports",
   ],
   overview: {
@@ -56,8 +56,8 @@ export const projectMeta: ProjectMeta = {
     { role: "Animator", name: "Toan Dang" },
     { role: "Studio", name: "TD GAMES" },
   ],
-  tools: ["Spine 2D"],
-  fields: ["Animation", "Visual Effects"],
+  tools: [],
+  fields: ["Visual Effects"],
   tags: [
     "animation",
     "game mobile",

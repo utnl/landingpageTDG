@@ -12,7 +12,7 @@ export const projectMeta: ProjectMeta = {
   title: "GAME ANIMATION/VFX - 3Q",
   eyebrow: "Case study",
   summary:
-    "2D mobile strategy game animation and VFX — hero motion, combat loops and polish passes for a quarterly content drop, built in Spine 2D with After Effects and Photoshop finishing.",
+    "2D mobile strategy game — hero motion, combat loops and polish passes for a quarterly content drop.",
   heroTitle: {
     primary: [
       { text: "Game", color: "accentSoft" },
@@ -30,12 +30,12 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "May 2022", label: "Published", icon: "calendar" },
     { value: "Game (Mobile)", label: "Project type", icon: "cube" },
-    { value: "Ae · Ps · Spine", label: "Pipeline", icon: "users" },
+    { value: "Ps", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
-    "Spine 2D character animation loops",
-    "After Effects VFX & comp polish",
-    "Photoshop texture and pose prep",
+    "Character loops",
+    "VFX & comp polish",
+    "Texture and pose prep",
   ],
   overview: {
     body: "A Behance collection of in-game animation and VFX work for a 2D mobile strategy title — hero showcases, readable silhouettes at phone scale, and hand-tuned effects passes that sit cleanly on illustrated assets from the art team.",
@@ -51,8 +51,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/c4e25d143388227.Y3JvcCwxOTgxLDE1NTAsOSww.png",
-  tools: ["After Effects", "Photoshop", "Spine 2D"],
-  fields: ["Animation", "Character Design", "Visual Effects"],
+  tools: [],
+  fields: ["Character Design", "Visual Effects"],
   tags: [
     "2D Animation",
     "2D game mobile",

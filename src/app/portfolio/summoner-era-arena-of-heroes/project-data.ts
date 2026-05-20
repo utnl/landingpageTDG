@@ -12,7 +12,7 @@ export const projectMeta: ProjectMeta = {
   title: "Animation for Summoner Era - Arena of Heroes",
   eyebrow: "Case study",
   summary:
-    "Cinematic hero showcase for Summoner Era's Arena of Heroes mode. Seven champions, each shipped with a name plate, splash, full Spine battle reel, and a two-up combo loop — built to feed the in-game arena lobby and marketing pipeline.",
+    "Cinematic hero showcase for Summoner Era's Arena of Heroes mode. Seven champions, each shipped with a name plate, splash, full battle reel, and a two-up combo loop — built to feed the in-game arena lobby and marketing pipeline.",
   heroTitle: {
     primary: [
       { text: "Arena", color: "accentSoft" },
@@ -51,8 +51,8 @@ export const projectMeta: ProjectMeta = {
   madeForLabel: "AnimVFX Clan",
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage: `${MW}/d4a408104755019.5f9b97c0a0f8a.png`,
-  tools: ["After Effects", "Spine 2D"],
-  fields: ["Animation", "Visual Effects", "Motion Graphics"],
+  tools: [],
+  fields: ["Visual Effects"],
   tags: [
     "after effects",
     "animation",

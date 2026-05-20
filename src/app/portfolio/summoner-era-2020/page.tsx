@@ -429,7 +429,7 @@ export default function SummonerEra2020DetailPage() {
                 />
               </div>
 
-              <div className="mt-4 flex-1 grid gap-4 rounded-2xl border border-white/10 bg-white/2 p-5 md:grid-cols-3">
+              <div className="mt-4 flex-1 grid gap-4 rounded-[24px] border border-white/10 bg-white/[0.025] p-5 md:grid-cols-3">
                 <div className="flex h-full flex-col">
                   <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
                     Deliverables
@@ -461,7 +461,7 @@ export default function SummonerEra2020DetailPage() {
                     Tools
                   </div>
                   <ul className="mt-3 flex flex-1 flex-col justify-around gap-2 text-[12.5px] text-white/80">
-                    {projectMeta.tools.map((tool) => {
+                    {projectMeta.tools && projectMeta.tools.length > 0 ? projectMeta.tools.map((tool) => {
                       const logo = TOOL_LOGOS[tool];
                       return (
                         <li key={tool} className="flex items-center gap-2">
@@ -483,7 +483,9 @@ export default function SummonerEra2020DetailPage() {
                           {tool}
                         </li>
                       );
-                    })}
+                    }) : (
+                      <li className="text-white/40 text-[12px]">No tools specified</li>
+                    )}
                   </ul>
                 </div>
 
@@ -491,15 +493,16 @@ export default function SummonerEra2020DetailPage() {
                   <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-white/40">
                     Creative Fields
                   </div>
-                  <div className="mt-3 flex flex-1 flex-wrap content-around gap-2.5">
+                  <div className="mt-3 flex flex-1 flex-wrap content-start gap-2">
                     {projectMeta.fields.map((field) => (
                       <span
                         key={field}
-                        className="h-fit rounded-full px-3 py-1.5 text-[11px] font-semibold"
+                        className="rounded-md px-3 py-1.5 text-[11px] font-medium transition-all duration-200 hover:scale-105"
                         style={{
-                          border: `1px solid ${projectMeta.theme?.accent || "#22d3ee"}40`,
-                          backgroundColor: `${projectMeta.theme?.accent || "#22d3ee"}1a`,
-                          color: `${projectMeta.theme?.accentSoft || "#ffffff"}dd`
+                          background: `linear-gradient(135deg, ${projectMeta.theme?.accent || "#22d3ee"}20 0%, ${projectMeta.theme?.accent || "#22d3ee"}10 100%)`,
+                          border: `1px solid ${projectMeta.theme?.accent || "#22d3ee"}50`,
+                          color: `${projectMeta.theme?.accentSoft || "#ffffff"}ff`,
+                          boxShadow: `0 2px 8px ${projectMeta.theme?.accent || "#22d3ee"}15`,
                         }}
                       >
                         {field}
@@ -507,41 +510,37 @@ export default function SummonerEra2020DetailPage() {
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <div
-            className="relative mx-auto px-4 pb-8 sm:px-0 lg:pb-10"
-            style={{ width: "min(var(--layout-width, 88%), 1280px)" }}
-          >
-            <div className="border-t border-white/10 pt-5 md:pt-6">
-              <div className="grid gap-6 md:grid-cols-[1.1fr_1fr] md:items-center">
-                <div>
-                  <div 
-                    className="text-[11px] font-bold uppercase tracking-[0.34em]"
-                    style={{ color: projectMeta.theme?.accent || "#22d3ee" }}
-                  >
-                    Project Overview
-                  </div>
-                  <p className="mt-2.5 max-w-xl text-[13px] leading-6 text-white/72 md:text-sm">
-                    {projectMeta.overview.body}
-                  </p>
-                </div>
-                <div className="grid grid-cols-4 gap-3">
-                  {projectMeta.overview.stats.map((s) => (
-                    <div key={s.label}>
-                      <div
-                        className="text-2xl font-black tracking-tight text-white md:text-3xl"
-                        style={{ fontFamily: "var(--font-rajdhani)" }}
-                      >
-                        {s.value}
-                      </div>
-                      <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">
-                        {s.label}
-                      </div>
+                <div className="md:col-span-3 rounded-[20px] border border-white/10 bg-black/20 p-4">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="h-2.5 w-2.5 rounded-full"
+                      style={{ backgroundColor: projectMeta.theme?.accent || "#22d3ee" }}
+                    />
+                    <div className="text-[11px] font-bold uppercase tracking-[0.34em] text-white/60">
+                      Snapshot
                     </div>
-                  ))}
+                  </div>
+                  <div className="mt-3 grid gap-4 md:grid-cols-[1.05fr_1fr] md:items-end">
+                    <p className="max-w-xl text-[12.5px] leading-6 text-white/68">
+                      {projectMeta.overview.body}
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                      {projectMeta.overview.stats.map((s) => (
+                        <div key={s.label}>
+                          <div
+                            className="text-2xl font-black tracking-tight text-white md:text-3xl"
+                            style={{ fontFamily: "var(--font-rajdhani)" }}
+                          >
+                            {s.value}
+                          </div>
+                          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">
+                            {s.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

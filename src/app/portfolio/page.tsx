@@ -528,6 +528,7 @@ export default function PortfolioPage() {
   const ENABLE_PORTFOLIO_HOVER_FX = true;
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [introCardsReady, setIntroCardsReady] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
   const [bgImage, setBgImage] = useState(PORTFOLIO_PAGE_DEFAULTS.background);
   const [bgRightWidthVw, setBgRightWidthVw] = useState(
     PORTFOLIO_PAGE_DEFAULTS.bgRight.widthVw,
@@ -1042,6 +1043,13 @@ export default function PortfolioPage() {
     return () => window.cancelAnimationFrame(id);
   }, [boardFitLayoutReady]);
 
+  useEffect(() => {
+    if (introCardsReady) {
+      const t = window.setTimeout(() => setHasEntered(true), 3000);
+      return () => window.clearTimeout(t);
+    }
+  }, [introCardsReady]);
+
   /** Slot đôi khi chưa có kích thước ở frame đầu (aspect/vw); không để intro kẹt mãi. */
   useEffect(() => {
     if (boardFitLayoutReady) return;
@@ -1069,7 +1077,12 @@ export default function PortfolioPage() {
         className={`relative min-h-screen bg-black ${nunitoSans.className}`}
       >
         {/* Chỉ vùng hero: nền hover card không được absolute theo cả <main> (sẽ kéo dài xuống FAQ/Contact). */}
-        <div className="relative isolate overflow-hidden">
+        <div 
+          className="relative isolate overflow-hidden"
+          onMouseLeave={() => {
+            if (ENABLE_PORTFOLIO_HOVER_FX) setHoveredCardIndex(null);
+          }}
+        >
           {/* Global background — hover bất kỳ card: ảnh card làm nền + bỏ phủ + scale nhẹ */}
           <div className="pointer-events-none absolute inset-0 z-0">
             {bgImage && !/bgright\.png/i.test(bgImage) ? (
@@ -1809,7 +1822,7 @@ export default function PortfolioPage() {
                 transform: `translate(${bgRightOffsetX}px, ${bgRightOffsetY}px)`,
               }}
             >
-              <div className="relative h-full w-full min-h-0 overflow-hidden">
+              <div className="relative h-full w-full min-h-0 overflow-visible">
                 <div
                   className="absolute"
                   style={{
@@ -1881,7 +1894,7 @@ export default function PortfolioPage() {
                               card.id === "summoners-era" ||
                               card.id === "overdrive-top-left" ||
                               card.id === "overdrive-top-right";
-                            const introDelayMs = index * 120;
+                            const introDelayMs = index * 200;
                             const introFrom =
                               index % 3 === 0
                                 ? { tx: 220, ty: 90 }
@@ -1889,51 +1902,47 @@ export default function PortfolioPage() {
                                   ? { tx: -240, ty: 140 }
                                   : { tx: 180, ty: -160 };
 
+                            // Khi hover: Ẩn hết mọi card, chỉ giữ background
+                            const hoverOpacity = !introCardsReady
+                              ? 0
+                              : cardBgTakeover
+                                ? 0
+                                : 1;
+                            const hoverFilter = !introCardsReady
+                              ? "blur(10px)"
+                              : "blur(0px)";
+                            const hoverScale = 1;
+                            const hoverRotate = card.rotate;
+
                             return (
                               <article
                                 key={card.id}
                                 className={`group absolute overflow-visible shadow-[0_14px_40px_rgba(0,0,0,0.55)] ${
-                                  cardBgTakeover && !isActiveHoveredCard
-                                    ? "pointer-events-none"
-                                    : ""
+                                  cardBgTakeover ? "pointer-events-none" : ""
                                 } ${
-                                  cardBgTakeover && isActiveHoveredCard
-                                    ? "pointer-events-auto"
-                                    : ""
-                                } ${interaction?.index === index ? "cursor-grabbing" : "cursor-grab"}`}
+                                  interaction?.index === index ? "cursor-grabbing" : "cursor-grab"
+                                }`}
                                 style={{
                                   left: `${card.x}px`,
                                   top: `${card.y}px`,
                                   width: `${card.w}px`,
                                   height: `${card.h}px`,
-                                  zIndex: cardZ,
-                                  opacity: !introCardsReady
-                                    ? 0
-                                    : cardBgTakeover
-                                      ? 0
-                                      : 1,
-                                  filter: introCardsReady
-                                    ? "blur(0px)"
-                                    : "blur(10px)",
-                                  transform: introCardsReady
-                                    ? `translate3d(0,0,0) rotate(${card.rotate}deg) scale(1)`
-                                    : `translate3d(${introFrom.tx}px, ${introFrom.ty}px, 0) rotate(${card.rotate - 10}deg) scale(0.92)`,
+                                  zIndex: isActiveHoveredCard ? 50 : (cardBgTakeover ? 10 : cardZ),
+                                  opacity: hoverOpacity,
+                                  filter: hoverFilter,
+                                  transform: !introCardsReady
+                                    ? `translate3d(${introFrom.tx}px, ${introFrom.ty}px, 0) rotate(${card.rotate - 10}deg) scale(0.92)`
+                                    : `translate3d(0,0,0) rotate(${hoverRotate}deg) scale(${hoverScale})`,
                                   transitionProperty:
                                     "transform, opacity, filter",
-                                  transitionDuration: "900ms",
+                                  transitionDuration: !hasEntered ? "1800ms" : "450ms",
                                   transitionTimingFunction:
                                     "cubic-bezier(0.22, 1, 0.36, 1)",
-                                  transitionDelay: `${introDelayMs}ms`,
+                                  transitionDelay: !hasEntered ? `${introDelayMs}ms` : "0ms",
                                 }}
                                 onMouseEnter={() => {
                                   if (ENABLE_PORTFOLIO_HOVER_FX)
                                     setHoveredCardIndex(index);
-                                }}
-                                onMouseLeave={() => {
-                                  if (!ENABLE_PORTFOLIO_HOVER_FX) return;
-                                  setHoveredCardIndex((h) =>
-                                    h === index ? null : h,
-                                  );
                                 }}
                                 onPointerDown={(event) => {
                                   if (!ENABLE_EDITOR) return;
@@ -2195,6 +2204,69 @@ export default function PortfolioPage() {
               </div>
             </div>
           </section>
+
+          {/* Dock Overlay — 4 thumbnails hiện khi hover card, nằm ngoài rotated board */}
+          <div
+            className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex items-end justify-center pb-6"
+            style={{
+              transition: "opacity 450ms cubic-bezier(0.22, 1, 0.36, 1), transform 450ms cubic-bezier(0.22, 1, 0.36, 1)",
+              opacity: hoveredCardIndex !== null ? 1 : 0,
+              transform: hoveredCardIndex !== null ? "translateY(0px)" : "translateY(24px)",
+            }}
+          >
+            <div className="flex items-end gap-3">
+              {hoveredCardIndex !== null &&
+                showcaseCards
+                  .map((dockCard, dockIdx) => {
+                    const isActive = dockIdx === hoveredCardIndex;
+                    return (
+                      <button
+                        key={dockCard.id}
+                        type="button"
+                        className={`pointer-events-auto group/dock relative overflow-hidden rounded-lg border-2 shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+                          isActive 
+                            ? "border-amber-400 scale-110 -translate-y-2 z-10" 
+                            : "border-white/20 scale-100 hover:border-amber-400/70 hover:scale-110 hover:z-10"
+                        }`}
+                        style={{
+                          width: 120,
+                          height: 80,
+                          transitionDelay: `${dockIdx * 40}ms`,
+                          animation: `dockSlideIn 400ms cubic-bezier(0.34,1.56,0.64,1) ${dockIdx * 40}ms both`,
+                        }}
+                        onMouseEnter={() => setHoveredCardIndex(dockIdx)}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={dockCard.image}
+                          alt=""
+                          className={`absolute inset-0 h-full w-full object-cover transition-transform duration-300 ${
+                            isActive ? "scale-110" : "group-hover/dock:scale-110"
+                          }`}
+                        />
+                        <div 
+                          className={`absolute inset-0 transition-opacity duration-300 ${
+                            isActive ? "bg-black/0" : "bg-black/50 group-hover/dock:bg-black/20"
+                          }`} 
+                        />
+                        {/* Số thứ tự */}
+                        <span className={`absolute bottom-1 right-1.5 text-[10px] font-bold transition-colors ${
+                          isActive ? "text-amber-400" : "text-white/60"
+                        }`}>
+                          {dockIdx + 1}
+                        </span>
+                      </button>
+                    );
+                  })}
+            </div>
+          </div>
+
+          <style>{`
+            @keyframes dockSlideIn {
+              from { opacity: 0; transform: translateY(20px) scale(0.85); }
+              to   { opacity: 1; transform: translateY(0)    scale(1);    }
+            }
+          `}</style>
         </div>
 
         {/* Selected Works Grid Section */}

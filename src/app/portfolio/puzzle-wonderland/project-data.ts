@@ -30,7 +30,7 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Jul 2018", label: "Published", icon: "calendar" },
     { value: "Casual mobile", label: "Project type", icon: "cube" },
-    { value: "Spine 2D", label: "Pipeline", icon: "users" },
+    { value: "", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
     "Portrait login splash",
@@ -55,8 +55,8 @@ export const projectMeta: ProjectMeta = {
     { role: "Artist", name: "Hung Ngo" },
     { role: "Animator", name: "Toan Dang" },
   ],
-  tools: ["Spine 2D"],
-  fields: ["Animation", "Visual Effects", "Digital Art"],
+  tools: [],
+  fields: ["Visual Effects", "Digital Art"],
   tags: [
     "animation",
     "spine 2D",

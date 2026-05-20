@@ -2,7 +2,7 @@ export const projectMeta = {
   title: "Summoner Era — Login Screen Animations (2020)",
   eyebrow: "Case study",
   summary:
-    "Animated splash art (login screens) for Summoner Era at Zitga Studio in 2020 — story-driven loops that introduce new champions, events and game updates.",
+    "Splash art (login screens) for Summoner Era at Zitga Studio in 2020 — story-driven loops that introduce new champions, events and game updates.",
   heroTitle: {
     primary: [{ text: "SUMMONER ERA", color: "accent" }],
     subtitle: [
@@ -15,11 +15,11 @@ export const projectMeta = {
   heroFacts: [
     { value: "May 2022", label: "Published", icon: "calendar" },
     { value: "Game (Mobile)", label: "Project type", icon: "cube" },
-    { value: "Ae · Ps · Spine", label: "Pipeline", icon: "users" },
+    { value: "Ps", label: "Pipeline", icon: "users" },
   ] as const,
   deliverables: [
-    "Animated splash art / login screens",
-    "Character animation & event reveals",
+    "Splash art / login screens",
+    "Character & event reveals",
     "VFX passes for skills and ambient FX",
   ] as const,
   overview: {
@@ -37,8 +37,8 @@ export const projectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/1efef4144430837.Y3JvcCwxOTgxLDE1NTAsOSww.jpg",
-  tools: ["After Effects", "Photoshop", "Spine 2D"] as const,
-  fields: ["Animation", "Motion Graphics", "Visual Effects"] as const,
+  tools: [] as string[],
+  fields: ["Visual Effects"] as const,
   tags: [
     "animation",
     "Champions",

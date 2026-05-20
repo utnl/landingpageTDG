@@ -11,7 +11,7 @@ export const projectMeta: ProjectMeta = {
   title: "Animation Contest - Sky Mavis",
   eyebrow: "Case study",
   summary:
-    "Spine + After Effects entry for the Sky Mavis Animation Contest. A short cinematic reel and three character action loops showcasing combat timing, secondary motion, and stylised VFX.",
+    "Entry for the Sky Mavis Contest. A short cinematic reel and three character action loops showcasing combat timing, secondary motion, and stylised VFX.",
   heroTitle: {
     primary: [
       { text: "Animation", color: "soft" },
@@ -27,7 +27,7 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Nov 2021", label: "Published", icon: "calendar" },
     { value: "Contest entry", label: "Project type", icon: "cube" },
-    { value: "Ae · Spine", label: "Pipeline", icon: "users" },
+    { value: "", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
     "Cinematic reel (Vimeo)",
@@ -49,8 +49,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/33e83e130561969.Y3JvcCwxOTgxLDE1NTAsOSww.png",
-  tools: ["After Effects", "Spine 2D"],
-  fields: ["Animation", "Visual Effects", "Character Design"],
+  tools: [],
+  fields: ["Visual Effects", "Character Design"],
   tags: [
     "2D animation",
     "after effects",

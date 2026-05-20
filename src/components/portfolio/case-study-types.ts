@@ -61,6 +61,7 @@ export type ProjectMeta = {
   title: string;
   eyebrow: string;
   summary: string;
+  showOverviewSection?: boolean;
   heroTitle: HeroTitle;
   heroFacts: readonly HeroFact[];
   deliverables: readonly string[];

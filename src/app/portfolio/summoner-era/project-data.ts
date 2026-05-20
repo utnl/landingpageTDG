@@ -42,8 +42,8 @@ export const projectMeta: ProjectMeta = {
   behanceUrl:
     "https://www.behance.net/gallery/199358443/ANIMATIONVFX-HEROES-LIGHTDARK-SUMMONER-ERA",
   coverImage: "/images/summonerDetail.png",
-  tools: ["Spine 2D", "After Effects"],
-  fields: ["Animation", "Game Design", "Visual Effects"],
+  tools: [],
+  fields: ["Game Design", "Visual Effects"],
   tags: [
     "2D Animation",
     "Character Design",

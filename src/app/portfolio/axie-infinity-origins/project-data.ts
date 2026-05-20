@@ -11,7 +11,7 @@ export const projectMeta: ProjectMeta = {
   title: "AXIE INFINITY - ORIGINS | ANIMATION",
   eyebrow: "Case study",
   summary:
-    "Spine 2D character animation for Axie Infinity: Origins — in-game Axie rigs, attack loops, and showcase reels for Sky Mavis production.",
+    "Character work for Axie Infinity: Origins — in-game Axie rigs, attack loops, and showcase reels for Sky Mavis production.",
   heroTitle: {
     primary: [
       { text: "Axie Infinity", color: "accent" },
@@ -27,10 +27,10 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Sep 2022", label: "Published", icon: "calendar" },
     { value: "Game (Web3)", label: "Project type", icon: "cube" },
-    { value: "Ps · Spine", label: "Pipeline", icon: "users" },
+    { value: "Ps", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
-    "Spine 2D character animation",
+    "Character work",
     "In-game Axie motion loops",
     "Showcase reels for Origins",
   ],
@@ -49,8 +49,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/924075153491527.Y3JvcCwxOTgxLDE1NTAsOSww.png",
-  tools: ["Photoshop", "Spine 2D", "Spine"],
-  fields: ["Animation", "Character Design", "Game Design"],
+  tools: [],
+  fields: ["Character Design", "Game Design"],
   tags: [
     "2D",
     "animation",

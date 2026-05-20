@@ -12,7 +12,7 @@ export const projectMeta: ProjectMeta = {
   title: "ANIMATION/VFX - HEROES FIRE | SUMMONER ERA",
   eyebrow: "Case study",
   summary:
-    "2D character animation and VFX for Summoner Era — Fire heroes: in-game attack loops, skill effects, and showcase reels produced with After Effects and Spine 2D.",
+    "2D character and VFX for Summoner Era — Fire heroes: in-game attack loops, skill effects, and showcase reels.",
   heroTitle: {
     primary: [
       { text: "Heroes", color: "accent" },
@@ -28,11 +28,11 @@ export const projectMeta: ProjectMeta = {
   heroFacts: [
     { value: "Sep 2022", label: "Published", icon: "calendar" },
     { value: "Game (Mobile)", label: "Project type", icon: "cube" },
-    { value: "Ae · Spine", label: "Pipeline", icon: "users" },
+    { value: "", label: "Pipeline", icon: "users" },
   ],
   deliverables: [
-    "Spine 2D hero attack & idle loops",
-    "After Effects VFX & skill passes",
+    "Hero attack & idle loops",
+    "VFX & skill passes",
     "In-game showcase reels",
   ],
   overview: {
@@ -50,8 +50,8 @@ export const projectMeta: ProjectMeta = {
   madeForUrl: "https://www.behance.net/AnimVFXClan",
   coverImage:
     "https://mir-s3-cdn-cf.behance.net/projects/max_808/d50de7152527397.Y3JvcCwxOTgxLDE1NTAsOSww.png",
-  tools: ["After Effects", "Spine 2D"],
-  fields: ["Animation", "Visual Effects", "Game Design"],
+  tools: [],
+  fields: ["Visual Effects", "Game Design"],
   tags: [
     "2D",
     "animation",
